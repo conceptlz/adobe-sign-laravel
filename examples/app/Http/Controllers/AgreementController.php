@@ -54,6 +54,8 @@ final class AgreementController
         );
 
         // 2. Build the signing order: each signer is the next step, unless marked parallel.
+        //    Mixing sequential and parallel steps needs "hybrid routing" enabled on the Acrobat Sign
+        //    account; otherwise Adobe answers 403 HYBRID_ROUTING_NOT_ALLOWED.
         $agreement = AgreementInfo::create($data['name'])
             ->file(FileInfo::transientDocument($documentId))
             ->message('Please review and sign.');

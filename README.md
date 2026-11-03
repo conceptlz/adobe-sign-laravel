@@ -117,6 +117,9 @@ Two signers who should sign **in parallel** get the same `order()` number; the e
 supports this with a `parallel[]` field. Order numbers must run 1, 2, 3… with no gaps, and the
 builder rejects anything else before calling Adobe.
 
+Mixing sequential and parallel steps (e.g. one signer, then two at once) is **hybrid routing**, an
+Acrobat Sign account setting. When it's off, Adobe answers `403 HYBRID_ROUTING_NOT_ALLOWED`.
+
 The example also has `show()` for status, `signingUrl()` for embedded signing, and `download()`,
 which streams the PDF to the browser. Routes are in [`examples/routes/web.php`](examples/routes/web.php).
 
