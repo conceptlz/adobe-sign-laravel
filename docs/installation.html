@@ -117,7 +117,7 @@
       <tbody>
         <tr><td>PHP</td><td>8.2 or newer</td></tr>
         <tr><td>Laravel</td><td>12 or 13 (<code>illuminate/*</code> <code>^12.0 || ^13.0</code>)</td></tr>
-        <tr><td>Core SDK</td><td><code>conceptlz/adobe-sign</code> <code>^0.3</code>, installed for you</td></tr>
+        <tr><td>Core SDK</td><td><code>conceptlz/adobe-sign</code> <code>^0.4</code>, installed for you</td></tr>
         <tr><td>HTTP client</td><td>Any PSR-18 client. Laravel already ships Guzzle, so there is nothing to add.</td></tr>
         <tr><td>Database table</td><td>Only for OAuth (<code>adobe_sign_tokens</code>)</td></tr>
         <tr><td>Acrobat Sign account</td><td>Any plan, including a free developer account</td></tr>
@@ -282,8 +282,8 @@ public function register(): void
   </p>
   <pre><code class="language-bash">composer update conceptlz/adobe-sign-laravel conceptlz/adobe-sign</code></pre>
   <p>
-    While the version is below 1.0, a minor bump (0.3 → 0.4) can contain breaking changes, and the
-    bridge's <code>^0.3</code> constraint keeps you on 0.3.x until you change your own constraint. Read
+    While the version is below 1.0, a minor bump (0.4 → 0.5) can contain breaking changes, and the
+    bridge's <code>^0.4</code> constraint keeps you on 0.4.x until you change your own constraint. Read
     the changelog before moving to a new minor version. If you published the config file, compare it with
     the package's copy after upgrading, since new keys only reach your app through the merged defaults.
   </p>
