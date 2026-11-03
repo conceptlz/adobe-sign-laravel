@@ -1646,6 +1646,334 @@ kbd {
   }
 }
 
+/* ---------- Troubleshooting: problem finder and issue cards ---------- */
+
+.finder {
+  margin: var(--space-xl) 0 var(--space-2xl);
+  padding: var(--space-lg);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  background: var(--paper-raised);
+}
+
+.doc .finder-title {
+  margin: 0 0 var(--space-sm);
+  line-height: 1.2;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+}
+
+.finder-search {
+  position: relative;
+  margin-bottom: var(--space-md);
+}
+
+.finder-search[hidden] {
+  display: none;
+}
+
+.finder-input {
+  width: 100%;
+  height: 2.9rem;
+  padding: 0 var(--space-md) 0 2.6rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-md);
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+}
+
+.finder-input:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px var(--brand-wash);
+}
+
+.finder-search svg {
+  position: absolute;
+  left: 0.85rem;
+  top: 0.9rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--ink-faint);
+  pointer-events: none;
+}
+
+.doc .finder-status {
+  margin: var(--space-xs) 0 0;
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  min-height: 1.4em;
+}
+
+.finder-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: var(--space-lg) var(--space-xl);
+  margin: var(--space-md) 0 0;
+}
+
+.doc .finder-group-title {
+  margin: 0 0 var(--space-2xs);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--stamp-ink);
+}
+
+.finder-group-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.doc .finder-group ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.doc .finder-group li {
+  margin: 0;
+  font-size: 0.93rem;
+  line-height: 1.45;
+}
+
+.doc .finder-group li + li {
+  margin-top: 0.3rem;
+}
+
+.finder-group a {
+  text-decoration: none;
+}
+
+.finder-group a:hover {
+  text-decoration: underline;
+}
+
+.issue-group-intro {
+  color: var(--ink-soft);
+}
+
+.issue {
+  margin: var(--space-lg) 0 var(--space-xl);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  background: var(--paper-raised);
+  overflow: hidden;
+  scroll-margin-top: calc(var(--topbar-h) + var(--space-md));
+}
+
+.issue[hidden] {
+  display: none;
+}
+
+.issue-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-xs) var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--rule);
+}
+
+.doc .issue-head h3 {
+  flex: 1 1 18rem;
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.issue-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  margin: 0;
+}
+
+.issue-tags .badge {
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.issue-part {
+  display: grid;
+  grid-template-columns: 9.5rem minmax(0, 1fr);
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+}
+
+.issue-part + .issue-part {
+  border-top: 1px dashed var(--rule);
+}
+
+.doc .issue-label {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-xs);
+  margin: 0;
+  padding-top: 0.1rem;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.issue-label::before {
+  content: "";
+  flex: none;
+  width: 0.55rem;
+  height: 0.55rem;
+  margin-top: 0.3rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink-faint);
+}
+
+.issue-cause .issue-label::before {
+  border-color: var(--stamp);
+  background: var(--stamp-wash);
+}
+
+.issue-fix {
+  background: color-mix(in oklch, var(--ok-wash) 70%, var(--paper-raised));
+}
+
+.issue-fix .issue-label {
+  color: var(--ok-ink);
+}
+
+.issue-fix .issue-label::before {
+  border-color: var(--ok-ink);
+  background: var(--ok-ink);
+}
+
+.issue-body > :first-child {
+  margin-top: 0;
+}
+
+.issue-body > :last-child {
+  margin-bottom: 0;
+}
+
+.issue-body .code,
+.issue-body .table-wrap,
+.issue-body > pre {
+  margin: var(--space-sm) 0;
+}
+
+@media (max-width: 40rem) {
+  .issue-part {
+    grid-template-columns: 1fr;
+    gap: var(--space-xs);
+  }
+
+  .issue-head,
+  .issue-part {
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+  }
+}
+
+/* ---------- Legal and about pages ---------- */
+
+.doc .legal-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-lg);
+  margin: var(--space-lg) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.doc .legal-meta li {
+  margin: 0;
+}
+
+.legal-meta strong {
+  color: var(--ink);
+}
+
+.summary-box {
+  margin: var(--space-xl) 0;
+  padding: var(--space-lg) var(--space-xl);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-lg);
+  background: var(--paper-raised);
+}
+
+.doc .summary-box-title {
+  margin: 0 0 var(--space-sm);
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+}
+
+.doc .summary-box ul {
+  margin-bottom: 0;
+}
+
+.maker {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-lg) var(--space-xl);
+  align-items: center;
+  margin: var(--space-xl) 0;
+  padding: var(--space-xl);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-lg);
+  background: var(--paper-raised);
+}
+
+.maker-seal {
+  width: 6.5rem;
+  height: 6.5rem;
+  color: var(--brand);
+}
+
+.doc .maker-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 1.4rem + 1.4vw, 2.5rem);
+  line-height: 1.05;
+}
+
+.doc .maker-role {
+  margin: var(--space-2xs) 0 var(--space-sm);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--stamp-ink);
+}
+
+.maker p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 40rem) {
+  .maker {
+    grid-template-columns: 1fr;
+  }
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-lg);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.site-footer-legal {
+  max-width: 46rem;
+}
+
 /* ---------- Pager & footer ---------- */
 
 .pager {

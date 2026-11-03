@@ -1363,7 +1363,7 @@ window.DOCS_INDEX = [
         "page": "Troubleshooting",
         "url": "troubleshooting.html#first-checks",
         "level": 2,
-        "text": "Do the credentials work?php artisan adobe-sign:verifyIt calls Adobe with the default client and prints the user, or the exact error. Add --user=ID for an OAuth connection. Is the config you think you have loaded?php artisan config:clear php artisan tinker --execute=\"dump(config('adobe-sign.auth'), config('adobe-sign.we…"
+        "text": "Do the credentials work?php artisan adobe-sign:verify It calls Adobe with the default client and prints the user, or the exact error. Add --user=ID for an OAuth connection. Is the config you think you have loaded?php artisan config:clear php artisan tinker --execute=\"dump(config('adobe-sign.auth'), config('adobe-sign.w…"
     },
     {
         "title": "Quick lookup",
@@ -1373,186 +1373,193 @@ window.DOCS_INDEX = [
         "text": "You seeGo to MisconfiguredExceptionMissing configuration \"Base table or view not found\" / \"no such table: adobe_sign_tokens\"Token table missing AuthenticationException with INVALID_ACCESS_TOKENKey rejected OAuth callback answers 400State mismatch Adobe's page says the redirect URI is invalid, or callback answers 403Red…"
     },
     {
+        "title": "Find your problem",
+        "page": "Troubleshooting",
+        "url": "troubleshooting.html#find-your-problem",
+        "level": 2,
+        "text": "21 problems in 5 groups. Type an error code, an exception name or a word from the message to narrow them down, or pick one from the index. Filter problems Setup and configuration MisconfiguredException Token table missing Key rejected: INVALID_ACCESS_TOKEN OAuth Callback answers 400 (state mismatch) Redirect URI reject…"
+    },
+    {
         "title": "Setup and configuration",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#setup-problems",
         "level": 2,
-        "text": ""
+        "text": "MisconfiguredException MisconfiguredException What you see Conceptlz\\AdobeSign\\Laravel\\MisconfiguredException from the facade, an injected client, adobe-sign:verify, the OAuth routes or the webhook route. Why it happens A setting the feature needs is empty. The message names it: Message starts withFix Set ADOBE_SIGN_IN…"
     },
     {
         "title": "MisconfiguredException",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#misconfigured-exception",
         "level": 3,
-        "text": "Symptom. Conceptlz\\AdobeSign\\Laravel\\MisconfiguredException from the facade, an injected client, adobe-sign:verify, the OAuth routes or the webhook route. Cause. A setting the feature needs is empty. The message names it: Message starts withFix Set ADOBE_SIGN_INTEGRATION_KEY…Add the key, or set ADOBE_SIGN_AUTH=oauth if…"
+        "text": "Conceptlz\\AdobeSign\\Laravel\\MisconfiguredException from the facade, an injected client, adobe-sign:verify, the OAuth routes or the webhook route. A setting the feature needs is empty. The message names it: Message starts withFix Set ADOBE_SIGN_INTEGRATION_KEY…Add the key, or set ADOBE_SIGN_AUTH=oauth if you meant to us…"
     },
     {
         "title": "Token table missing",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#missing-migration",
         "level": 3,
-        "text": "Symptom. A database error such as SQLSTATE[42S02]: Base table or view not found or no such table: adobe_sign_tokens, from the OAuth callback, forUser() or isConnected(). Cause. The package doesn't load its migration automatically; it has to be published and run. Or you changed oauth.table after migrating. Fix. php arti…"
+        "text": "A database error such as SQLSTATE[42S02]: Base table or view not found or no such table: adobe_sign_tokens, from the OAuth callback, forUser() or isConnected(). The package doesn't load its migration automatically; it has to be published and run. Or you changed oauth.table after migrating. php artisan vendor:publish --…"
     },
     {
         "title": "Key rejected: INVALID_ACCESS_TOKEN",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#invalid-access-token",
         "level": 3,
-        "text": "Symptom. AuthenticationException mentioning INVALID_ACCESS_TOKEN; adobe-sign:verify fails. Cause. The Integration Key is wrong, truncated, revoked, or belongs to a different environment. A stray quote or space in .env is common. Fix. Copy the key again from Acrobat Sign (Account → Acrobat Sign API → API Information), c…"
+        "text": "AuthenticationException mentioning INVALID_ACCESS_TOKEN; adobe-sign:verify fails. The Integration Key is wrong, truncated, revoked, or belongs to a different environment. A stray quote or space in .env is common. Copy the key again from Acrobat Sign (Account → Acrobat Sign API → API Information), clear the config cache…"
     },
     {
         "title": "OAuth",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#oauth-problems",
         "level": 2,
-        "text": ""
+        "text": "Callback answers 400 (state mismatch) HTTP 400 What you see After consenting at Adobe the user lands on a 400 page. Why it happens The callback couldn't match the state in the URL with the one stored in the session. The package pulls the state on first use, so it fails when: the session expired or was regenerated while…"
     },
     {
         "title": "Callback answers 400 (state mismatch)",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#oauth-state-mismatch",
         "level": 3,
-        "text": "Symptom. After consenting at Adobe the user lands on a 400 page. Cause. The callback couldn't match the state in the URL with the one stored in the session. The package pulls the state on first use, so it fails when: the session expired or was regenerated while the user was at Adobe; the session cookie wasn't sent on t…"
+        "text": "After consenting at Adobe the user lands on a 400 page. The callback couldn't match the state in the URL with the one stored in the session. The package pulls the state on first use, so it fails when: the session expired or was regenerated while the user was at Adobe; the session cookie wasn't sent on the redirect back…"
     },
     {
         "title": "Redirect URI rejected",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#oauth-redirect-uri",
         "level": 3,
-        "text": "Symptom. Adobe shows an error about the redirect URI instead of the consent screen, or the callback answers 403 after the code exchange. Cause. The redirect URI your app sends doesn't match one registered on the Adobe application character for character. Behind a proxy, route('adobe-sign.oauth.callback') may come out a…"
+        "text": "Adobe shows an error about the redirect URI instead of the consent screen, or the callback answers 403 after the code exchange. The redirect URI your app sends doesn't match one registered on the Adobe application character for character. Behind a proxy, route('adobe-sign.oauth.callback') may come out as http:// or wit…"
     },
     {
         "title": "Connection expired: OAuthException",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#oauth-token-dead",
         "level": 3,
-        "text": "Symptom. OAuthException with EXPIRED_TOKEN, INVALID_TOKEN, NO_REFRESH_TOKEN or NO_TOKEN when using forUser(). Cause. NO_TOKEN: the user never connected (or the key differs, e.g. after changing resolveUserKeyUsing()). The others: the refresh token went unused for 60 days, or the user or an admin revoked access. Fix. Sen…"
+        "text": "OAuthException with EXPIRED_TOKEN, INVALID_TOKEN, NO_REFRESH_TOKEN or NO_TOKEN when using forUser(). NO_TOKEN: the user never connected (or the key differs, e.g. after changing resolveUserKeyUsing()). The others: the refresh token went unused for 60 days, or the user or an admin revoked access. Send the user through ro…"
     },
     {
         "title": "DecryptException after deploying",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#decrypt-exception",
         "level": 3,
-        "text": "Symptom. Illuminate\\Contracts\\Encryption\\DecryptException (\"The MAC is invalid.\") when reading tokens. Cause. Tokens are encrypted with APP_KEY, and it changed, or differs between servers. Fix. Use the same APP_KEY on every server. When rotating, put the old key in APP_PREVIOUS_KEYS. If the old key is lost, delete the…"
+        "text": "Illuminate\\Contracts\\Encryption\\DecryptException (\"The MAC is invalid.\") when reading tokens. Tokens are encrypted with APP_KEY, and it changed, or differs between servers. Use the same APP_KEY on every server. When rotating, put the old key in APP_PREVIOUS_KEYS. If the old key is lost, delete the rows and ask users to…"
     },
     {
         "title": "Webhooks",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#webhook-problems",
         "level": 2,
-        "text": ""
+        "text": "Webhook can't be registered What you see webhooks()->create() throws, while uploading and creating agreements works. Why it happens Adobe verifies the URL immediately with a GET and expects a 2xx with the client-id echo. It fails when the URL isn't publicly reachable over HTTPS, when the client id Adobe sends isn't all…"
     },
     {
         "title": "Webhook can't be registered",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#webhook-registration-fails",
         "level": 3,
-        "text": "Symptom. webhooks()->create() throws, while uploading and creating agreements works. Cause. Adobe verifies the URL immediately with a GET and expects a 2xx with the client-id echo. It fails when the URL isn't publicly reachable over HTTPS, when the client id Adobe sends isn't allowed (your route answers 403), when midd…"
+        "text": "webhooks()->create() throws, while uploading and creating agreements works. Adobe verifies the URL immediately with a GET and expects a 2xx with the client-id echo. It fails when the URL isn't publicly reachable over HTTPS, when the client id Adobe sends isn't allowed (your route answers 403), when middleware intercept…"
     },
     {
         "title": "\"Acrobat Sign only delivers webhooks to HTTPS URLs\"",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#webhook-http-url",
         "level": 3,
-        "text": "Symptom. InvalidArgumentException from WebhookInfo, before any request. Cause. route('adobe-sign.webhook') produced an http:// URL: APP_URL is http, or a TLS-terminating proxy isn't trusted, or the code runs in a queue or console where only APP_URL is known. Fix. Set APP_URL=https://… and configure trusted proxies. In…"
+        "text": "InvalidArgumentException from WebhookInfo, before any request. route('adobe-sign.webhook') produced an http:// URL: APP_URL is http, or a TLS-terminating proxy isn't trusted, or the code runs in a queue or console where only APP_URL is known. Set APP_URL=https://… and configure trusted proxies. In tests, URL::forceSche…"
     },
     {
         "title": "Webhook answers 403: client id not allowed",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#webhook-403",
         "level": 3,
-        "text": "Symptom. Adobe's deliveries or your tunnel inspector show 403; your log has \"Rejected Acrobat Sign webhook\". Cause. The X-AdobeSign-ClientId header is missing or not in ADOBE_SIGN_WEBHOOK_CLIENT_IDS (or ADOBE_SIGN_CLIENT_ID when that list is empty). Typical after adding a second Adobe application, or when webhooks are…"
+        "text": "Adobe's deliveries or your tunnel inspector show 403; your log has \"Rejected Acrobat Sign webhook\". The X-AdobeSign-ClientId header is missing or not in ADOBE_SIGN_WEBHOOK_CLIENT_IDS (or ADOBE_SIGN_CLIENT_ID when that list is empty). Typical after adding a second Adobe application, or when webhooks are created with an…"
     },
     {
         "title": "Webhook answers 419 or redirects to a login page",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#webhook-419",
         "level": 3,
-        "text": "Symptom. 419 \"Page Expired\" or a 302 to /login on Adobe's calls. Cause. Session, CSRF or auth middleware is running on the route: web or auth was added to webhooks.middleware, or a global middleware applies to every route. Fix. Keep webhooks.middleware free of web and auth, and exclude the webhook path from any global…"
+        "text": "419 \"Page Expired\" or a 302 to /login on Adobe's calls. Session, CSRF or auth middleware is running on the route: web or auth was added to webhooks.middleware, or a global middleware applies to every route. Keep webhooks.middleware free of web and auth, and exclude the webhook path from any global middleware that needs…"
     },
     {
         "title": "Webhook answers 200, but nothing happens",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#webhook-no-events",
         "level": 3,
-        "text": "Symptom. Adobe shows successful deliveries (or your tunnel shows 200s), but statuses don't update and no PDFs are stored. Cause. Most often your listeners are queued and no worker is processing that queue. Other causes: the listener isn't registered (discovery off, or the event cache is stale), the delivery was a dupli…"
+        "text": "Adobe shows successful deliveries (or your tunnel shows 200s), but statuses don't update and no PDFs are stored. Most often your listeners are queued and no worker is processing that queue. Other causes: the listener isn't registered (discovery off, or the event cache is stale), the delivery was a duplicate and correct…"
     },
     {
         "title": "The same event is handled twice",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#duplicate-events",
         "level": 3,
-        "text": "Symptom. Two emails, two downloads, two status changes for one signature. Cause. Dedupe keys live in the cache. With a per-server store (file, array, APCu) a retry landing on another server isn't recognised, and php artisan cache:clear forgets every key. A queued job can also run twice after a timeout, and two differen…"
+        "text": "Two emails, two downloads, two status changes for one signature. Dedupe keys live in the cache. With a per-server store (file, array, APCu) a retry landing on another server isn't recognised, and php artisan cache:clear forgets every key. A queued job can also run twice after a timeout, and two different notifications…"
     },
     {
         "title": "Cache store not shared between servers",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#cache-not-shared",
         "level": 3,
-        "text": "Symptom. Duplicate events as above, plus every server making its own GET /baseUris call. Cause. The default cache store is local to each machine (for example file), so neither the data-centre lookup nor the webhook ids are shared. Fix. ADOBE_SIGN_CACHE_STORE=redis (or another shared store). Only the SDK's keys move; th…"
+        "text": "Duplicate events as above, plus every server making its own GET /baseUris call. The default cache store is local to each machine (for example file), so neither the data-centre lookup nor the webhook ids are shared. ADOBE_SIGN_CACHE_STORE=redis (or another shared store). Only the SDK's keys move; the rest of your app ca…"
     },
     {
         "title": "Webhooks worked, then stopped",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#webhook-disabled",
         "level": 3,
-        "text": "Symptom. No more deliveries for some or all agreements. Cause. Adobe disables a webhook after 72 hours of failed deliveries (an outage, an expired certificate, a broken deploy, a 403 after an allow-list change). Notifications while it is disabled are not sent later. Fix. Fix the cause, then AdobeSign::webhooks()->updat…"
+        "text": "No more deliveries for some or all agreements. Adobe disables a webhook after 72 hours of failed deliveries (an outage, an expired certificate, a broken deploy, a 403 after an allow-list change). Notifications while it is disabled are not sent later. Fix the cause, then AdobeSign::webhooks()->updateState($webhookId, 'A…"
     },
     {
         "title": "API errors",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#api-problems",
         "level": 2,
-        "text": ""
+        "text": "403 INVALID_API_ACCESS_POINT HTTP 403ApiException What you see An ApiException with status 403 and code INVALID_API_ACCESS_POINT. Why it happens The request went to the wrong data centre. The SDK already handles the normal case: on this error it forgets the cached data centre, rediscovers it and retries once. If you st…"
     },
     {
         "title": "403 INVALID_API_ACCESS_POINT",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#invalid-api-access-point",
         "level": 3,
-        "text": "Symptom. An ApiException with status 403 and code INVALID_API_ACCESS_POINT. Cause. The request went to the wrong data centre. The SDK already handles the normal case: on this error it forgets the cached data centre, rediscovers it and retries once. If you still see it, the rediscovery itself points somewhere the creden…"
+        "text": "An ApiException with status 403 and code INVALID_API_ACCESS_POINT. The request went to the wrong data centre. The SDK already handles the normal case: on this error it forgets the cached data centre, rediscovers it and retries once. If you still see it, the rediscovery itself points somewhere the credentials don't belo…"
     },
     {
         "title": "AccountCapabilityException",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#account-capability",
         "level": 3,
-        "text": "Symptom. AccountCapabilityException with codes such as HYBRID_ROUTING_NOT_ALLOWED or GOV_ID_LIMIT_EXCEEDED, or a message saying something is not allowed by account settings. Cause. The request is valid, but the Acrobat Sign account's plan or settings don't allow it: mixed sequential and parallel signing (hybrid routing…"
+        "text": "AccountCapabilityException with codes such as HYBRID_ROUTING_NOT_ALLOWED or GOV_ID_LIMIT_EXCEEDED, or a message saying something is not allowed by account settings. The request is valid, but the Acrobat Sign account's plan or settings don't allow it: mixed sequential and parallel signing (hybrid routing), an identity m…"
     },
     {
         "title": "NotFoundException right after creating an agreement",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#not-signable-yet",
         "level": 3,
-        "text": "Symptom. signingUrlFor() or similar calls throw NotFoundException (AGREEMENT_NOT_SIGNABLE) within seconds of create(); other calls may report AGREEMENT_NOT_EXPOSED. Cause. Adobe is still processing the document; the status is DOCUMENTS_NOT_YET_PROCESSED for a few seconds. Fix. Retry after a short delay, or answer \"try…"
+        "text": "signingUrlFor() or similar calls throw NotFoundException (AGREEMENT_NOT_SIGNABLE) within seconds of create(); other calls may report AGREEMENT_NOT_EXPOSED. Adobe is still processing the document; the status is DOCUMENTS_NOT_YET_PROCESSED for a few seconds. Retry after a short delay, or answer \"try again shortly\" (the e…"
     },
     {
         "title": "RateLimitException",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#rate-limited",
         "level": 3,
-        "text": "Symptom. RateLimitException, usually during bulk work. Cause. Adobe throttled the account and asked for a wait longer than retries.max_delay_seconds, or retries ran out. Fix. Do bulk work in queued jobs and release them for $e->retryAfter seconds. Spread schedules out; don't raise max_delay_seconds for web requests."
+        "text": "RateLimitException, usually during bulk work. Adobe throttled the account and asked for a wait longer than retries.max_delay_seconds, or retries ran out. Do bulk work in queued jobs and release them for $e->retryAfter seconds. Spread schedules out; don't raise max_delay_seconds for web requests."
     },
     {
         "title": "Production and performance",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#production-problems",
         "level": 2,
-        "text": ""
+        "text": "Adobe reports webhook timeouts What you see Deliveries are retried even though your code ran. Why it happens The whole request took more than 5 seconds, usually because a listener isn't queued, or QUEUE_CONNECTION=sync in production. How to fix it Implement ShouldQueue on every listener that does real work and use a re…"
     },
     {
         "title": "Adobe reports webhook timeouts",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#slow-webhook",
         "level": 3,
-        "text": "Symptom. Deliveries are retried even though your code ran. Cause. The whole request took more than 5 seconds, usually because a listener isn't queued, or QUEUE_CONNECTION=sync in production. Fix. Implement ShouldQueue on every listener that does real work and use a real queue connection."
+        "text": "Deliveries are retried even though your code ran. The whole request took more than 5 seconds, usually because a listener isn't queued, or QUEUE_CONNECTION=sync in production. Implement ShouldQueue on every listener that does real work and use a real queue connection."
     },
     {
         "title": "Octane or workers use old settings",
         "page": "Troubleshooting",
         "url": "troubleshooting.html#octane-stale-config",
         "level": 3,
-        "text": "Symptom. A changed key or level only applies to some requests. Cause. Long-running processes loaded config at start. The manager itself is rebuilt per request and per job, but from the config the process already has. Fix. php artisan octane:reload and php artisan queue:restart after changing config, as part of every de…"
+        "text": "A changed key or level only applies to some requests. Long-running processes loaded config at start. The manager itself is rebuilt per request and per job, but from the config the process already has. php artisan octane:reload and php artisan queue:restart after changing config, as part of every deploy."
     },
     {
         "title": "Common questions",
@@ -1868,5 +1875,285 @@ window.DOCS_INDEX = [
         "url": "faq.html#faq-rotate-key",
         "level": 3,
         "text": "Create the new key in Acrobat Sign, deploy it, verify, then revoke the old one. Update ADOBE_SIGN_INTEGRATION_KEY, re-cache config, restart queue and Octane workers, and run php artisan adobe-sign:verify. The data-centre cache is keyed by a hash of the credentials, so the new key triggers one fresh lookup. Only then re…"
+    },
+    {
+        "title": "Credits",
+        "page": "About",
+        "url": "credits.html",
+        "level": 1,
+        "text": "About"
+    },
+    {
+        "title": "Conceptualize",
+        "page": "Credits",
+        "url": "credits.html#created-by",
+        "level": 2,
+        "text": "Created and maintained by Conceptualize designed and built conceptlz/adobe-sign and conceptlz/adobe-sign-laravel, and continues to maintain both: releases, fixes, testing against real Acrobat Sign accounts, and this documentation. The packages are published on GitHub under the conceptlz organisation and released under…"
+    },
+    {
+        "title": "What maintenance means here",
+        "page": "Credits",
+        "url": "credits.html#what-conceptualize-does",
+        "level": 2,
+        "text": "Design & developmentThe SDK's architecture: PSR-only core, data-centre routing, retries, ETags, typed exceptions, builders, signature levels and evidence, and the Laravel bridge. VerificationEvery request in the test suite is validated against Adobe's published API specification, and behaviour is checked against a real…"
+    },
+    {
+        "title": "Get in touch",
+        "page": "Credits",
+        "url": "credits.html#get-in-touch",
+        "level": 2,
+        "text": "ForUse Bugs, questions, feature requestsgithub.com/conceptlz/adobe-sign/issues Security reports (please don't open a public issue)info@conceptualize.ae Commercial support, integration work, everything elseinfo@conceptualize.ae Source codeconceptlz/adobe-sign · conceptlz/adobe-sign-laravel Contributions are welcome. The…"
+    },
+    {
+        "title": "Built with",
+        "page": "Credits",
+        "url": "credits.html#built-with",
+        "level": 2,
+        "text": "The SDK depends only on open standards at runtime and uses well-known open-source tools to build and test it. With thanks to everyone who maintains them."
+    },
+    {
+        "title": "At runtime",
+        "page": "Credits",
+        "url": "credits.html#runtime-dependencies",
+        "level": 3,
+        "text": "ProjectUsed forLicence PHP-FIG standards: PSR-3, PSR-7, PSR-16, PSR-17, PSR-18, PSR-20The interfaces the core depends on: logging, HTTP messages, cache, factories, HTTP client, clockMIT php-http/discoveryFinding the HTTP client and factories installed in your projectMIT Laravel (illuminate/*)The framework the bridge pl…"
+    },
+    {
+        "title": "In development and testing",
+        "page": "Credits",
+        "url": "credits.html#development-tools",
+        "level": 3,
+        "text": "ProjectUsed forLicence Jane PHPGenerating the 313 model classes from the API specificationMIT justinrainbow/json-schemaChecking every test request and response against the specificationMIT PHPUnitThe test suitesBSD-3-Clause PHPStan and LarastanStatic analysisMIT Orchestra TestbenchTesting the Laravel bridgeMIT nyholm/p…"
+    },
+    {
+        "title": "The API specification",
+        "page": "Credits",
+        "url": "credits.html#api-specification",
+        "level": 3,
+        "text": "The models and the contract tests are based on the OpenAPI description of the Acrobat Sign REST API v6 that Adobe publishes for developers. Adobe, Acrobat and Acrobat Sign are trademarks of Adobe Inc.; this project is independent of Adobe, as the disclaimer explains."
+    },
+    {
+        "title": "Typefaces",
+        "page": "Credits",
+        "url": "credits.html#typefaces",
+        "level": 3,
+        "text": "This documentation is set in Gloock for headings, and Atkinson Hyperlegible Next and Atkinson Hyperlegible Mono for text and code. Atkinson Hyperlegible was created by the Braille Institute of America to be easier to read. All three are licensed under the SIL Open Font License and served by Google Fonts."
+    },
+    {
+        "title": "Licence",
+        "page": "Credits",
+        "url": "credits.html#licence",
+        "level": 2,
+        "text": "Both packages are released under the MIT License (copyright © 2026 Conceptlz). You may use, copy, modify and distribute them, including commercially, as long as the copyright and licence notice is kept. The full text is in the LICENSE file of each repository. DisclaimerThe project's independence from Adobe, warranties…"
+    },
+    {
+        "title": "Disclaimer",
+        "page": "About",
+        "url": "disclaimer.html",
+        "level": 1,
+        "text": "About"
+    },
+    {
+        "title": "An independent project",
+        "page": "Disclaimer",
+        "url": "disclaimer.html#independent-project",
+        "level": 2,
+        "text": "conceptlz/adobe-sign (the framework-agnostic PHP SDK) and conceptlz/adobe-sign-laravel (its Laravel bridge) are created and maintained by Conceptualize. They are client libraries: they call the public Acrobat Sign REST API v6 on your behalf, using credentials you obtain from Adobe for your own Acrobat Sign account. Nei…"
+    },
+    {
+        "title": "Trademarks",
+        "page": "Disclaimer",
+        "url": "disclaimer.html#trademarks",
+        "level": 2,
+        "text": "Adobe, Acrobat, Acrobat Sign and Adobe Sign are either registered trademarks or trademarks of Adobe Inc. in the United States and/or other countries. Laravel is a trademark of Laravel Holdings Inc. PHP is a trademark of The PHP Group. GitHub is a trademark of GitHub, Inc. All other trademarks are the property of their…"
+    },
+    {
+        "title": "No warranty",
+        "page": "Disclaimer",
+        "url": "disclaimer.html#no-warranty",
+        "level": 2,
+        "text": "Both packages are released under the MIT License. As that licence states, the software is provided \"as is\", without warranty of any kind, express or implied, including fitness for a particular purpose and non-infringement. Neither the authors nor the copyright holders are liable for any claim, damages or other liabilit…"
+    },
+    {
+        "title": "Not legal advice",
+        "page": "Disclaimer",
+        "url": "disclaimer.html#not-legal-advice",
+        "level": 2,
+        "text": "Signature law is jurisdiction-specific The pages on signature levels, identity checks, eIDAS and UAE law explain how these frameworks are generally understood, so that developers and technical leads can talk to their lawyers in the same terms. They are not legal advice and do not create any professional relationship. W…"
+    },
+    {
+        "title": "Your responsibilities",
+        "page": "Disclaimer",
+        "url": "disclaimer.html#your-responsibilities",
+        "level": 2,
+        "text": "When you build with these packages, you remain responsible for: Your Adobe relationship. Your use of Acrobat Sign is governed by your agreement with Adobe, including its terms of use, pricing, plan limits and acceptable-use rules. Credentials. Integration Keys, OAuth client secrets and tokens give access to your accoun…"
+    },
+    {
+        "title": "Third-party services can change",
+        "page": "Disclaimer",
+        "url": "disclaimer.html#third-party-services",
+        "level": 2,
+        "text": "Acrobat Sign is a service operated by Adobe. Adobe can change its API, its behaviour, its error codes and the features available on each plan at any time. Several behaviours documented here, such as data-centre routing, ETag handling and fields that differ from the published specification, were observed against a real…"
+    },
+    {
+        "title": "Accuracy of this documentation",
+        "page": "Disclaimer",
+        "url": "disclaimer.html#documentation-accuracy",
+        "level": 2,
+        "text": "The documentation is written to match the source code of the release it ships with, and the examples are checked against that code. Mistakes are still possible. If something here disagrees with the code, the code describes what actually happens; please open an issue so it can be corrected. Example names, email addresse…"
+    },
+    {
+        "title": "Security reports",
+        "page": "Disclaimer",
+        "url": "disclaimer.html#security-reports",
+        "level": 2,
+        "text": "If you find a security problem in either package, please do not open a public issue. Email info@conceptualize.ae with a description and, if possible, steps to reproduce it. Problems in Acrobat Sign itself should be reported to Adobe."
+    },
+    {
+        "title": "Contact",
+        "page": "Disclaimer",
+        "url": "disclaimer.html#contact",
+        "level": 2,
+        "text": "Questions about this disclaimer: info@conceptualize.ae. Bugs and feature requests: GitHub issues. CreditsWho makes and maintains the SDK, and what it is built with. Privacy policyWhat this website and the packages do, and don't do, with data."
+    },
+    {
+        "title": "Privacy policy",
+        "page": "About",
+        "url": "privacy.html",
+        "level": 1,
+        "text": "About"
+    },
+    {
+        "title": "Who we are and what this covers",
+        "page": "Privacy policy",
+        "url": "privacy.html#scope",
+        "level": 2,
+        "text": "\"We\" means Conceptualize, which creates and maintains the open-source packages conceptlz/adobe-sign and conceptlz/adobe-sign-laravel and publishes this documentation. This policy covers: the documentation websites for both packages (this site and its sibling), and the behaviour of the packages themselves when you insta…"
+    },
+    {
+        "title": "This documentation website",
+        "page": "Privacy policy",
+        "url": "privacy.html#website",
+        "level": 2,
+        "text": ""
+    },
+    {
+        "title": "No analytics, cookies, accounts or forms",
+        "page": "Privacy policy",
+        "url": "privacy.html#no-tracking",
+        "level": 3,
+        "text": "The site is a set of static HTML pages. It contains no analytics or advertising scripts, no tracking pixels, no social-media widgets and no embedded videos. It sets no cookies. There are no accounts, sign-ins or contact forms, so the site has no way to ask you for personal data."
+    },
+    {
+        "title": "Hosting: GitHub Pages",
+        "page": "Privacy policy",
+        "url": "privacy.html#hosting",
+        "level": 3,
+        "text": "The pages are served by GitHub Pages, a service of GitHub, Inc. Like any web server, GitHub receives technical information when your browser requests a page, including your IP address, the page requested, and your browser's user-agent string. GitHub may log this for security and to operate the service. Conceptualize ha…"
+    },
+    {
+        "title": "Fonts: Google Fonts",
+        "page": "Privacy policy",
+        "url": "privacy.html#fonts",
+        "level": 3,
+        "text": "The typefaces (Gloock, Atkinson Hyperlegible Next and Atkinson Hyperlegible Mono) are loaded from Google Fonts (fonts.googleapis.com and fonts.gstatic.com). To deliver them, Google receives your IP address and browser information. Google states that the Google Fonts web API does not set cookies or use this data to buil…"
+    },
+    {
+        "title": "Your theme preference",
+        "page": "Privacy policy",
+        "url": "privacy.html#local-storage",
+        "level": 3,
+        "text": "If you switch between light and dark mode, the site remembers your choice in your browser's localStorage under the key docs-theme. It never leaves your device, and it is not a cookie and not used for tracking. Clear it at any time through your browser's site-data settings; the site then follows your system preference a…"
+    },
+    {
+        "title": "Search",
+        "page": "Privacy policy",
+        "url": "privacy.html#search",
+        "level": 3,
+        "text": "The search box looks through an index that is downloaded with the page. Your queries are processed entirely in your browser and are not sent anywhere."
+    },
+    {
+        "title": "Links to other sites",
+        "page": "Privacy policy",
+        "url": "privacy.html#external-links",
+        "level": 3,
+        "text": "Pages link to GitHub, Packagist, Adobe, PHP-FIG and other sites. Those sites have their own privacy practices, which apply once you follow a link."
+    },
+    {
+        "title": "The software packages",
+        "page": "Privacy policy",
+        "url": "privacy.html#packages",
+        "level": 2,
+        "text": ""
+    },
+    {
+        "title": "No telemetry",
+        "page": "Privacy policy",
+        "url": "privacy.html#no-telemetry",
+        "level": 3,
+        "text": "Neither package collects usage statistics, crash reports or analytics, and neither contacts any server operated by Conceptualize. Installing them through Composer involves Packagist and GitHub, whose own policies apply to those downloads."
+    },
+    {
+        "title": "Where your data goes",
+        "page": "Privacy policy",
+        "url": "privacy.html#where-data-goes",
+        "level": 3,
+        "text": "The SDK is a client for the Acrobat Sign REST API. It sends requests only to: api.adobesign.com (or the bootstrap URL you configure), to find your account's data centre; your account's Acrobat Sign data centre (for example api.na4.adobesign.com), for every API call; and during OAuth, Adobe's authorization and token end…"
+    },
+    {
+        "title": "What the packages store, and where",
+        "page": "Privacy policy",
+        "url": "privacy.html#what-is-stored",
+        "level": 3,
+        "text": "Everything the packages keep is stored in infrastructure you control: DataWherePackage Your account's API base URIsYour PSR-16 cache (default 24 hours)Core OAuth access and refresh tokens, expiry and data centreThe TokenStore you provide (in memory by default)Core OAuth tokens, keyed by your user idThe adobe_sign_token…"
+    },
+    {
+        "title": "Logging",
+        "page": "Privacy policy",
+        "url": "privacy.html#logging",
+        "level": 3,
+        "text": "If you give the SDK a PSR-3 logger, it logs the method, path, status code and duration of each request, and retries after rate limiting. Paths can include agreement ids. Request bodies, documents, signer details and credentials are not logged. Integration Keys, access tokens and client secrets are also redacted from ex…"
+    },
+    {
+        "title": "Example scripts and live tests",
+        "page": "Privacy policy",
+        "url": "privacy.html#examples-and-tests",
+        "level": 3,
+        "text": "The example scripts and the optional live test suite send real agreements, and therefore real emails, to the addresses you configure. They read your credentials from your environment or a local .env file and never transmit them anywhere except Adobe."
+    },
+    {
+        "title": "When you contact us",
+        "page": "Privacy policy",
+        "url": "privacy.html#contacting-us",
+        "level": 2,
+        "text": "If you email Conceptualize, we use your email address and message to reply and to deal with your request, and keep the correspondence only as long as needed for that. If you open an issue or pull request on GitHub, it is public and handled under GitHub's terms; please do not post credentials, documents or other people'…"
+    },
+    {
+        "title": "Your rights",
+        "page": "Privacy policy",
+        "url": "privacy.html#your-rights",
+        "level": 2,
+        "text": "Because Conceptualize does not collect personal data through this website or the packages, there is usually nothing for us to access, correct or delete. For data held by GitHub, Google or Adobe, contact them directly using the links above. For emails you have sent us, write to info@conceptualize.ae to ask for access or…"
+    },
+    {
+        "title": "Children",
+        "page": "Privacy policy",
+        "url": "privacy.html#children",
+        "level": 2,
+        "text": "This documentation is meant for software developers. It is not directed at children and knowingly collects no data from anyone."
+    },
+    {
+        "title": "Changes to this policy",
+        "page": "Privacy policy",
+        "url": "privacy.html#changes",
+        "level": 2,
+        "text": "If the website or the packages change in a way that affects privacy, for example by adding a new third-party service, this page is updated and its effective date changes. The history of this file is public in the package's GitHub repository."
+    },
+    {
+        "title": "Contact",
+        "page": "Privacy policy",
+        "url": "privacy.html#contact",
+        "level": 2,
+        "text": "Conceptualize, info@conceptualize.ae. Read the disclaimer for the project's relationship to Adobe."
     }
 ];

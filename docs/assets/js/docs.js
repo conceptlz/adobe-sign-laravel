@@ -443,6 +443,43 @@
     });
   }
 
+  /* ---------- Troubleshooting finder ---------- */
+
+  function initFinder() {
+    var box = document.querySelector('.finder-search');
+    var input = document.querySelector('.finder-input');
+    var status = document.querySelector('.finder-status');
+    var issues = Array.prototype.slice.call(document.querySelectorAll('.issue'));
+    if (!box || !input || !issues.length) return;
+    box.hidden = false;
+
+    var groups = Array.prototype.slice.call(document.querySelectorAll('.issue-group'));
+    var texts = issues.map(function (issue) { return issue.textContent.toLowerCase(); });
+
+    function apply() {
+      var terms = input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+      var shown = 0;
+      issues.forEach(function (issue, i) {
+        var match = terms.every(function (t) { return texts[i].indexOf(t) > -1; });
+        issue.hidden = !match;
+        if (match) shown++;
+      });
+      groups.forEach(function (group) {
+        group.hidden = !group.querySelector('.issue:not([hidden])');
+      });
+      if (status) {
+        status.textContent = terms.length
+          ? (shown ? shown + ' of ' + issues.length + ' problems match.' : 'No problem matches. Try an error code (e.g. 412), an exception name or a word like "webhook".')
+          : '';
+      }
+    }
+
+    input.addEventListener('input', apply);
+    input.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') { input.value = ''; apply(); }
+    });
+  }
+
   /* ---------- FAQ deep links ---------- */
 
   function initFaq() {
@@ -471,6 +508,7 @@
     initCode();
     initSearch();
     initSignature();
+    initFinder();
     initFaq();
   });
 })();
