@@ -7,6 +7,9 @@ namespace Conceptlz\AdobeSign\Laravel\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * One stored OAuth token pair, keyed by user key. Both tokens are encrypted with APP_KEY and
+ * hidden from serialisation. Used through EloquentTokenStore.
+ *
  * @property string $key
  * @property string $access_token
  * @property string|null $refresh_token
@@ -19,6 +22,7 @@ class AdobeSignToken extends Model
 
     protected $hidden = ['access_token', 'refresh_token'];
 
+    /** The adobe-sign.oauth.table config value. */
     public function getTable(): string
     {
         return config('adobe-sign.oauth.table', 'adobe_sign_tokens');

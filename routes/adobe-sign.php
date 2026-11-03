@@ -4,6 +4,8 @@ use Conceptlz\AdobeSign\Laravel\Http\Controllers\OAuthController;
 use Conceptlz\AdobeSign\Laravel\Http\Controllers\WebhookController;
 use Illuminate\Support\Facades\Route;
 
+// Loaded by AdobeSignServiceProvider; each group can be switched off in config/adobe-sign.php.
+
 if (config('adobe-sign.oauth.routes', true)) {
     Route::middleware(config('adobe-sign.oauth.route_middleware', ['web', 'auth']))
         ->prefix(config('adobe-sign.oauth.route_prefix', 'adobe-sign/oauth'))

@@ -19,6 +19,11 @@ use Illuminate\Support\Facades\Log;
  */
 final class WebhookController
 {
+    /**
+     * 403 for a missing or unknown client id, 400 for an unreadable POST body, otherwise 200 with
+     * the echo.
+     * Dedupe keys live in the adobe-sign.cache_store store for webhooks.dedupe_ttl seconds.
+     */
     public function __invoke(Request $request, AdobeSignManager $manager, CacheFactory $cache): Response|JsonResponse
     {
         $handler = $manager->webhookHandler();

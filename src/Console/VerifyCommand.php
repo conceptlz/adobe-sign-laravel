@@ -8,12 +8,17 @@ use Conceptlz\AdobeSign\Exception\AdobeSignException;
 use Conceptlz\AdobeSign\Laravel\AdobeSignManager;
 use Illuminate\Console\Command;
 
+/**
+ * adobe-sign:verify: calls GET /users/me with the default client (or --user's OAuth connection)
+ * and prints who the credentials belong to.
+ */
 final class VerifyCommand extends Command
 {
     protected $signature = 'adobe-sign:verify {--user= : Check this user\'s OAuth connection instead of the default client}';
 
     protected $description = 'Check Acrobat Sign credentials by fetching the authenticated user';
 
+    /** Exits non-zero with the SDK's message on any AdobeSignException. */
     public function handle(AdobeSignManager $manager): int
     {
         try {

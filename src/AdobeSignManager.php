@@ -47,6 +47,9 @@ class AdobeSignManager
 
     /**
      * The default client: the integration key, or the signed-in user's OAuth connection.
+     *
+     * @throws MisconfiguredException when the key is missing, or auth is "oauth" and nobody is
+     *                                signed in or OAuth isn't configured
      */
     public function client(): AdobeSign
     {
@@ -69,6 +72,11 @@ class AdobeSignManager
 
     /**
      * A client acting with the OAuth tokens the given user connected (refreshed automatically).
+     * Cached per user key for the lifetime of the manager. A user who never connected only
+     * fails on the first API call, with OAuthException (NO_TOKEN); check isConnected() first.
+     *
+     * @param Authenticatable|string|int $user a user, or a key as produced by userKey()
+     * @throws MisconfiguredException when OAuth client id/secret are not configured
      */
     public function forUser(Authenticatable|string|int $user): AdobeSign
     {
@@ -80,11 +88,18 @@ class AdobeSignManager
         );
     }
 
+    /** Whether a token is stored for this user (it may still be expired or revoked). */
     public function isConnected(Authenticatable|string|int $user): bool
     {
         return $this->tokens()->get($this->userKey($user)) !== null;
     }
 
+    /**
+     * The OAuth client for the authorization-code flow. The redirect URI defaults to the
+     * package's adobe-sign.oauth.callback route.
+     *
+     * @throws MisconfiguredException when the client id or secret is not set
+     */
     public function oauth(): OAuthClient
     {
         if ($this->oauth !== null) {
@@ -107,11 +122,17 @@ class AdobeSignManager
         );
     }
 
+    /** The bound TokenStore (EloquentTokenStore by default). */
     public function tokens(): TokenStore
     {
         return $this->app->make(TokenStore::class);
     }
 
+    /**
+     * A WebhookHandler allowlisting webhooks.client_ids, or oauth.client_id when that is empty.
+     *
+     * @throws MisconfiguredException when neither is set
+     */
     public function webhookHandler(): WebhookHandler
     {
         $ids = $this->config['webhooks']['client_ids'] ?? [];
@@ -125,6 +146,10 @@ class AdobeSignManager
         return new WebhookHandler(array_values($ids));
     }
 
+    /**
+     * The TokenStore key for a user: strings and ints are used as-is, users go through the
+     * resolveUserKeyUsing() callback or default to their auth identifier.
+     */
     public function userKey(Authenticatable|string|int $user): string
     {
         if (!$user instanceof Authenticatable) {
@@ -138,6 +163,7 @@ class AdobeSignManager
 
     /**
      * Change how users map to token rows, e.g. per team: fn ($user) => 'team:'.$user->current_team_id
+     * Process-wide (static); pass null to restore the default.
      *
      * @param (callable(Authenticatable): string)|null $resolver
      */
@@ -147,6 +173,8 @@ class AdobeSignManager
     }
 
     /**
+     * Forward to the default client, e.g. agreements().
+     *
      * @param array<mixed> $arguments
      */
     public function __call(string $method, array $arguments): mixed
@@ -188,6 +216,7 @@ class AdobeSignManager
         return $this->app->bound(ClientInterface::class) ? $this->app->make(ClientInterface::class) : null;
     }
 
+    /** The configured log channel; log_channel false disables logging. */
     private function logger(): LoggerInterface
     {
         $channel = $this->config['log_channel'] ?? null;

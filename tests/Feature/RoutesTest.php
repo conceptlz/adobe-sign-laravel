@@ -70,6 +70,16 @@ final class RoutesTest extends TestCase
         self::assertSame([], $this->http->getRequests());
     }
 
+    public function test_callback_with_forged_access_point_is_rejected_without_contacting_it(): void
+    {
+        $this->actingAs($this->user())
+            ->withSession(['adobe_sign_oauth_state' => 's'])
+            ->get('/adobe-sign/oauth/callback?code=c&state=s&api_access_point=https://api.adobesign.com.evil.example/')
+            ->assertStatus(400);
+
+        self::assertSame([], $this->http->getRequests(), 'the client secret never left the app');
+    }
+
     public function test_callback_when_user_denies(): void
     {
         $this->actingAs($this->user())
@@ -105,6 +115,18 @@ final class RoutesTest extends TestCase
         Event::assertDispatched(WebhookReceived::class, fn (WebhookReceived $e) => $e->event instanceof AgreementEvent
             && $e->event->isWorkflowCompleted()
             && $e->event->agreementId() === 'CBJCHBCAABAAx1aFQyYF-aGrLsBZtVqaT9gPh6Xw42kK');
+    }
+
+    public function test_readme_webhook_testing_snippet_works(): void
+    {
+        Event::fake([WebhookReceived::class]);
+        $payload = json_decode(self::fixture('webhook_agreement_workflow_completed'), true);
+
+        $this->postJson('/adobe-sign/webhook', $payload, ['X-AdobeSign-ClientId' => config('adobe-sign.oauth.client_id')])
+            ->assertOk()
+            ->assertHeader('X-AdobeSign-ClientId');
+
+        Event::assertDispatched(WebhookReceived::class);
     }
 
     public function test_webhook_rejects_unknown_client(): void

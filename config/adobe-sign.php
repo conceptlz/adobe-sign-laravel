@@ -36,10 +36,11 @@ return [
     // Shard-agnostic host for GET /baseUris. Only change for e.g. Gov Cloud.
     'bootstrap_url' => env('ADOBE_SIGN_BOOTSTRAP_URL', 'https://api.adobesign.com'),
 
-    // Cache store for discovered data-center URLs (null = default store).
+    // Cache store for discovered data-center URLs and webhook dedupe keys (null = default store).
     'cache_store' => env('ADOBE_SIGN_CACHE_STORE'),
-    'base_uri_ttl' => 86400,
+    'base_uri_ttl' => 86400, // seconds
 
+    // Retries for throttled (429/503) responses; a longer Retry-After than max_delay_seconds fails fast.
     'retries' => [
         'max' => 3,
         'max_delay_seconds' => 60,

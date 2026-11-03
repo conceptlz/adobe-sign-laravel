@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Conceptlz\AdobeSign\Laravel\Http\Controllers;
 
 use Conceptlz\AdobeSign\Auth\OAuthClient;
+use Conceptlz\AdobeSign\Exception\InvalidArgumentException;
 use Conceptlz\AdobeSign\Exception\OAuthException;
+use Conceptlz\AdobeSign\Exception\TransportException;
 use Conceptlz\AdobeSign\Laravel\AdobeSignManager;
 use Conceptlz\AdobeSign\Laravel\Events\OAuthConnected;
 use Illuminate\Http\RedirectResponse;
@@ -18,6 +20,10 @@ final class OAuthController
 {
     private const SESSION_KEY = 'adobe_sign_oauth_state';
 
+    /**
+     * GET {prefix}/redirect: store a fresh state in the session and send the user to Adobe with
+     * the configured scopes.
+     */
     public function redirect(Request $request, AdobeSignManager $manager): RedirectResponse
     {
         $state = OAuthClient::generateState();
@@ -26,6 +32,11 @@ final class OAuthController
         return new RedirectResponse($manager->oauth()->authorizationUrl(config('adobe-sign.oauth.scopes', []), $state));
     }
 
+    /**
+     * GET {prefix}/callback: exchange the code, store the token under the user's key, fire
+     * OAuthConnected and redirect to oauth.redirect_after. Aborts with 400 for a bad state or
+     * missing code and 403 when Adobe refused.
+     */
     public function callback(Request $request, AdobeSignManager $manager): RedirectResponse
     {
         // pull(): a state is single-use, so a replayed callback URL fails.
@@ -35,6 +46,11 @@ final class OAuthController
             $token = $manager->oauth()->handleCallback($request->query(), $expected);
         } catch (OAuthException $e) {
             abort(in_array($e->errorCode, ['STATE_MISMATCH', 'MISSING_CODE'], true) ? 400 : 403, $e->getMessage());
+        } catch (InvalidArgumentException $e) {
+            // e.g. a forged api_access_point outside Adobe's domains: the request itself is bad.
+            abort(400, $e->getMessage());
+        } catch (TransportException) {
+            abort(502, 'Acrobat Sign could not be reached. Please try again.');
         }
 
         $user = $request->user();

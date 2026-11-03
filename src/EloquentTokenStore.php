@@ -35,6 +35,10 @@ final class EloquentTokenStore implements TokenStore
         ]);
     }
 
+    /**
+     * Delete the stored token, e.g. when a user disconnects. Not part of TokenStore. This does not
+     * revoke it at Adobe; call OAuthClient::revoke() first if that matters.
+     */
     public function forget(string $key): void
     {
         AdobeSignToken::query()->where('key', $key)->delete();

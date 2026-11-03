@@ -9,8 +9,16 @@ use Conceptlz\AdobeSign\Auth\TokenStore;
 use Conceptlz\AdobeSign\Laravel\Console\VerifyCommand;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Wires the core SDK into Laravel: config, the manager, the AdobeSign binding, the token store,
+ * routes, publishable config/migration, and the adobe-sign:verify command.
+ */
 final class AdobeSignServiceProvider extends ServiceProvider
 {
+    /**
+     * AdobeSignManager is scoped; resolving AdobeSign returns the manager's default client;
+     * TokenStore defaults to EloquentTokenStore unless the app already bound one.
+     */
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/adobe-sign.php', 'adobe-sign');
@@ -20,6 +28,10 @@ final class AdobeSignServiceProvider extends ServiceProvider
         $this->app->bindIf(TokenStore::class, EloquentTokenStore::class, true);
     }
 
+    /**
+     * Load the OAuth and webhook routes (each can be disabled in config); in the console, also
+     * register the publishable config and migration and the verify command.
+     */
     public function boot(): void
     {
         $this->loadRoutesFrom(__DIR__ . '/../routes/adobe-sign.php');

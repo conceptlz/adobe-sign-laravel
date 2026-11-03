@@ -16,6 +16,7 @@ final class OAuthConnected
 
     public function __construct(
         public readonly Authenticatable $user,
+        /** TokenStore key, from AdobeSignManager::userKey(). */
         public readonly string $key,
         /** The account's API host, e.g. https://api.eu1.adobesign.com/ */
         public readonly ?string $apiAccessPoint,

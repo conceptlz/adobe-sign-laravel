@@ -8,10 +8,14 @@ use Conceptlz\AdobeSign\Laravel\AdobeSignManager;
 use Illuminate\Support\Facades\Facade;
 
 /**
+ * Static access to AdobeSignManager; calls it doesn't define go to the default client.
+ *
  * @method static \Conceptlz\AdobeSign\AdobeSign client()
  * @method static \Conceptlz\AdobeSign\AdobeSign forUser(\Illuminate\Contracts\Auth\Authenticatable|string|int $user)
  * @method static bool isConnected(\Illuminate\Contracts\Auth\Authenticatable|string|int $user)
  * @method static \Conceptlz\AdobeSign\Auth\OAuthClient oauth()
+ * @method static \Conceptlz\AdobeSign\Auth\TokenStore tokens()
+ * @method static string userKey(\Illuminate\Contracts\Auth\Authenticatable|string|int $user)
  * @method static \Conceptlz\AdobeSign\Webhook\WebhookHandler webhookHandler()
  * @method static void resolveUserKeyUsing(?callable $resolver)
  * @method static \Conceptlz\AdobeSign\AdobeSign asUser(string $user)
