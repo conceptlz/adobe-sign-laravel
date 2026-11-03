@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- docs:head -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<script>
+(function () {
+  var theme = null;
+  try { theme = localStorage.getItem('docs-theme'); } catch (e) {}
+  if (theme !== 'light' && theme !== 'dark') {
+    theme = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  document.documentElement.setAttribute('data-theme', theme);
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,600;0,700;1,400&family=Gloock&display=swap">
+<link rel="stylesheet" href="assets/css/docs.css">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<!-- /docs:head -->
+<title>Configuration · conceptlz/adobe-sign-laravel</title>
+<meta name="description" content="Every key in config/adobe-sign.php: its .env variable, default and effect, grouped by auth, OAuth, signature levels, data centres and retries, logging and webhooks, with examples per environment.">
+</head>
+<body>
+<!-- docs:topbar -->
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="icon-button menu-button" type="button" aria-controls="sidebar" aria-expanded="false" aria-label="Open navigation">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+  </button>
+  <a class="brand" href="index.html">
+    <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+      <circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <circle cx="20" cy="20" r="15.5" fill="none" stroke="currentColor" stroke-width="0.6" stroke-dasharray="1.5 2"/>
+      <path d="M9.5 24.5c3.2-1.2 5.4-7.6 7.1-11.3 1-2.1 2.4-1.4 1.6 1.2-1.2 3.9-2.8 8.4-1.4 9.3 1.5 1 3.4-4.4 4.6-4.1 1.1.3-.3 3.3.8 3.5 1.3.2 2.6-2.4 3.8-2.2 1 .2.6 1.8 1.6 1.9 1 .1 2.1-.8 3-1.3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10 28.5h20" stroke="currentColor" stroke-width="0.8" opacity="0.6"/>
+    </svg>
+    <span class="brand-text"><span class="brand-name">Adobe Sign for Laravel</span><span class="brand-package">conceptlz/adobe-sign-laravel</span></span>
+  </a>
+  <span class="topbar-spacer"></span>
+  <div class="search" role="search">
+    <label class="visually-hidden" for="docs-search">Search the documentation</label>
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
+    <input class="search-input" id="docs-search" type="search" placeholder="Search docs" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="docs-search-results" aria-autocomplete="list">
+    <kbd class="search-key">/</kbd>
+    <ul class="search-results" id="docs-search-results" role="listbox" aria-label="Search results" hidden></ul>
+  </div>
+  <a class="topbar-link" href="https://github.com/conceptlz/adobe-sign-laravel">GitHub</a>
+  <button class="icon-button theme-toggle" type="button" aria-label="Switch theme">
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg>
+  </button>
+</header>
+<!-- /docs:topbar -->
+<div class="layout">
+<!-- docs:sidebar -->
+<nav class="sidebar" id="sidebar" aria-label="Documentation">
+  <div class="nav-group">
+    <p class="nav-group-title">Start here</p>
+    <ul class="nav-list">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="configuration.html" aria-current="page">Configuration</a></li>
+    </ul>
+  </div>
+  <div class="nav-group">
+    <p class="nav-group-title">Guides</p>
+    <ul class="nav-list">
+      <li><a href="usage.html">Using the client</a></li>
+      <li><a href="walkthrough.html">Walkthrough: send &amp; store</a></li>
+      <li><a href="oauth.html">OAuth: connect user accounts</a></li>
+      <li><a href="webhooks.html">Webhooks</a></li>
+      <li><a href="signature-levels.html">Signature levels</a></li>
+    </ul>
+  </div>
+  <div class="nav-group">
+    <p class="nav-group-title">Reference</p>
+    <ul class="nav-list">
+      <li><a href="reference.html">Facade, events, routes &amp; commands</a></li>
+    </ul>
+  </div>
+  <div class="nav-group">
+    <p class="nav-group-title">Help</p>
+    <ul class="nav-list">
+      <li><a href="testing.html">Testing your application</a></li>
+      <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+    </ul>
+  </div>
+  <p class="sidebar-other">Need the full API reference?<br><a href="https://conceptlz.github.io/adobe-sign/">Core SDK docs →</a></p>
+</nav>
+<div class="nav-backdrop" hidden></div>
+<!-- /docs:sidebar -->
+<main id="content" class="content">
+<article class="doc">
+  <header class="doc-header">
+    <p class="eyebrow">Start here</p>
+    <h1>Configuration</h1>
+    <p class="lede">Everything the package does is driven by <code>config/adobe-sign.php</code>. This page lists every key with its <code>.env</code> variable, its default and what it changes, and explains when you would touch it.</p>
+  </header>
+
+  <h2 id="how-config-is-read">How configuration is read</h2>
+  <p>
+    The service provider merges the package's <code>config/adobe-sign.php</code> under the
+    <code>adobe-sign</code> key, so <code>config('adobe-sign.signature_level')</code> works whether or not
+    you published the file. Values that change between environments (keys, secrets, levels, cache store)
+    read <code>.env</code>; structural values (route paths, middleware, retry counts) are plain config.
+  </p>
+  <p>
+    <code>AdobeSignManager</code> receives the whole <code>adobe-sign</code> array when it is built. It is
+    bound <em>scoped</em>, which means one instance per HTTP request, per Octane request and per queued
+    job. Two consequences follow:
+  </p>
+  <ul>
+    <li>After <code>php artisan config:cache</code>, editing <code>.env</code> has no effect until you cache again. This is standard Laravel behaviour, but it is the most common reason a new key "doesn't work".</li>
+    <li>If you change config at runtime with <code>config([...])</code>, an already-built manager keeps the old values for the rest of that request. Change config before the first call, or see <a href="#runtime-changes">Changing values at runtime</a>.</li>
+  </ul>
+  <p>The routes are registered from config at boot, so <code>oauth.*</code> route settings and <code>webhooks.enabled</code>/<code>path</code>/<code>middleware</code> must be set in the config file (or <code>.env</code>), not at runtime.</p>
+
+  <h2 id="env-at-a-glance">The .env variables at a glance</h2>
+  <figure class="code">
+    <figcaption>.env (all optional except the credentials you use)</figcaption>
+    <pre><code class="language-dotenv"># Authentication
+ADOBE_SIGN_AUTH=integration_key          # or oauth
+ADOBE_SIGN_INTEGRATION_KEY=
+
+# OAuth application
+ADOBE_SIGN_CLIENT_ID=
+ADOBE_SIGN_CLIENT_SECRET=
+ADOBE_SIGN_REDIRECT_URI=                 # defaults to route('adobe-sign.oauth.callback')
+ADOBE_SIGN_SCOPES="user_login:self agreement_read:self agreement_write:self agreement_send:self webhook_read:self webhook_write:self"
+
+# Signature level
+ADOBE_SIGN_SIGNATURE_LEVEL=ses           # ses, aes or qes
+ADOBE_SIGN_QUALIFIED_ISSUERS=            # comma-separated certificate issuers
+
+# Infrastructure
+ADOBE_SIGN_BOOTSTRAP_URL=https://api.adobesign.com
+ADOBE_SIGN_CACHE_STORE=                  # empty = default cache store
+ADOBE_SIGN_LOG_CHANNEL=                  # empty = default channel, false = off
+
+# Webhooks
+ADOBE_SIGN_WEBHOOK_CLIENT_IDS=           # comma-separated; empty = ADOBE_SIGN_CLIENT_ID</code></pre>
+  </figure>
+
+  <h2 id="auth">Authentication</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Key</th><th>.env</th><th>Default</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>auth</code></td><td><code>ADOBE_SIGN_AUTH</code></td><td><code>integration_key</code></td><td>What the default client (the facade, and an injected <code>AdobeSign</code>) authenticates with. <code>oauth</code> makes it the signed-in user's OAuth connection.</td></tr>
+        <tr><td><code>integration_key</code></td><td><code>ADOBE_SIGN_INTEGRATION_KEY</code></td><td><code>null</code></td><td>The account's Integration Key. Required when <code>auth</code> is <code>integration_key</code> and you use the default client.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    <code>auth</code> only decides what the <em>default</em> client is. <code>AdobeSign::forUser($user)</code>
+    always uses OAuth, whatever <code>auth</code> says, so an app can send from its own account by default
+    and from a user's account where it matters.
+  </p>
+  <div class="callout callout-warning">
+    <p class="callout-title">oauth mode needs a signed-in user</p>
+    <p>With <code>ADOBE_SIGN_AUTH=oauth</code> the default client is built from <code>auth()-&gt;user()</code>. In a queued job, a scheduled command or the webhook listener there is no signed-in user, so the default client throws <code>MisconfiguredException</code>. Use <code>AdobeSign::forUser($userId)</code> there instead.</p>
+  </div>
+
+  <h2 id="oauth">OAuth application and routes</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Key</th><th>.env</th><th>Default</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>oauth.client_id</code></td><td><code>ADOBE_SIGN_CLIENT_ID</code></td><td><code>null</code></td><td>Your Acrobat Sign API application's client id. Also the fallback webhook allow-list.</td></tr>
+        <tr><td><code>oauth.client_secret</code></td><td><code>ADOBE_SIGN_CLIENT_SECRET</code></td><td><code>null</code></td><td>The application's client secret. Without id and secret, <code>oauth()</code> and <code>forUser()</code> throw <code>MisconfiguredException</code>.</td></tr>
+        <tr><td><code>oauth.redirect_uri</code></td><td><code>ADOBE_SIGN_REDIRECT_URI</code></td><td><code>null</code></td><td>The callback URL sent to Adobe. Empty means <code>route('adobe-sign.oauth.callback')</code>. It must match a redirect URI registered on your Adobe application exactly.</td></tr>
+        <tr><td><code>oauth.scopes</code></td><td><code>ADOBE_SIGN_SCOPES</code></td><td><code>user_login:self agreement_read:self agreement_write:self agreement_send:self webhook_read:self webhook_write:self</code></td><td>Space-separated scopes requested on connect, each with an optional <code>:self</code>, <code>:group</code> or <code>:account</code> modifier.</td></tr>
+        <tr><td><code>oauth.table</code></td><td>none</td><td><code>adobe_sign_tokens</code></td><td>Table used by the migration and the <code>AdobeSignToken</code> model. Set it before running the migration.</td></tr>
+        <tr><td><code>oauth.routes</code></td><td>none</td><td><code>true</code></td><td>Registers the connect routes. Set <code>false</code> to write your own controller around <code>AdobeSign::oauth()</code>.</td></tr>
+        <tr><td><code>oauth.route_prefix</code></td><td>none</td><td><code>adobe-sign/oauth</code></td><td>URL prefix: the routes become <code>{prefix}/redirect</code> and <code>{prefix}/callback</code>.</td></tr>
+        <tr><td><code>oauth.route_middleware</code></td><td>none</td><td><code>['web', 'auth']</code></td><td>Middleware for both routes. Keep <code>web</code> (the state lives in the session) and an authentication middleware (tokens are stored under the signed-in user).</td></tr>
+        <tr><td><code>oauth.redirect_after</code></td><td>none</td><td><code>/</code></td><td>Where the callback sends the user after storing the tokens. A path or full URL.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Example: connect from a settings page behind your own guard, and land back on it.</p>
+  <figure class="code">
+    <figcaption>config/adobe-sign.php (excerpt)</figcaption>
+    <pre><code class="language-php">'oauth' =&gt; [
+    // ...
+    'route_prefix' =&gt; 'settings/integrations/acrobat-sign',
+    'route_middleware' =&gt; ['web', 'auth', 'verified'],
+    'redirect_after' =&gt; '/settings/integrations?connected=acrobat-sign',
+],</code></pre>
+  </figure>
+  <p>
+    Request broader scopes only when you need them. <code>agreement_read:account</code>, for example, lets
+    an account admin's token read every agreement in the account, and Adobe shows the user exactly what
+    they are granting. The <a href="oauth.html#scopes">OAuth page</a> covers scope choice.
+  </p>
+
+  <h2 id="signature-level">Signature level</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Key</th><th>.env</th><th>Default</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>signature_level</code></td><td><code>ADOBE_SIGN_SIGNATURE_LEVEL</code></td><td><code>ses</code></td><td>Default level for agreements built with <code>AgreementInfo</code> that don't set their own: <code>ses</code>, <code>aes</code> or <code>qes</code> (case-insensitive). Any other value makes client creation throw <code>MisconfiguredException</code>.</td></tr>
+        <tr><td><code>qualified_issuers</code></td><td><code>ADOBE_SIGN_QUALIFIED_ISSUERS</code></td><td><code>[]</code></td><td>Certificate issuers you accept as qualified, comma-separated in <code>.env</code>. Used by <code>AdobeSign::signatureShortfalls()</code> to decide whether a digital signature counts as QES.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <figure class="code">
+    <figcaption>.env for a project that needs qualified signatures</figcaption>
+    <pre><code class="language-dotenv">ADOBE_SIGN_SIGNATURE_LEVEL=qes
+ADOBE_SIGN_QUALIFIED_ISSUERS="DigiCert,TrustPro QTSP"</code></pre>
+  </figure>
+  <p>
+    The level becomes <code>ClientOptions::$defaultSignatureLevel</code> on every client the manager builds,
+    including <code>forUser()</code> clients. It applies only to agreements passed to
+    <code>agreements()-&gt;create()</code> as an <code>AgreementInfo</code> builder; a raw array or a
+    generated model is sent as-is. The <a href="signature-levels.html">Signature levels</a> page explains
+    the levels and per-signer overrides.
+  </p>
+
+  <h2 id="data-centres-and-retries">Data centres, cache and retries</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Key</th><th>.env</th><th>Default</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>bootstrap_url</code></td><td><code>ADOBE_SIGN_BOOTSTRAP_URL</code></td><td><code>https://api.adobesign.com</code></td><td>Host used only for <span class="endpoint"><b>GET</b> /baseUris</span>, which tells the SDK which data centre your account lives on. Change it only for separate Adobe environments such as Gov Cloud.</td></tr>
+        <tr><td><code>cache_store</code></td><td><code>ADOBE_SIGN_CACHE_STORE</code></td><td><code>null</code> (default store)</td><td>Laravel cache store for the discovered data-centre URL and for webhook dedupe keys. Name any store from <code>config/cache.php</code>, e.g. <code>redis</code>.</td></tr>
+        <tr><td><code>base_uri_ttl</code></td><td>none</td><td><code>86400</code></td><td>Seconds a discovered data-centre URL stays cached. If an account moves, the SDK notices the 403 and rediscovers on its own.</td></tr>
+        <tr><td><code>retries.max</code></td><td>none</td><td><code>3</code></td><td>Retries for throttled responses (429 and 503). <code>0</code> disables retrying.</td></tr>
+        <tr><td><code>retries.max_delay_seconds</code></td><td>none</td><td><code>60</code></td><td>Longest wait per retry. A <code>Retry-After</code> longer than this fails fast instead of blocking (<code>RateLimitException</code> for a 429).</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Why the cache matters: Acrobat Sign accounts live on shards (<code>na1</code>, <code>na4</code>,
+    <code>eu1</code>, …) and every call must go to the right one. Without a shared cache, every PHP process
+    would repeat the <code>/baseUris</code> lookup. With the default cache store it happens once per day for
+    the whole app.
+  </p>
+  <p>
+    Why the retry ceiling matters: retries happen inside the request that made the call. In a web request,
+    sleeping for a minute is worse than failing, so you may want a lower <code>max_delay_seconds</code> for
+    web traffic and to let queued jobs handle <code>RateLimitException</code> with <code>release()</code>,
+    as the <a href="walkthrough.html#step-download-job">download job in the walkthrough</a> does. Without
+    a <code>Retry-After</code> header the SDK backs off exponentially from one second.
+  </p>
+  <div class="callout callout-tip">
+    <p class="callout-title">Multiple servers need a shared store</p>
+    <p>On more than one server, point <code>ADOBE_SIGN_CACHE_STORE</code> at a shared store (Redis, Memcached, database, DynamoDB). The data-centre cache works with any store, but webhook dedupe only works across servers if every server sees the same keys.</p>
+  </div>
+
+  <h2 id="logging">Logging</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Key</th><th>.env</th><th>Default</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>log_channel</code></td><td><code>ADOBE_SIGN_LOG_CHANNEL</code></td><td><code>null</code></td><td><code>null</code> logs to your default channel, a channel name logs there, and <code>false</code> disables SDK logging.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    The core logs requests and throttling retries. It never passes headers or bodies to the logger, so
+    keys, tokens and document content stay out of your logs. Laravel's <code>env()</code> turns the
+    string <code>false</code> into a boolean, so <code>ADOBE_SIGN_LOG_CHANNEL=false</code> turns logging off.
+    A dedicated channel keeps the noise out of your main log:
+  </p>
+  <figure class="code">
+    <figcaption>config/logging.php (excerpt)</figcaption>
+    <pre><code class="language-php">'channels' =&gt; [
+    // ...
+    'adobe-sign' =&gt; [
+        'driver' =&gt; 'daily',
+        'path' =&gt; storage_path('logs/adobe-sign.log'),
+        'level' =&gt; 'info',
+        'days' =&gt; 14,
+    ],
+],</code></pre>
+  </figure>
+  <pre><code class="language-dotenv">ADOBE_SIGN_LOG_CHANNEL=adobe-sign</code></pre>
+  <p>The webhook controller logs rejected and unreadable deliveries through Laravel's default logger (the <code>Log</code> facade), not this channel.</p>
+
+  <h2 id="webhooks">Webhooks</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Key</th><th>.env</th><th>Default</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>webhooks.enabled</code></td><td>none</td><td><code>true</code></td><td>Registers the <code>adobe-sign.webhook</code> route. Set <code>false</code> if you don't receive webhooks or handle them yourself.</td></tr>
+        <tr><td><code>webhooks.path</code></td><td>none</td><td><code>adobe-sign/webhook</code></td><td>URI of the route, which answers <code>GET</code> and <code>POST</code>.</td></tr>
+        <tr><td><code>webhooks.middleware</code></td><td>none</td><td><code>[]</code></td><td>Middleware for the route. Deliberately not <code>web</code>: Adobe sends no CSRF token or session cookie.</td></tr>
+        <tr><td><code>webhooks.client_ids</code></td><td><code>ADOBE_SIGN_WEBHOOK_CLIENT_IDS</code></td><td><code>[]</code></td><td>Client ids allowed to deliver, comma-separated in <code>.env</code>. Empty means <code>[oauth.client_id]</code>. With neither set, the route answers with a <code>MisconfiguredException</code>.</td></tr>
+        <tr><td><code>webhooks.dedupe_ttl</code></td><td>none</td><td><code>259200</code> (72 hours)</td><td>Seconds a notification id is remembered, so a retried delivery doesn't fire the event twice. Adobe retries for up to 72 hours.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    You can add middleware to the webhook route as long as it doesn't need a session, a CSRF token or a
+    logged-in user, and is fast; Adobe allows 5 seconds for the whole answer. A rate limiter or an IP
+    allow-list is fine:
+  </p>
+  <pre><code class="language-php">'webhooks' =&gt; [
+    // ...
+    'middleware' =&gt; ['throttle:120,1'],
+],</code></pre>
+  <p>The <a href="webhooks.html">Webhooks page</a> explains the handshake, dedupe and listeners in depth.</p>
+
+  <h2 id="per-environment">Examples per environment</h2>
+  <h3 id="example-local">Local development</h3>
+  <pre><code class="language-dotenv">ADOBE_SIGN_INTEGRATION_KEY=3AAABLblqZhB...developer-account-key...
+ADOBE_SIGN_CACHE_STORE=file
+ADOBE_SIGN_LOG_CHANNEL=stack
+APP_URL=https://warm-otter-42.example-tunnel.dev   # your tunnel, so route('adobe-sign.webhook') is public HTTPS
+ADOBE_SIGN_WEBHOOK_CLIENT_IDS=CBJCHBCAABAAdevapp</code></pre>
+  <h3 id="example-production">Production on several servers</h3>
+  <pre><code class="language-dotenv">ADOBE_SIGN_AUTH=integration_key
+ADOBE_SIGN_INTEGRATION_KEY=${SECRET_FROM_YOUR_VAULT}
+ADOBE_SIGN_SIGNATURE_LEVEL=aes
+ADOBE_SIGN_CACHE_STORE=redis
+ADOBE_SIGN_LOG_CHANNEL=adobe-sign
+ADOBE_SIGN_WEBHOOK_CLIENT_IDS=CBJCHBCAABAAprodapp</code></pre>
+  <h3 id="example-saas">A SaaS where customers connect their own accounts</h3>
+  <pre><code class="language-dotenv">ADOBE_SIGN_AUTH=oauth
+ADOBE_SIGN_CLIENT_ID=CBJCHBCAABAAsaasapp
+ADOBE_SIGN_CLIENT_SECRET=${SECRET_FROM_YOUR_VAULT}
+ADOBE_SIGN_REDIRECT_URI=https://app.example.com/adobe-sign/oauth/callback
+ADOBE_SIGN_CACHE_STORE=redis
+# webhook allow-list falls back to ADOBE_SIGN_CLIENT_ID</code></pre>
+
+  <h2 id="runtime-changes">Changing values at runtime</h2>
+  <p>
+    Because the manager reads config once per scope, a runtime change needs a fresh manager. In tests this
+    is common:
+  </p>
+  <pre><code class="language-php">config(['adobe-sign.signature_level' =&gt; 'qes']);
+$this-&gt;app-&gt;forgetScopedInstances();                       // next resolve builds a new manager
+\Conceptlz\AdobeSign\Laravel\Facades\AdobeSign::clearResolvedInstance(); // and the facade forgets the old one</code></pre>
+  <p>
+    For per-tenant credentials in production, don't rewrite global config. Build a core client for the
+    tenant with Laravel services passed by name. Laravel's cache repository implements PSR-16 and its
+    logger implements PSR-3, so they plug straight in:
+  </p>
+  <figure class="code">
+    <figcaption>app/Support/TenantAdobeSign.php</figcaption>
+    <pre><code class="language-php">use Conceptlz\AdobeSign\AdobeSign;
+use Conceptlz\AdobeSign\ClientOptions;
+use Conceptlz\AdobeSign\Enum\SignatureLevel;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+
+final class TenantAdobeSign
+{
+    public static function for(Tenant $tenant): AdobeSign
+    {
+        return AdobeSign::withIntegrationKey(
+            $tenant-&gt;adobe_sign_integration_key,   // e.g. an encrypted model attribute
+            cache: Cache::store('redis'),
+            logger: Log::channel('adobe-sign'),
+            options: new ClientOptions(
+                defaultSignatureLevel: SignatureLevel::from(strtoupper($tenant-&gt;signature_level)),
+            ),
+        );
+    }
+}</code></pre>
+  </figure>
+  <p>
+    The data-centre cache key is a hash of the credentials, so tenants on different shards
+    don't overwrite each other. Webhooks for these tenants still arrive at the package's route; add each
+    tenant application's client id to <code>webhooks.client_ids</code>.
+  </p>
+
+  <h2 id="configuration-questions">Common questions</h2>
+  <div class="faq">
+    <details id="configuration-env-ignored">
+      <summary>I changed .env but the package still uses the old value. Why?</summary>
+      <div class="faq-answer"><p>Your config is probably cached. Run <code>php artisan config:clear</code> (or <code>config:cache</code> again on a server). Under Octane or a long-running queue worker, also restart the workers, since they loaded config when they started.</p></div>
+    </details>
+    <details id="configuration-webhook-ids-required">
+      <summary>Do I need ADOBE_SIGN_WEBHOOK_CLIENT_IDS if I use OAuth?</summary>
+      <div class="faq-answer"><p>Not when the webhooks are created through your OAuth application: an empty list falls back to <code>ADOBE_SIGN_CLIENT_ID</code>. Set it when webhooks come from another application, or when you have no OAuth app at all.</p></div>
+    </details>
+    <details id="configuration-disable-routes">
+      <summary>Can I turn off the routes the package registers?</summary>
+      <div class="faq-answer"><p>Yes. Set <code>oauth.routes</code> to <code>false</code> to drop the connect routes and <code>webhooks.enabled</code> to <code>false</code> to drop the webhook route. Both are read at boot from the config file. The manager methods (<code>oauth()</code>, <code>webhookHandler()</code>) keep working for your own controllers.</p></div>
+    </details>
+    <details id="configuration-table-name">
+      <summary>Can I rename the token table?</summary>
+      <div class="faq-answer"><p>Yes. Set <code>oauth.table</code> in your published config <em>before</em> running the migration. Both the migration and the <code>AdobeSignToken</code> model read that value.</p></div>
+    </details>
+    <details id="configuration-signature-level-invalid">
+      <summary>What happens with an invalid ADOBE_SIGN_SIGNATURE_LEVEL?</summary>
+      <div class="faq-answer"><p>Building any client throws <code>MisconfiguredException</code> with the message "ADOBE_SIGN_SIGNATURE_LEVEL must be ses, aes or qes". It fails at the first API call rather than silently sending SES.</p></div>
+    </details>
+    <details id="configuration-gov-cloud">
+      <summary>When would I change bootstrap_url?</summary>
+      <div class="faq-answer"><p>Only when your account lives in a separate Adobe environment, such as Gov Cloud, whose discovery host is not <code>api.adobesign.com</code>. Commercial accounts in any region use the default. More in the core's <a href="https://conceptlz.github.io/adobe-sign/http-layer.html">data centres page</a>.</p></div>
+    </details>
+  </div>
+  <ul class="next-links">
+    <li><a href="usage.html"><strong>Using the client</strong><span>Facade, injection and the manager's methods.</span></a></li>
+    <li><a href="webhooks.html"><strong>Webhooks</strong><span>The route, the handshake and queued listeners.</span></a></li>
+  </ul>
+</article>
+<!-- docs:pager -->
+<nav class="pager" aria-label="Previous and next pages">
+  <a class="pager-prev" href="installation.html" rel="prev"><span class="pager-label">Previous</span><span class="pager-title">Installation</span></a>
+  <a class="pager-next" href="usage.html" rel="next"><span class="pager-label">Next</span><span class="pager-title">Using the client</span></a>
+</nav>
+<!-- /docs:pager -->
+</main>
+<aside class="toc" aria-label="On this page"></aside>
+</div>
+<!-- docs:footer -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <p>conceptlz/adobe-sign-laravel · MIT licensed · <a href="https://github.com/conceptlz/adobe-sign-laravel">Source on GitHub</a></p>
+    <p>An independent SDK, not affiliated with or endorsed by Adobe. Adobe and Acrobat Sign are trademarks of Adobe Inc.</p>
+  </div>
+</footer>
+<script src="assets/js/search-index.js"></script>
+<script src="assets/js/docs.js"></script>
+<!-- /docs:footer -->
+</body>
+</html>

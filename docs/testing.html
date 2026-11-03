@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- docs:head -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<script>
+(function () {
+  var theme = null;
+  try { theme = localStorage.getItem('docs-theme'); } catch (e) {}
+  if (theme !== 'light' && theme !== 'dark') {
+    theme = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  document.documentElement.setAttribute('data-theme', theme);
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,600;0,700;1,400&family=Gloock&display=swap">
+<link rel="stylesheet" href="assets/css/docs.css">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<!-- /docs:head -->
+<title>Testing your application · conceptlz/adobe-sign-laravel</title>
+<meta name="description" content="Test Laravel code that uses Acrobat Sign without calling Adobe: swap the PSR-18 HTTP client, queue fake responses, assert on requests, fake WebhookReceived, post webhooks with the client-id header, test OAuth callbacks, and use Orchestra Testbench in packages.">
+</head>
+<body>
+<!-- docs:topbar -->
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="icon-button menu-button" type="button" aria-controls="sidebar" aria-expanded="false" aria-label="Open navigation">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+  </button>
+  <a class="brand" href="index.html">
+    <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+      <circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <circle cx="20" cy="20" r="15.5" fill="none" stroke="currentColor" stroke-width="0.6" stroke-dasharray="1.5 2"/>
+      <path d="M9.5 24.5c3.2-1.2 5.4-7.6 7.1-11.3 1-2.1 2.4-1.4 1.6 1.2-1.2 3.9-2.8 8.4-1.4 9.3 1.5 1 3.4-4.4 4.6-4.1 1.1.3-.3 3.3.8 3.5 1.3.2 2.6-2.4 3.8-2.2 1 .2.6 1.8 1.6 1.9 1 .1 2.1-.8 3-1.3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10 28.5h20" stroke="currentColor" stroke-width="0.8" opacity="0.6"/>
+    </svg>
+    <span class="brand-text"><span class="brand-name">Adobe Sign for Laravel</span><span class="brand-package">conceptlz/adobe-sign-laravel</span></span>
+  </a>
+  <span class="topbar-spacer"></span>
+  <div class="search" role="search">
+    <label class="visually-hidden" for="docs-search">Search the documentation</label>
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
+    <input class="search-input" id="docs-search" type="search" placeholder="Search docs" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="docs-search-results" aria-autocomplete="list">
+    <kbd class="search-key">/</kbd>
+    <ul class="search-results" id="docs-search-results" role="listbox" aria-label="Search results" hidden></ul>
+  </div>
+  <a class="topbar-link" href="https://github.com/conceptlz/adobe-sign-laravel">GitHub</a>
+  <button class="icon-button theme-toggle" type="button" aria-label="Switch theme">
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg>
+  </button>
+</header>
+<!-- /docs:topbar -->
+<div class="layout">
+<!-- docs:sidebar -->
+<nav class="sidebar" id="sidebar" aria-label="Documentation">
+  <div class="nav-group">
+    <p class="nav-group-title">Start here</p>
+    <ul class="nav-list">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="configuration.html">Configuration</a></li>
+    </ul>
+  </div>
+  <div class="nav-group">
+    <p class="nav-group-title">Guides</p>
+    <ul class="nav-list">
+      <li><a href="usage.html">Using the client</a></li>
+      <li><a href="walkthrough.html">Walkthrough: send &amp; store</a></li>
+      <li><a href="oauth.html">OAuth: connect user accounts</a></li>
+      <li><a href="webhooks.html">Webhooks</a></li>
+      <li><a href="signature-levels.html">Signature levels</a></li>
+    </ul>
+  </div>
+  <div class="nav-group">
+    <p class="nav-group-title">Reference</p>
+    <ul class="nav-list">
+      <li><a href="reference.html">Facade, events, routes &amp; commands</a></li>
+    </ul>
+  </div>
+  <div class="nav-group">
+    <p class="nav-group-title">Help</p>
+    <ul class="nav-list">
+      <li><a href="testing.html" aria-current="page">Testing your application</a></li>
+      <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+    </ul>
+  </div>
+  <p class="sidebar-other">Need the full API reference?<br><a href="https://conceptlz.github.io/adobe-sign/">Core SDK docs →</a></p>
+</nav>
+<div class="nav-backdrop" hidden></div>
+<!-- /docs:sidebar -->
+<main id="content" class="content">
+<article class="doc">
+  <header class="doc-header">
+    <p class="eyebrow">Help</p>
+    <h1>Testing your application</h1>
+    <p class="lede">Your tests should never email real signers or depend on Adobe being up. This page shows how to replace the HTTP client the SDK uses, script Adobe's responses, assert on what your code sent, and drive the webhook and OAuth routes from feature tests.</p>
+  </header>
+
+  <h2 id="where-to-fake">Where to fake: the PSR-18 client</h2>
+  <p>
+    The SDK sends every request through a PSR-18 <code>Psr\Http\Client\ClientInterface</code>. The bridge
+    uses whatever is bound to that interface in the container, and only falls back to discovering Guzzle
+    when nothing is bound. So the seam for tests is one line:
+  </p>
+  <pre><code class="language-php">$this-&gt;app-&gt;instance(\Psr\Http\Client\ClientInterface::class, $fakeClient);</code></pre>
+  <p>
+    Everything above that line runs for real: the builders validate, the SDK picks the data centre, adds
+    headers, encodes JSON and multipart bodies, maps error responses to exceptions. Your test sees exactly
+    the requests that would have gone to Adobe.
+  </p>
+  <div class="callout callout-warning">
+    <p class="callout-title">Http::fake() doesn't reach the SDK</p>
+    <p>Laravel's <code>Http</code> facade fakes its own client only. The SDK talks PSR-18 directly, so <code>Http::fake()</code> and <code>Http::preventStrayRequests()</code> have no effect on it. Bind a fake <code>ClientInterface</code> instead.</p>
+  </div>
+
+  <h2 id="choose-a-fake">Choose a fake client</h2>
+  <h3 id="php-http-mock-client">Option 1: php-http/mock-client</h3>
+  <p>This is what the package's own test suite uses. It records every request and returns queued responses in order.</p>
+  <pre><code class="language-bash">composer require --dev php-http/mock-client nyholm/psr7</code></pre>
+  <figure class="code">
+    <figcaption>tests/Concerns/FakesAdobeSign.php</figcaption>
+    <pre><code class="language-php">&lt;?php
+
+namespace Tests\Concerns;
+
+use Conceptlz\AdobeSign\Laravel\Facades\AdobeSign;
+use Http\Mock\Client as MockClient;
+use Nyholm\Psr7\Response;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestInterface;
+
+trait FakesAdobeSign
+{
+    protected MockClient $adobe;
+
+    protected function fakeAdobeSign(): void
+    {
+        $this-&gt;adobe = new MockClient();
+        // Fail loudly when code makes a request the test didn't script.
+        $this-&gt;adobe-&gt;setDefaultException(new \LogicException('Unexpected Acrobat Sign request.'));
+        $this-&gt;app-&gt;instance(ClientInterface::class, $this-&gt;adobe);
+
+        config([
+            'adobe-sign.integration_key' =&gt; 'test-integration-key',
+            'adobe-sign.log_channel' =&gt; false,
+            'adobe-sign.retries.max' =&gt; 0,      // don't sleep through retries in tests
+            'adobe-sign.webhooks.client_ids' =&gt; ['test-client-id'],
+        ]);
+        $this-&gt;app-&gt;forgetScopedInstances();   // rebuild the manager with this config
+        AdobeSign::clearResolvedInstance();
+    }
+
+    protected function adobeResponds(int $status, array|string|null $body = null, array $headers = []): void
+    {
+        if (is_array($body)) {
+            $body = json_encode($body);
+            $headers += ['Content-Type' =&gt; 'application/json'];
+        }
+
+        $this-&gt;adobe-&gt;addResponse(new Response($status, $headers, $body ?? ''));
+    }
+
+    protected function adobeKnowsTheDataCentre(): void
+    {
+        $this-&gt;adobeResponds(200, [
+            'apiAccessPoint' =&gt; 'https://api.na1.adobesign.com/',
+            'webAccessPoint' =&gt; 'https://secure.na1.adobesign.com/',
+        ]);
+    }
+
+    protected function adobeRequest(int $index): RequestInterface
+    {
+        return $this-&gt;adobe-&gt;getRequests()[$index] ?? $this-&gt;fail("No Acrobat Sign request #$index was sent.");
+    }
+}</code></pre>
+  </figure>
+
+  <h3 id="guzzle-mock-handler">Option 2: Guzzle's MockHandler</h3>
+  <p>No extra packages: Guzzle is already installed and its client implements PSR-18.</p>
+  <pre><code class="language-php">use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Response;
+use Psr\Http\Client\ClientInterface;
+
+$mock = new MockHandler([
+    new Response(200, ['Content-Type' =&gt; 'application/json'], '{"apiAccessPoint":"https://api.na1.adobesign.com/","webAccessPoint":"https://secure.na1.adobesign.com/"}'),
+    new Response(200, ['Content-Type' =&gt; 'application/json'], '{"id":"CBJCHBCAABAAagreement1"}'),
+]);
+$history = [];
+$stack = HandlerStack::create($mock);
+$stack-&gt;push(Middleware::history($history));
+
+$this-&gt;app-&gt;instance(ClientInterface::class, new Client(['handler' =&gt; $stack]));
+
+// ... run your code; $history[1]['request'] is the second request sent</code></pre>
+  <p>An empty <code>MockHandler</code> queue throws, so unexpected requests fail the test here too.</p>
+
+  <h2 id="request-order">Know the request order</h2>
+  <p>Queue responses in the order your code will make requests:</p>
+  <ul>
+    <li><strong>A fresh Integration Key client starts with <span class="endpoint"><b>GET</b> /baseUris</span></strong> to find the data centre. Use the <code>array</code> cache store in tests (Laravel's default under PHPUnit), so every test starts fresh and the order is predictable. Later requests in the same test reuse the cached answer.</li>
+    <li><strong><code>forUser()</code> clients skip it</strong>: the stored token carries the account's <code>api_access_point</code>. An expired token adds a <span class="endpoint"><b>POST</b> /oauth/v2/refresh</span> first.</li>
+    <li><strong>Each resource call is one request</strong>, except helpers that combine several, such as <code>signatureEvidence()</code> (agreement, members, events) and <code>sendReminder()</code> without participant ids (members, then the reminder).</li>
+  </ul>
+
+  <h2 id="testing-controllers">Testing a controller that sends an agreement</h2>
+  <figure class="code">
+    <figcaption>tests/Feature/SendAgreementTest.php</figcaption>
+    <pre><code class="language-php">&lt;?php
+
+namespace Tests\Feature;
+
+use App\Models\User;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\URL;
+use Tests\Concerns\FakesAdobeSign;
+use Tests\TestCase;
+
+final class SendAgreementTest extends TestCase
+{
+    use FakesAdobeSign;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this-&gt;fakeAdobeSign();
+
+        // WebhookInfo only accepts https URLs; route() needs an https root in tests.
+        URL::forceRootUrl('https://app.example.com');
+        URL::forceScheme('https');
+    }
+
+    public function test_it_uploads_and_sends_in_order(): void
+    {
+        $this-&gt;adobeKnowsTheDataCentre();
+        $this-&gt;adobeResponds(200, ['transientDocumentId' =&gt; 'tdoc-1']);
+        $this-&gt;adobeResponds(200, ['id' =&gt; 'agr-1']);
+        $this-&gt;adobeResponds(200, ['id' =&gt; 'webhook-1']);
+
+        $this-&gt;actingAs(User::factory()-&gt;create())
+            -&gt;post('/agreements', [
+                'contract' =&gt; UploadedFile::fake()-&gt;createWithContent('msa.pdf', '%PDF-1.4 test'),
+                'name' =&gt; 'Master Services Agreement',
+                'signers' =&gt; ['jane@client.example.com', 'ceo@example.com'],
+            ], ['Accept' =&gt; 'application/json'])
+            -&gt;assertCreated()
+            -&gt;assertJson(['agreement_id' =&gt; 'agr-1']);
+
+        $this-&gt;assertStringEndsWith('/transientDocuments', $this-&gt;adobeRequest(1)-&gt;getUri()-&gt;getPath());
+
+        $created = json_decode((string) $this-&gt;adobeRequest(2)-&gt;getBody(), true);
+        $this-&gt;assertSame('IN_PROCESS', $created['state']);
+        $this-&gt;assertSame([1, 2], array_column($created['participantSetsInfo'], 'order'));
+
+        $webhook = json_decode((string) $this-&gt;adobeRequest(3)-&gt;getBody(), true);
+        $this-&gt;assertSame('https://app.example.com/adobe-sign/webhook', $webhook['webhookUrlInfo']['url']);
+    }
+
+    public function test_nothing_is_sent_for_a_non_pdf(): void
+    {
+        $this-&gt;actingAs(User::factory()-&gt;create())
+            -&gt;post('/agreements', [
+                'contract' =&gt; UploadedFile::fake()-&gt;create('notes.txt', 1, 'text/plain'),
+                'name' =&gt; 'x',
+                'signers' =&gt; ['a@example.com'],
+            ], ['Accept' =&gt; 'application/json'])
+            -&gt;assertUnprocessable();
+
+        $this-&gt;assertSame([], $this-&gt;adobe-&gt;getRequests());
+    }
+}</code></pre>
+  </figure>
+  <p>Assert on request bodies rather than on the order of internal calls: the payload is the contract with Adobe, and it is what changes behaviour.</p>
+
+  <h3 id="testing-errors">Simulating Adobe errors</h3>
+  <p>Queue an error body and the SDK throws the same typed exception it would in production:</p>
+  <pre><code class="language-php">use Conceptlz\AdobeSign\Exception\AccountCapabilityException;
+
+$this-&gt;adobeKnowsTheDataCentre();
+$this-&gt;adobeResponds(200, ['transientDocumentId' =&gt; 'tdoc-1']);
+$this-&gt;adobeResponds(403, ['code' =&gt; 'HYBRID_ROUTING_NOT_ALLOWED', 'message' =&gt; 'Hybrid routing is not enabled.']);
+
+$this-&gt;expectException(AccountCapabilityException::class);
+// ... call the code that creates a mixed-order agreement</code></pre>
+  <p>Common shapes: <code>401</code> with <code>INVALID_ACCESS_TOKEN</code> (<code>AuthenticationException</code>), <code>404</code> with <code>AGREEMENT_NOT_SIGNABLE</code> (<code>NotFoundException</code>), <code>429</code> with a <code>Retry-After</code> header (<code>RateLimitException</code>, since retries are off).</p>
+
+  <h2 id="testing-webhooks">Testing webhooks</h2>
+  <p>
+    The webhook route needs no fake HTTP client: it only checks the header, parses, de-duplicates and
+    dispatches. Post a payload with an allowed client id and assert on the event. These tests assume
+    <code>fakeAdobeSign()</code> ran in <code>setUp()</code>, which allow-lists <code>test-client-id</code>:
+  </p>
+  <figure class="code">
+    <figcaption>tests/Feature/AdobeSignWebhookTest.php</figcaption>
+    <pre><code class="language-php">use Conceptlz\AdobeSign\Laravel\Events\WebhookReceived;
+use Conceptlz\AdobeSign\Webhook\AgreementEvent;
+use Illuminate\Support\Facades\Event;
+
+public function test_completed_agreement_fires_the_event_once(): void
+{
+    Event::fake([WebhookReceived::class]);
+
+    $payload = [
+        'event' =&gt; 'AGREEMENT_WORKFLOW_COMPLETED',
+        'webhookNotificationId' =&gt; 'notification-1',
+        'agreement' =&gt; ['id' =&gt; 'agr-1', 'status' =&gt; 'SIGNED'],
+    ];
+
+    foreach ([1, 2] as $attempt) {   // Adobe retrying the same notification
+        $this-&gt;postJson('/adobe-sign/webhook', $payload, ['X-AdobeSign-ClientId' =&gt; 'test-client-id'])
+            -&gt;assertOk()
+            -&gt;assertHeader('X-AdobeSign-ClientId', 'test-client-id');
+    }
+
+    Event::assertDispatchedTimes(WebhookReceived::class, 1);
+    Event::assertDispatched(WebhookReceived::class, fn (WebhookReceived $e) =&gt;
+        $e-&gt;event instanceof AgreementEvent
+        &amp;&amp; $e-&gt;event-&gt;isWorkflowCompleted()
+        &amp;&amp; $e-&gt;event-&gt;agreementId() === 'agr-1');
+}
+
+public function test_unknown_senders_are_rejected(): void
+{
+    Event::fake([WebhookReceived::class]);
+
+    $this-&gt;postJson('/adobe-sign/webhook', ['event' =&gt; 'AGREEMENT_CREATED'], ['X-AdobeSign-ClientId' =&gt; 'someone-else'])
+        -&gt;assertForbidden();
+
+    Event::assertNotDispatched(WebhookReceived::class);
+}</code></pre>
+  </figure>
+  <p>Use a different <code>webhookNotificationId</code> in each test, or the array cache's memory within one test will treat a second post as a duplicate. The verification handshake is a <code>GET</code> with the same header, answered with <code>{"xAdobeSignClientId": "…"}</code>.</p>
+
+  <h3 id="testing-listeners">Testing a listener on its own</h3>
+  <p>Build the event from a payload with the core's <code>WebhookEvent::fromArray()</code> and call the listener directly; fake the bus to see what it dispatched:</p>
+  <pre><code class="language-php">use App\Jobs\DownloadSignedAgreement;
+use App\Listeners\ProcessAdobeSignWebhook;
+use Conceptlz\AdobeSign\Laravel\Events\WebhookReceived;
+use Conceptlz\AdobeSign\Webhook\WebhookEvent;
+use Illuminate\Support\Facades\Bus;
+
+Bus::fake();
+
+(new ProcessAdobeSignWebhook())-&gt;handle(new WebhookReceived(WebhookEvent::fromArray([
+    'event' =&gt; 'AGREEMENT_WORKFLOW_COMPLETED',
+    'agreement' =&gt; ['id' =&gt; 'agr-1'],
+])));
+
+Bus::assertDispatched(DownloadSignedAgreement::class, fn ($job) =&gt; $job-&gt;agreementId === 'agr-1');</code></pre>
+
+  <h3 id="testing-jobs">Testing the download job</h3>
+  <pre><code class="language-php">use App\Jobs\DownloadSignedAgreement;
+use Illuminate\Support\Facades\Storage;
+
+Storage::fake(config('filesystems.default'));
+$this-&gt;adobeKnowsTheDataCentre();
+$this-&gt;adobeResponds(200, ['id' =&gt; 'agr-1', 'name' =&gt; 'MSA', 'status' =&gt; 'SIGNED']);
+$this-&gt;adobeResponds(200, '%PDF-1.4 signed', ['Content-Type' =&gt; 'application/pdf']);
+
+$this-&gt;app-&gt;call([new DownloadSignedAgreement('agr-1'), 'handle']);
+
+Storage::assertExists('agreements/agr-1.pdf');
+$this-&gt;assertSame('attachAuditReport=true', $this-&gt;adobeRequest(2)-&gt;getUri()-&gt;getQuery());</code></pre>
+  <p>Add a case where the status is <code>OUT_FOR_SIGNATURE</code> and assert nothing was stored: that is the guard against forged or premature webhooks.</p>
+
+  <h2 id="testing-the-full-loop">Testing the full loop</h2>
+  <p>
+    The package's <code>SigningLifecycleTest</code> runs upload, send, webhook and storage in one test. The
+    ingredients, for your own version:
+  </p>
+  <ol class="steps">
+    <li><span class="step-title">Run queued work inline</span><p>Set <code>queue.default</code> to <code>sync</code> for the test, so the listener and the job run during the webhook post.</p></li>
+    <li><span class="step-title">Fake the disk</span><p><code>Storage::fake()</code> on the disk the job writes to.</p></li>
+    <li><span class="step-title">Make route() produce https</span><p><code>URL::forceRootUrl('https://app.example.com')</code> and <code>URL::forceScheme('https')</code>, because <code>WebhookInfo</code> rejects <code>http://</code>.</p></li>
+    <li><span class="step-title">Script both halves</span><p>Queue the sending responses, post the form, then queue the agreement (<code>SIGNED</code>) and PDF responses and post the completion webhook.</p></li>
+    <li><span class="step-title">Assert on the outcome</span><p>The file exists on the fake disk with the PDF bytes you queued, and the requests had the expected paths and bodies.</p></li>
+  </ol>
+
+  <h2 id="testing-oauth">Testing OAuth code</h2>
+  <h3 id="testing-oauth-callback">The callback</h3>
+  <pre><code class="language-php">use Conceptlz\AdobeSign\Laravel\Events\OAuthConnected;
+use Illuminate\Support\Facades\Event;
+
+Event::fake([OAuthConnected::class]);
+config(['adobe-sign.oauth.client_id' =&gt; 'test-client-id', 'adobe-sign.oauth.client_secret' =&gt; 'test-secret']);
+$this-&gt;adobeResponds(200, [
+    'access_token' =&gt; 'access-1',
+    'refresh_token' =&gt; 'refresh-1',
+    'expires_in' =&gt; 3600,
+    'token_type' =&gt; 'Bearer',
+    'api_access_point' =&gt; 'https://api.eu1.adobesign.com/',
+]);
+
+$this-&gt;actingAs($user)
+    -&gt;withSession(['adobe_sign_oauth_state' =&gt; 'state-1'])
+    -&gt;get('/adobe-sign/oauth/callback?code=auth-code&amp;state=state-1&amp;api_access_point=https://api.eu1.adobesign.com/')
+    -&gt;assertRedirect('/');
+
+Event::assertDispatched(OAuthConnected::class, fn ($e) =&gt; $e-&gt;key === (string) $user-&gt;id);</code></pre>
+  <p>The session key <code>adobe_sign_oauth_state</code> is where the redirect route stores the state; seeding it is how you skip the trip to Adobe. A wrong state should give 400 and send no request at all.</p>
+
+  <h3 id="testing-for-user">Code that uses forUser()</h3>
+  <p>Seed a token instead of running the flow. With <code>RefreshDatabase</code> and the published migration, the default <code>EloquentTokenStore</code> works as in production:</p>
+  <pre><code class="language-php">use Conceptlz\AdobeSign\Auth\{AccessToken, TokenStore};
+
+$this-&gt;app-&gt;make(TokenStore::class)-&gt;put((string) $user-&gt;id, new AccessToken(
+    'user-access-token',
+    'user-refresh-token',
+    new \DateTimeImmutable('+1 hour'),          // not expired: no refresh request
+    'https://api.eu1.adobesign.com/',
+));
+
+$this-&gt;adobeResponds(200, ['id' =&gt; 'agr-1', 'name' =&gt; 'NDA', 'status' =&gt; 'OUT_FOR_SIGNATURE']);
+// ... code calling AdobeSign::forUser($user)-&gt;agreements()-&gt;get('agr-1')
+
+$this-&gt;assertSame('Bearer user-access-token', $this-&gt;adobeRequest(0)-&gt;getHeaderLine('Authorization'));</code></pre>
+  <p>An expiry in the past makes the SDK refresh first, so queue a refresh response (<code>access_token</code>, <code>expires_in</code>) before the API response to test that path.</p>
+
+  <h3 id="mocking-the-facade">Mocking the manager's own methods</h3>
+  <p>For code that only branches on the manager's answers, the facade's Mockery support is enough:</p>
+  <pre><code class="language-php">AdobeSign::shouldReceive('isConnected')-&gt;once()-&gt;andReturn(false);
+
+$this-&gt;actingAs($user)-&gt;get('/contracts/new')-&gt;assertSee('Connect Acrobat Sign');</code></pre>
+  <p>Don't mock the resources (<code>agreements()</code> and friends): they are final classes, and a fake HTTP client tests more of the real behaviour anyway.</p>
+
+  <h2 id="testbench">Testing a package with Orchestra Testbench</h2>
+  <p>
+    If you build a package on top of the bridge, Orchestra Testbench boots a minimal Laravel app for its
+    tests. Register the bridge's provider next to yours, alias the facade if you use it, and load the token
+    migration from <code>vendor</code> when you need OAuth:
+  </p>
+  <figure class="code">
+    <figcaption>tests/TestCase.php</figcaption>
+    <pre><code class="language-php">&lt;?php
+
+namespace Acme\Contracts\Tests;
+
+use Acme\Contracts\ContractsServiceProvider;
+use Conceptlz\AdobeSign\Laravel\AdobeSignServiceProvider;
+use Conceptlz\AdobeSign\Laravel\Facades\AdobeSign;
+use Http\Mock\Client as MockClient;
+use Orchestra\Testbench\TestCase as BaseTestCase;
+use Psr\Http\Client\ClientInterface;
+
+abstract class TestCase extends BaseTestCase
+{
+    protected MockClient $adobe;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this-&gt;adobe = new MockClient();
+        $this-&gt;adobe-&gt;setDefaultException(new \LogicException('Unexpected request: no queued response left.'));
+        $this-&gt;app-&gt;instance(ClientInterface::class, $this-&gt;adobe);
+    }
+
+    protected function getPackageProviders($app): array
+    {
+        return [AdobeSignServiceProvider::class, ContractsServiceProvider::class];
+    }
+
+    protected function getPackageAliases($app): array
+    {
+        return ['AdobeSign' =&gt; AdobeSign::class];
+    }
+
+    protected function defineEnvironment($app): void
+    {
+        $app['config']-&gt;set('adobe-sign.integration_key', 'test-integration-key');
+        $app['config']-&gt;set('adobe-sign.oauth.client_id', 'test-client-id');
+        $app['config']-&gt;set('adobe-sign.oauth.client_secret', 'test-secret');
+        $app['config']-&gt;set('adobe-sign.log_channel', false);
+        $app['config']-&gt;set('cache.default', 'array');
+        $app['config']-&gt;set('database.default', 'testing');
+    }
+
+    protected function defineDatabaseMigrations(): void
+    {
+        $this-&gt;loadMigrationsFrom(__DIR__.'/../vendor/conceptlz/adobe-sign-laravel/database/migrations');
+    }
+}</code></pre>
+  </figure>
+  <p>
+    This mirrors the bridge's own <code>tests/TestCase.php</code>. Setting config in
+    <code>defineEnvironment()</code> means it is in place before anything resolves the scoped manager. The
+    bridge's CI runs Laravel 12 with Testbench 10 and Laravel 13 with Testbench 11.
+  </p>
+
+  <h2 id="testing-config-changes">Changing config inside a test</h2>
+  <p>
+    The manager copies the <code>adobe-sign</code> config when it is first resolved in a scope, and the facade
+    caches the instance it got. To change config after that point:
+  </p>
+  <pre><code class="language-php">config(['adobe-sign.auth' =&gt; 'oauth']);
+$this-&gt;app-&gt;forgetScopedInstances();
+AdobeSign::clearResolvedInstance();</code></pre>
+  <p>Route config (<code>oauth.route_prefix</code>, <code>webhooks.path</code>, the <code>enabled</code> flags) is read when routes load at boot, so set it in <code>defineEnvironment()</code> or your <code>phpunit.xml</code> environment instead.</p>
+
+  <h2 id="testing-questions">Common questions</h2>
+  <div class="faq">
+    <details id="testing-real-account">
+      <summary>Should my CI ever call the real Acrobat Sign API?</summary>
+      <div class="faq-answer"><p>Not in the normal suite: real calls send real emails and depend on Adobe's availability. If you want a smoke test, keep it in a separate, opt-in suite with a developer account and addresses you control, and cancel every agreement it creates. <code>php artisan adobe-sign:verify</code> is a safe deploy-time check.</p></div>
+    </details>
+    <details id="testing-unexpected-request">
+      <summary>My test fails with "Unexpected Acrobat Sign request". What happened?</summary>
+      <div class="faq-answer"><p>The code made one more request than you queued responses for. The most common reason is the initial <code>GET /baseUris</code> of a fresh Integration Key client; queue the data-centre response first. Dump <code>$this-&gt;adobe-&gt;getRequests()</code> to see what was sent.</p></div>
+    </details>
+    <details id="testing-slow-tests">
+      <summary>Why does a test with a 429 response take seconds?</summary>
+      <div class="faq-answer"><p>The SDK retries throttled responses and sleeps between attempts. Set <code>adobe-sign.retries.max</code> to <code>0</code> in tests so a 429 surfaces immediately as <code>RateLimitException</code>.</p></div>
+    </details>
+    <details id="testing-pest">
+      <summary>Does this work with Pest?</summary>
+      <div class="faq-answer"><p>Yes. Pest runs on PHPUnit and Laravel's testing helpers; use the trait in your <code>Pest.php</code> (<code>uses(FakesAdobeSign::class)</code>) and call <code>$this-&gt;fakeAdobeSign()</code> in <code>beforeEach</code>.</p></div>
+    </details>
+    <details id="testing-spec-validation">
+      <summary>How do I know my faked responses look like Adobe's?</summary>
+      <div class="faq-answer"><p>Copy real shapes: the bridge's <code>tests/Fixtures</code> and the core's fixtures hold responses checked against Adobe's OpenAPI spec, and some captured from the live API. The core's <a href="https://conceptlz.github.io/adobe-sign/testing.html">testing page</a> explains its spec-validated approach.</p></div>
+    </details>
+  </div>
+  <ul class="next-links">
+    <li><a href="troubleshooting.html"><strong>Troubleshooting</strong><span>Symptoms, causes and fixes.</span></a></li>
+    <li><a href="webhooks.html"><strong>Webhooks</strong><span>What the route does with each delivery.</span></a></li>
+  </ul>
+</article>
+<!-- docs:pager -->
+<nav class="pager" aria-label="Previous and next pages">
+  <a class="pager-prev" href="reference.html" rel="prev"><span class="pager-label">Previous</span><span class="pager-title">Facade, events, routes &amp; commands</span></a>
+  <a class="pager-next" href="troubleshooting.html" rel="next"><span class="pager-label">Next</span><span class="pager-title">Troubleshooting</span></a>
+</nav>
+<!-- /docs:pager -->
+</main>
+<aside class="toc" aria-label="On this page"></aside>
+</div>
+<!-- docs:footer -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <p>conceptlz/adobe-sign-laravel · MIT licensed · <a href="https://github.com/conceptlz/adobe-sign-laravel">Source on GitHub</a></p>
+    <p>An independent SDK, not affiliated with or endorsed by Adobe. Adobe and Acrobat Sign are trademarks of Adobe Inc.</p>
+  </div>
+</footer>
+<script src="assets/js/search-index.js"></script>
+<script src="assets/js/docs.js"></script>
+<!-- /docs:footer -->
+</body>
+</html>

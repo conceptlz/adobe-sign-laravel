@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- docs:head -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<script>
+(function () {
+  var theme = null;
+  try { theme = localStorage.getItem('docs-theme'); } catch (e) {}
+  if (theme !== 'light' && theme !== 'dark') {
+    theme = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  document.documentElement.setAttribute('data-theme', theme);
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,600;0,700;1,400&family=Gloock&display=swap">
+<link rel="stylesheet" href="assets/css/docs.css">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<!-- /docs:head -->
+<title>Facade, events, routes &amp; commands · conceptlz/adobe-sign-laravel</title>
+<meta name="description" content="Reference for conceptlz/adobe-sign-laravel: the AdobeSign facade's methods, container bindings, the OAuthConnected and WebhookReceived events, routes, the adobe-sign:verify command, the token model and migration, and MisconfiguredException.">
+</head>
+<body>
+<!-- docs:topbar -->
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="icon-button menu-button" type="button" aria-controls="sidebar" aria-expanded="false" aria-label="Open navigation">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+  </button>
+  <a class="brand" href="index.html">
+    <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+      <circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <circle cx="20" cy="20" r="15.5" fill="none" stroke="currentColor" stroke-width="0.6" stroke-dasharray="1.5 2"/>
+      <path d="M9.5 24.5c3.2-1.2 5.4-7.6 7.1-11.3 1-2.1 2.4-1.4 1.6 1.2-1.2 3.9-2.8 8.4-1.4 9.3 1.5 1 3.4-4.4 4.6-4.1 1.1.3-.3 3.3.8 3.5 1.3.2 2.6-2.4 3.8-2.2 1 .2.6 1.8 1.6 1.9 1 .1 2.1-.8 3-1.3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10 28.5h20" stroke="currentColor" stroke-width="0.8" opacity="0.6"/>
+    </svg>
+    <span class="brand-text"><span class="brand-name">Adobe Sign for Laravel</span><span class="brand-package">conceptlz/adobe-sign-laravel</span></span>
+  </a>
+  <span class="topbar-spacer"></span>
+  <div class="search" role="search">
+    <label class="visually-hidden" for="docs-search">Search the documentation</label>
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
+    <input class="search-input" id="docs-search" type="search" placeholder="Search docs" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="docs-search-results" aria-autocomplete="list">
+    <kbd class="search-key">/</kbd>
+    <ul class="search-results" id="docs-search-results" role="listbox" aria-label="Search results" hidden></ul>
+  </div>
+  <a class="topbar-link" href="https://github.com/conceptlz/adobe-sign-laravel">GitHub</a>
+  <button class="icon-button theme-toggle" type="button" aria-label="Switch theme">
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg>
+  </button>
+</header>
+<!-- /docs:topbar -->
+<div class="layout">
+<!-- docs:sidebar -->
+<nav class="sidebar" id="sidebar" aria-label="Documentation">
+  <div class="nav-group">
+    <p class="nav-group-title">Start here</p>
+    <ul class="nav-list">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="configuration.html">Configuration</a></li>
+    </ul>
+  </div>
+  <div class="nav-group">
+    <p class="nav-group-title">Guides</p>
+    <ul class="nav-list">
+      <li><a href="usage.html">Using the client</a></li>
+      <li><a href="walkthrough.html">Walkthrough: send &amp; store</a></li>
+      <li><a href="oauth.html">OAuth: connect user accounts</a></li>
+      <li><a href="webhooks.html">Webhooks</a></li>
+      <li><a href="signature-levels.html">Signature levels</a></li>
+    </ul>
+  </div>
+  <div class="nav-group">
+    <p class="nav-group-title">Reference</p>
+    <ul class="nav-list">
+      <li><a href="reference.html" aria-current="page">Facade, events, routes &amp; commands</a></li>
+    </ul>
+  </div>
+  <div class="nav-group">
+    <p class="nav-group-title">Help</p>
+    <ul class="nav-list">
+      <li><a href="testing.html">Testing your application</a></li>
+      <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+    </ul>
+  </div>
+  <p class="sidebar-other">Need the full API reference?<br><a href="https://conceptlz.github.io/adobe-sign/">Core SDK docs →</a></p>
+</nav>
+<div class="nav-backdrop" hidden></div>
+<!-- /docs:sidebar -->
+<main id="content" class="content">
+<article class="doc">
+  <header class="doc-header">
+    <p class="eyebrow">Reference</p>
+    <h1>Facade, events, routes &amp; commands</h1>
+    <p class="lede">Everything the Laravel bridge adds, in one place: class names, signatures, properties, routes, columns and error messages, exactly as they are in the code. The guides explain when to use each piece.</p>
+  </header>
+
+  <h2 id="classes">Classes at a glance</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Class</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td><code>Conceptlz\AdobeSign\Laravel\AdobeSignServiceProvider</code></td><td>Registers config, bindings, routes, publishable files and the command. Auto-discovered.</td></tr>
+        <tr><td><code>Conceptlz\AdobeSign\Laravel\AdobeSignManager</code></td><td>Builds configured clients; forwards unknown calls to the default client.</td></tr>
+        <tr><td><code>Conceptlz\AdobeSign\Laravel\Facades\AdobeSign</code></td><td>Facade over the manager, alias <code>AdobeSign</code>.</td></tr>
+        <tr><td><code>Conceptlz\AdobeSign\Laravel\EloquentTokenStore</code></td><td>Core <code>TokenStore</code> backed by the token table.</td></tr>
+        <tr><td><code>Conceptlz\AdobeSign\Laravel\Models\AdobeSignToken</code></td><td>Eloquent model for one stored token pair.</td></tr>
+        <tr><td><code>Conceptlz\AdobeSign\Laravel\Events\OAuthConnected</code></td><td>A user finished connecting their account.</td></tr>
+        <tr><td><code>Conceptlz\AdobeSign\Laravel\Events\WebhookReceived</code></td><td>A new webhook notification arrived.</td></tr>
+        <tr><td><code>Conceptlz\AdobeSign\Laravel\Http\Controllers\OAuthController</code></td><td>The redirect and callback routes.</td></tr>
+        <tr><td><code>Conceptlz\AdobeSign\Laravel\Http\Controllers\WebhookController</code></td><td>The webhook route (invokable).</td></tr>
+        <tr><td><code>Conceptlz\AdobeSign\Laravel\Console\VerifyCommand</code></td><td><code>adobe-sign:verify</code>.</td></tr>
+        <tr><td><code>Conceptlz\AdobeSign\Laravel\MisconfiguredException</code></td><td>Config is missing something a feature needs.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="facade-methods">Facade methods</h2>
+  <p>
+    The facade's docblock declares these methods. The first group is defined on
+    <code>AdobeSignManager</code>; the second is forwarded through <code>__call</code> to the default client
+    (<code>client()</code>).
+  </p>
+  <h3 id="facade-manager-methods">Manager methods</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Returns</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><a href="usage.html#api-client"><code>client()</code></a></td><td><code>Conceptlz\AdobeSign\AdobeSign</code></td><td>Default client per <code>adobe-sign.auth</code></td></tr>
+        <tr><td><a href="usage.html#api-for-user"><code>forUser(Authenticatable|string|int $user)</code></a></td><td><code>Conceptlz\AdobeSign\AdobeSign</code></td><td>OAuth client for one user; cached per key</td></tr>
+        <tr><td><a href="usage.html#api-is-connected"><code>isConnected(Authenticatable|string|int $user)</code></a></td><td><code>bool</code></td><td>A token is stored; no API call</td></tr>
+        <tr><td><a href="usage.html#api-oauth"><code>oauth()</code></a></td><td><code>Conceptlz\AdobeSign\Auth\OAuthClient</code></td><td>Authorization-code flow client</td></tr>
+        <tr><td><a href="usage.html#api-tokens"><code>tokens()</code></a></td><td><code>Conceptlz\AdobeSign\Auth\TokenStore</code></td><td>The bound token store</td></tr>
+        <tr><td><a href="usage.html#api-user-key"><code>userKey(Authenticatable|string|int $user)</code></a></td><td><code>string</code></td><td>Token store key for a user</td></tr>
+        <tr><td><a href="usage.html#api-webhook-handler"><code>webhookHandler()</code></a></td><td><code>Conceptlz\AdobeSign\Webhook\WebhookHandler</code></td><td>Allow-lists the configured client ids</td></tr>
+        <tr><td><a href="usage.html#api-user-key"><code>resolveUserKeyUsing(?callable $resolver)</code></a></td><td><code>void</code></td><td>Static; process-wide; <code>null</code> resets</td></tr>
+        <tr><td><a href="usage.html#api-signature-level"><code>signatureLevel()</code></a></td><td><code>Conceptlz\AdobeSign\Enum\SignatureLevel</code></td><td>From <code>adobe-sign.signature_level</code></td></tr>
+        <tr><td><a href="usage.html#api-signature-level"><code>qualifiedIssuers()</code></a></td><td><code>list&lt;string&gt;</code></td><td>From <code>adobe-sign.qualified_issuers</code></td></tr>
+        <tr><td><a href="usage.html#api-signature-shortfalls"><code>signatureShortfalls(string $agreementId, ?SignatureLevel $required = null)</code></a></td><td><code>list&lt;string&gt;</code></td><td>Empty when every signer met the level</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3 id="facade-client-methods">Forwarded to the default client</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Returns</th><th>Core docs</th></tr></thead>
+      <tbody>
+        <tr><td><code>asUser(string $user)</code></td><td><code>Conceptlz\AdobeSign\AdobeSign</code></td><td><a href="https://conceptlz.github.io/adobe-sign/authentication.html">Authentication</a></td></tr>
+        <tr><td><code>agreements()</code></td><td><code>Conceptlz\AdobeSign\Resource\Agreements</code></td><td><a href="https://conceptlz.github.io/adobe-sign/agreements.html">Creating agreements</a>, <a href="https://conceptlz.github.io/adobe-sign/managing-agreements.html">Managing agreements</a></td></tr>
+        <tr><td><code>transientDocuments()</code></td><td><code>Conceptlz\AdobeSign\Resource\TransientDocuments</code></td><td><a href="https://conceptlz.github.io/adobe-sign/documents.html">Uploading documents</a></td></tr>
+        <tr><td><code>libraryDocuments()</code></td><td><code>Conceptlz\AdobeSign\Resource\LibraryDocuments</code></td><td><a href="https://conceptlz.github.io/adobe-sign/other-resources.html">Other resources</a></td></tr>
+        <tr><td><code>webhooks()</code></td><td><code>Conceptlz\AdobeSign\Resource\Webhooks</code></td><td><a href="https://conceptlz.github.io/adobe-sign/webhooks.html">Webhooks</a></td></tr>
+        <tr><td><code>users()</code></td><td><code>Conceptlz\AdobeSign\Resource\Users</code></td><td><a href="https://conceptlz.github.io/adobe-sign/other-resources.html">Other resources</a></td></tr>
+        <tr><td><code>widgets()</code></td><td><code>Conceptlz\AdobeSign\Resource\Widgets</code></td><td><a href="https://conceptlz.github.io/adobe-sign/other-resources.html">Other resources</a></td></tr>
+        <tr><td><code>megaSigns()</code></td><td><code>Conceptlz\AdobeSign\Resource\MegaSigns</code></td><td><a href="https://conceptlz.github.io/adobe-sign/other-resources.html">Other resources</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="container-bindings">Container bindings</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Abstract</th><th>Concrete</th><th>Lifetime</th></tr></thead>
+      <tbody>
+        <tr><td><code>AdobeSignManager</code></td><td><code>new AdobeSignManager($app, config('adobe-sign'))</code></td><td><code>scoped</code></td></tr>
+        <tr><td><code>Conceptlz\AdobeSign\AdobeSign</code></td><td><code>AdobeSignManager::client()</code></td><td><code>bind</code> (the manager caches the client)</td></tr>
+        <tr><td><code>Conceptlz\AdobeSign\Auth\TokenStore</code></td><td><code>EloquentTokenStore</code></td><td>singleton, via <code>bindIf</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>The manager also uses a bound <code>Psr\Http\Client\ClientInterface</code> when one exists, the cache store from <code>cache_store</code>, and the log channel from <code>log_channel</code>.</p>
+
+  <h2 id="events">Events</h2>
+  <h3 id="event-oauth-connected">OAuthConnected</h3>
+  <p><code>Conceptlz\AdobeSign\Laravel\Events\OAuthConnected</code>, final, uses <code>Dispatchable</code>. Dispatched by the OAuth callback after the token is stored.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>$user</code></td><td><code>Illuminate\Contracts\Auth\Authenticatable</code></td><td>The signed-in user who connected</td></tr>
+        <tr><td><code>$key</code></td><td><code>string</code></td><td>The token store key, from <code>AdobeSignManager::userKey()</code></td></tr>
+        <tr><td><code>$apiAccessPoint</code></td><td><code>?string</code></td><td>The account's API host, e.g. <code>https://api.eu1.adobesign.com/</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3 id="event-webhook-received">WebhookReceived</h3>
+  <p><code>Conceptlz\AdobeSign\Laravel\Events\WebhookReceived</code>, final, uses <code>Dispatchable</code>. Dispatched by the webhook route once per new notification; duplicates are already dropped. Listeners doing real work should implement <code>ShouldQueue</code>.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>$event</code></td><td><code>Conceptlz\AdobeSign\Webhook\WebhookEvent</code></td><td>The parsed notification: <code>AgreementEvent</code>, <code>MegaSignEvent</code>, <code>WidgetEvent</code>, <code>LibraryDocumentEvent</code> or <code>UnknownEvent</code>. Fields are listed on the <a href="webhooks.html#webhook-received">Webhooks page</a>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="routes">Routes</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Name</th><th>Method</th><th>URI (default)</th><th>Middleware (default)</th><th>Action</th><th>Enabled by</th></tr></thead>
+      <tbody>
+        <tr><td><code>adobe-sign.oauth.redirect</code></td><td><code>GET</code></td><td><code>adobe-sign/oauth/redirect</code></td><td><code>web</code>, <code>auth</code></td><td><code>OAuthController@redirect</code></td><td><code>oauth.routes</code></td></tr>
+        <tr><td><code>adobe-sign.oauth.callback</code></td><td><code>GET</code></td><td><code>adobe-sign/oauth/callback</code></td><td><code>web</code>, <code>auth</code></td><td><code>OAuthController@callback</code></td><td><code>oauth.routes</code></td></tr>
+        <tr><td><code>adobe-sign.webhook</code></td><td><code>GET</code>, <code>POST</code></td><td><code>adobe-sign/webhook</code></td><td>none</td><td><code>WebhookController</code></td><td><code>webhooks.enabled</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Prefix, path and middleware come from <code>oauth.route_prefix</code>, <code>oauth.route_middleware</code>, <code>webhooks.path</code> and <code>webhooks.middleware</code>. Run <code>php artisan route:list --name=adobe-sign</code> to see them in your app.</p>
+  <h3 id="route-responses">Responses</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Route</th><th>Status</th><th>When</th></tr></thead>
+      <tbody>
+        <tr><td>redirect</td><td>302</td><td>Always, to Adobe's consent page; state stored in session key <code>adobe_sign_oauth_state</code></td></tr>
+        <tr><td>callback</td><td>302</td><td>Success; to <code>oauth.redirect_after</code></td></tr>
+        <tr><td>callback</td><td>400</td><td>State mismatch (<code>STATE_MISMATCH</code>), no code (<code>MISSING_CODE</code>), or an untrusted <code>api_access_point</code></td></tr>
+        <tr><td>callback</td><td>403</td><td>Any other <code>OAuthException</code>: user denied access, Adobe rejected the code</td></tr>
+        <tr><td>callback</td><td>502</td><td><code>TransportException</code>: Acrobat Sign unreachable</td></tr>
+        <tr><td>callback</td><td>401</td><td>No signed-in user</td></tr>
+        <tr><td>webhook</td><td>200</td><td>Accepted, with <code>X-AdobeSign-ClientId</code> header and <code>{"xAdobeSignClientId": "…"}</code> body</td></tr>
+        <tr><td>webhook</td><td>403</td><td>Missing or unknown client id</td></tr>
+        <tr><td>webhook</td><td>400</td><td>POST body unreadable</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="verify-command">The adobe-sign:verify command</h2>
+  <pre><code class="language-text">adobe-sign:verify {--user= : Check this user's OAuth connection instead of the default client}</code></pre>
+  <p>
+    Calls <span class="endpoint"><b>GET</b> /users/me</span> with the default client, or with
+    <code>forUser($user)</code> when <code>--user</code> is given (a token key, e.g. <code>42</code> or
+    <code>team:7</code>). On success it prints "Connected to Acrobat Sign." with the user's email, whether
+    they are an account admin, and the account id, and exits 0. On any SDK exception, including
+    <code>MisconfiguredException</code>, it prints the message and exits 1.
+  </p>
+  <pre><code class="language-bash">php artisan adobe-sign:verify
+php artisan adobe-sign:verify --user=42</code></pre>
+
+  <h2 id="publishable-files">Publishable files</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Tag</th><th>Publishes</th><th>Command</th></tr></thead>
+      <tbody>
+        <tr><td><code>adobe-sign-config</code></td><td><code>config/adobe-sign.php</code></td><td><code>php artisan vendor:publish --tag=adobe-sign-config</code></td></tr>
+        <tr><td><code>adobe-sign-migrations</code></td><td>The token table migration, into <code>database/migrations</code></td><td><code>php artisan vendor:publish --tag=adobe-sign-migrations</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Every config key is described on the <a href="configuration.html">Configuration page</a>.</p>
+
+  <h2 id="token-model">AdobeSignToken model</h2>
+  <p><code>Conceptlz\AdobeSign\Laravel\Models\AdobeSignToken</code> extends <code>Illuminate\Database\Eloquent\Model</code>.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Aspect</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Table</td><td><code>getTable()</code> returns <code>config('adobe-sign.oauth.table', 'adobe_sign_tokens')</code></td></tr>
+        <tr><td>Casts</td><td><code>access_token</code> and <code>refresh_token</code>: <code>encrypted</code>; <code>expires_at</code>: <code>datetime</code></td></tr>
+        <tr><td>Hidden</td><td><code>access_token</code>, <code>refresh_token</code></td></tr>
+        <tr><td>Guarded</td><td>nothing (<code>$guarded = []</code>)</td></tr>
+        <tr><td>Properties</td><td><code>string $key</code>, <code>string $access_token</code>, <code>?string $refresh_token</code>, <code>?Carbon $expires_at</code>, <code>?string $api_access_point</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Useful for admin screens and housekeeping, e.g. listing connections that will lapse:</p>
+  <pre><code class="language-php">use Conceptlz\AdobeSign\Laravel\Models\AdobeSignToken;
+
+$stale = AdobeSignToken::where('updated_at', '&lt;', now()-&gt;subDays(50))-&gt;pluck('key');</code></pre>
+
+  <h2 id="token-store">EloquentTokenStore</h2>
+  <div class="api" id="api-token-store-get">
+    <pre class="api-signature">get(string $key): ?Conceptlz\AdobeSign\Auth\AccessToken</pre>
+    <div class="api-body"><p>The stored token for a key, or <code>null</code>.</p></div>
+  </div>
+  <div class="api" id="api-token-store-put">
+    <pre class="api-signature">put(string $key, Conceptlz\AdobeSign\Auth\AccessToken $token): void</pre>
+    <div class="api-body"><p>Insert or update the row for the key (<code>updateOrCreate</code>).</p></div>
+  </div>
+  <div class="api" id="api-token-store-forget">
+    <pre class="api-signature">forget(string $key): void</pre>
+    <div class="api-body"><p>Delete the row. Not part of the <code>TokenStore</code> interface, and it doesn't revoke the token at Adobe; call <code>AdobeSign::oauth()-&gt;revoke($token)</code> first if that matters.</p></div>
+  </div>
+
+  <h2 id="migration">Migration columns</h2>
+  <p>Table name from <code>adobe-sign.oauth.table</code> (default <code>adobe_sign_tokens</code>):</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Column</th><th>Definition</th></tr></thead>
+      <tbody>
+        <tr><td><code>id</code></td><td><code>$table-&gt;id()</code></td></tr>
+        <tr><td><code>key</code></td><td><code>string</code>, unique</td></tr>
+        <tr><td><code>access_token</code></td><td><code>text</code> (encrypted)</td></tr>
+        <tr><td><code>refresh_token</code></td><td><code>text</code>, nullable (encrypted)</td></tr>
+        <tr><td><code>expires_at</code></td><td><code>timestamp</code>, nullable</td></tr>
+        <tr><td><code>api_access_point</code></td><td><code>string</code>, nullable</td></tr>
+        <tr><td><code>created_at</code>, <code>updated_at</code></td><td><code>$table-&gt;timestamps()</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="misconfigured-exception">MisconfiguredException</h2>
+  <p>
+    <code>Conceptlz\AdobeSign\Laravel\MisconfiguredException</code> extends <code>RuntimeException</code> and
+    implements the core's <code>Conceptlz\AdobeSign\Exception\AdobeSignException</code>, so a
+    <code>catch (AdobeSignException $e)</code> covers it too. These are the messages it carries:
+  </p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Message</th><th>Thrown by</th><th>Fix</th></tr></thead>
+      <tbody>
+        <tr><td><code>Set ADOBE_SIGN_INTEGRATION_KEY, or ADOBE_SIGN_AUTH=oauth.</code></td><td><code>client()</code></td><td>Add the key</td></tr>
+        <tr><td><code>adobe-sign.auth is "oauth" but no user is signed in; use AdobeSign::forUser($user).</code></td><td><code>client()</code></td><td>Use <code>forUser()</code> in jobs, commands and listeners</td></tr>
+        <tr><td><code>Set ADOBE_SIGN_CLIENT_ID and ADOBE_SIGN_CLIENT_SECRET to use OAuth.</code></td><td><code>oauth()</code>, <code>forUser()</code>, the OAuth routes</td><td>Add the OAuth app credentials</td></tr>
+        <tr><td><code>Set ADOBE_SIGN_WEBHOOK_CLIENT_IDS (or ADOBE_SIGN_CLIENT_ID) to receive webhooks.</code></td><td><code>webhookHandler()</code>, the webhook route</td><td>Add the allow-list</td></tr>
+        <tr><td><code>ADOBE_SIGN_SIGNATURE_LEVEL must be ses, aes or qes; got "…".</code></td><td><code>signatureLevel()</code>, and so every client creation</td><td>Fix the value</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>All other exceptions come from the core; see its <a href="https://conceptlz.github.io/adobe-sign/errors.html">errors page</a>.</p>
+
+  <h2 id="reference-questions">Common questions</h2>
+  <div class="faq">
+    <details id="reference-facade-ide">
+      <summary>Will my IDE autocomplete AdobeSign::agreements()?</summary>
+      <div class="faq-answer"><p>Yes. The facade's docblock declares every method with its return type, so PhpStorm, Intelephense and PHPStan/Larastan resolve <code>AdobeSign::agreements()-&gt;create()</code> to the core <code>Agreements</code> resource.</p></div>
+    </details>
+    <details id="reference-event-names">
+      <summary>Does the package fire events for individual signers or statuses?</summary>
+      <div class="faq-answer"><p>It fires one event type for all webhooks, <code>WebhookReceived</code>, and leaves interpretation to you. Check <code>$received-&gt;event-&gt;event</code> or use <code>is(EventType::…)</code> and <code>isWorkflowCompleted()</code>. The only other event is <code>OAuthConnected</code>.</p></div>
+    </details>
+    <details id="reference-extend-manager">
+      <summary>Can I extend AdobeSignManager?</summary>
+      <div class="faq-answer"><p>It isn't final, so you can subclass it and rebind it as scoped in your own service provider. Prefer composition where you can: most needs are covered by binding a <code>ClientInterface</code> or <code>TokenStore</code>, or by building a core client directly.</p></div>
+    </details>
+    <details id="reference-route-names">
+      <summary>Can I rename the package's routes?</summary>
+      <div class="faq-answer"><p>The names (<code>adobe-sign.oauth.redirect</code>, <code>adobe-sign.oauth.callback</code>, <code>adobe-sign.webhook</code>) are fixed; the URIs and middleware are configurable. The manager relies on the callback's name to build the default redirect URI.</p></div>
+    </details>
+  </div>
+  <ul class="next-links">
+    <li><a href="configuration.html"><strong>Configuration</strong><span>Every key, its .env variable and default.</span></a></li>
+    <li><a href="https://conceptlz.github.io/adobe-sign/"><strong>Core SDK docs</strong><span>Builders, resources, models and exceptions.</span></a></li>
+  </ul>
+</article>
+<!-- docs:pager -->
+<nav class="pager" aria-label="Previous and next pages">
+  <a class="pager-prev" href="signature-levels.html" rel="prev"><span class="pager-label">Previous</span><span class="pager-title">Signature levels</span></a>
+  <a class="pager-next" href="testing.html" rel="next"><span class="pager-label">Next</span><span class="pager-title">Testing your application</span></a>
+</nav>
+<!-- /docs:pager -->
+</main>
+<aside class="toc" aria-label="On this page"></aside>
+</div>
+<!-- docs:footer -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <p>conceptlz/adobe-sign-laravel · MIT licensed · <a href="https://github.com/conceptlz/adobe-sign-laravel">Source on GitHub</a></p>
+    <p>An independent SDK, not affiliated with or endorsed by Adobe. Adobe and Acrobat Sign are trademarks of Adobe Inc.</p>
+  </div>
+</footer>
+<script src="assets/js/search-index.js"></script>
+<script src="assets/js/docs.js"></script>
+<!-- /docs:footer -->
+</body>
+</html>

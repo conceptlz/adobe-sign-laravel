@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- docs:head -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<script>
+(function () {
+  var theme = null;
+  try { theme = localStorage.getItem('docs-theme'); } catch (e) {}
+  if (theme !== 'light' && theme !== 'dark') {
+    theme = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  document.documentElement.setAttribute('data-theme', theme);
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,600;0,700;1,400&family=Gloock&display=swap">
+<link rel="stylesheet" href="assets/css/docs.css">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<!-- /docs:head -->
+<title>Walkthrough: send &amp; store · conceptlz/adobe-sign-laravel</title>
+<meta name="description" content="An end-to-end Laravel tutorial: upload a PDF through a form, send it with a signing order, receive Adobe's webhook, queue a job that downloads the signed PDF, and store it on any disk.">
+</head>
+<body>
+<!-- docs:topbar -->
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="topbar">
+  <button class="icon-button menu-button" type="button" aria-controls="sidebar" aria-expanded="false" aria-label="Open navigation">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+  </button>
+  <a class="brand" href="index.html">
+    <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+      <circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <circle cx="20" cy="20" r="15.5" fill="none" stroke="currentColor" stroke-width="0.6" stroke-dasharray="1.5 2"/>
+      <path d="M9.5 24.5c3.2-1.2 5.4-7.6 7.1-11.3 1-2.1 2.4-1.4 1.6 1.2-1.2 3.9-2.8 8.4-1.4 9.3 1.5 1 3.4-4.4 4.6-4.1 1.1.3-.3 3.3.8 3.5 1.3.2 2.6-2.4 3.8-2.2 1 .2.6 1.8 1.6 1.9 1 .1 2.1-.8 3-1.3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M10 28.5h20" stroke="currentColor" stroke-width="0.8" opacity="0.6"/>
+    </svg>
+    <span class="brand-text"><span class="brand-name">Adobe Sign for Laravel</span><span class="brand-package">conceptlz/adobe-sign-laravel</span></span>
+  </a>
+  <span class="topbar-spacer"></span>
+  <div class="search" role="search">
+    <label class="visually-hidden" for="docs-search">Search the documentation</label>
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
+    <input class="search-input" id="docs-search" type="search" placeholder="Search docs" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="docs-search-results" aria-autocomplete="list">
+    <kbd class="search-key">/</kbd>
+    <ul class="search-results" id="docs-search-results" role="listbox" aria-label="Search results" hidden></ul>
+  </div>
+  <a class="topbar-link" href="https://github.com/conceptlz/adobe-sign-laravel">GitHub</a>
+  <button class="icon-button theme-toggle" type="button" aria-label="Switch theme">
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg>
+  </button>
+</header>
+<!-- /docs:topbar -->
+<div class="layout">
+<!-- docs:sidebar -->
+<nav class="sidebar" id="sidebar" aria-label="Documentation">
+  <div class="nav-group">
+    <p class="nav-group-title">Start here</p>
+    <ul class="nav-list">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="configuration.html">Configuration</a></li>
+    </ul>
+  </div>
+  <div class="nav-group">
+    <p class="nav-group-title">Guides</p>
+    <ul class="nav-list">
+      <li><a href="usage.html">Using the client</a></li>
+      <li><a href="walkthrough.html" aria-current="page">Walkthrough: send &amp; store</a></li>
+      <li><a href="oauth.html">OAuth: connect user accounts</a></li>
+      <li><a href="webhooks.html">Webhooks</a></li>
+      <li><a href="signature-levels.html">Signature levels</a></li>
+    </ul>
+  </div>
+  <div class="nav-group">
+    <p class="nav-group-title">Reference</p>
+    <ul class="nav-list">
+      <li><a href="reference.html">Facade, events, routes &amp; commands</a></li>
+    </ul>
+  </div>
+  <div class="nav-group">
+    <p class="nav-group-title">Help</p>
+    <ul class="nav-list">
+      <li><a href="testing.html">Testing your application</a></li>
+      <li><a href="troubleshooting.html">Troubleshooting</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+    </ul>
+  </div>
+  <p class="sidebar-other">Need the full API reference?<br><a href="https://conceptlz.github.io/adobe-sign/">Core SDK docs →</a></p>
+</nav>
+<div class="nav-backdrop" hidden></div>
+<!-- /docs:sidebar -->
+<main id="content" class="content">
+<article class="doc">
+  <header class="doc-header">
+    <p class="eyebrow">Guides</p>
+    <h1>Walkthrough: send &amp; store</h1>
+    <p class="lede">Build the complete loop a contract takes through your app: a form uploads the PDF, a controller sends it in signing order, Adobe calls your webhook when everyone has signed, and a queued job saves the signed PDF to your storage. Every class is complete and copy-pasteable.</p>
+  </header>
+
+  <h2 id="the-loop">The loop at a glance</h2>
+  <p>
+    The code below comes from the package's <code>examples/</code> directory. It isn't just illustration:
+    the package's test suite (<code>SigningLifecycleTest</code>) runs these exact classes end to end against
+    a fake Acrobat Sign, from the form upload to the PDF landing in storage.
+  </p>
+  <figure class="diagram">
+    <svg viewBox="0 0 720 300" role="img" aria-label="Sending: the upload form posts to AgreementController, which uploads the PDF, creates the agreement and registers a webhook at Acrobat Sign. Acrobat Sign emails the signers, who sign. Completion: Acrobat Sign posts a webhook to the package's route, which fires WebhookReceived; the queued listener dispatches DownloadSignedAgreement, which confirms the status and fetches the PDF from Acrobat Sign, then writes it to a storage disk.">
+      <defs>
+        <marker id="arrow-wt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="d-arrowhead" d="M0 0 10 5 0 10z"/></marker>
+        <marker id="arrow-wt-brand" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="d-arrowhead-brand" d="M0 0 10 5 0 10z"/></marker>
+      </defs>
+      <text class="d-text-soft" x="10" y="16">1 · Sending</text>
+      <rect class="d-box" x="10" y="30" width="150" height="60" rx="8"/>
+      <text class="d-text-strong" x="85" y="56" text-anchor="middle">Upload form</text>
+      <text class="d-text-mono" x="85" y="74" text-anchor="middle">POST /agreements</text>
+
+      <rect class="d-box-brand" x="190" y="30" width="160" height="60" rx="8"/>
+      <text class="d-text-strong" x="270" y="56" text-anchor="middle">Controller</text>
+      <text class="d-text-mono" x="270" y="74" text-anchor="middle">AgreementController</text>
+
+      <rect class="d-box-stamp" x="380" y="30" width="150" height="60" rx="8"/>
+      <text class="d-text-strong" x="455" y="56" text-anchor="middle">Acrobat Sign</text>
+      <text class="d-text-soft" x="455" y="74" text-anchor="middle">sends emails</text>
+
+      <rect class="d-box" x="570" y="30" width="140" height="60" rx="8"/>
+      <text class="d-text-strong" x="640" y="56" text-anchor="middle">Signers</text>
+      <text class="d-text-soft" x="640" y="74" text-anchor="middle">in order 1, 2, …</text>
+
+      <path class="d-line" d="M160 60h28" marker-end="url(#arrow-wt)"/>
+      <path class="d-line" d="M350 60h28" marker-end="url(#arrow-wt)"/>
+      <path class="d-line" d="M530 52h38" marker-end="url(#arrow-wt)"/>
+      <path class="d-line-dashed" d="M570 70h-38" marker-end="url(#arrow-wt)"/>
+      <text class="d-text-soft" x="550" y="104" text-anchor="middle">sign</text>
+
+      <text class="d-text-soft" x="10" y="186">2 · Completion</text>
+      <path class="d-line-brand" d="M420 90v70H85v38" marker-end="url(#arrow-wt-brand)"/>
+      <text class="d-text-mono" x="250" y="154" text-anchor="middle">POST AGREEMENT_WORKFLOW_COMPLETED</text>
+      <path class="d-line-dashed" d="M490 200V92" marker-end="url(#arrow-wt)"/>
+      <text class="d-text-soft" x="498" y="130">GET status, PDF</text>
+
+      <rect class="d-box-brand" x="10" y="200" width="150" height="70" rx="8"/>
+      <text class="d-text-strong" x="85" y="224" text-anchor="middle">Webhook route</text>
+      <text class="d-text-soft" x="85" y="242" text-anchor="middle">verify, echo,</text>
+      <text class="d-text-soft" x="85" y="258" text-anchor="middle">dedupe</text>
+
+      <rect class="d-box" x="190" y="200" width="160" height="70" rx="8"/>
+      <text class="d-text-strong" x="270" y="224" text-anchor="middle">Queued listener</text>
+      <text class="d-text-mono" x="270" y="242" text-anchor="middle">ProcessAdobe…</text>
+      <text class="d-text-mono" x="270" y="258" text-anchor="middle">SignWebhook</text>
+
+      <rect class="d-box" x="380" y="200" width="150" height="70" rx="8"/>
+      <text class="d-text-strong" x="455" y="224" text-anchor="middle">Queued job</text>
+      <text class="d-text-mono" x="455" y="242" text-anchor="middle">DownloadSigned…</text>
+      <text class="d-text-mono" x="455" y="258" text-anchor="middle">Agreement</text>
+
+      <rect class="d-box-ok" x="570" y="200" width="140" height="70" rx="8"/>
+      <text class="d-text-strong" x="640" y="230" text-anchor="middle">Storage disk</text>
+      <text class="d-text-mono" x="640" y="250" text-anchor="middle">agreements/{id}.pdf</text>
+
+      <path class="d-line" d="M160 235h28" marker-end="url(#arrow-wt)"/>
+      <text class="d-text-soft" x="175" y="290" text-anchor="middle">event</text>
+      <path class="d-line" d="M350 235h28" marker-end="url(#arrow-wt)"/>
+      <text class="d-text-soft" x="365" y="290" text-anchor="middle">dispatch</text>
+      <path class="d-line" d="M530 235h38" marker-end="url(#arrow-wt)"/>
+      <text class="d-text-soft" x="550" y="290" text-anchor="middle">stream</text>
+    </svg>
+    <figcaption>The web request only sends. Everything after signing happens off the request path: the package acknowledges Adobe within its 5-second limit, and your queue does the downloading.</figcaption>
+  </figure>
+  <p>
+    The split matters. Adobe gives a webhook 5 seconds to answer, and a signed PDF with its audit report
+    can take longer than that to download. So the webhook route only acknowledges and fires an event, the
+    listener runs on the queue, and the heavy work happens in a job that can retry on its own schedule.
+  </p>
+
+  <h2 id="before-you-start">Before you start</h2>
+  <ul>
+    <li>The package is installed and <code>php artisan adobe-sign:verify</code> succeeds (<a href="installation.html">Installation</a>).</li>
+    <li><code>APP_URL</code> is a public <strong>HTTPS</strong> address. Locally that means a tunnel; see <a href="webhooks.html#local-development">local development</a>. Adobe only calls HTTPS URLs, and <code>WebhookInfo</code> rejects anything else before sending.</li>
+    <li><code>ADOBE_SIGN_WEBHOOK_CLIENT_IDS</code> (or <code>ADOBE_SIGN_CLIENT_ID</code>) holds the client id Adobe will send, so the route accepts the callbacks.</li>
+    <li>A queue connection other than <code>sync</code>, and a worker running: <code>php artisan queue:work</code>.</li>
+    <li>A user to sign as. In a developer account, send to addresses you control; Adobe marks the agreements as demo documents.</li>
+  </ul>
+
+  <h2 id="step-routes">Step 1: Routes</h2>
+  <p>
+    Your app needs routes for its own controller. The package registers the webhook route
+    (<code>adobe-sign.webhook</code>) itself, so it doesn't appear here.
+  </p>
+  <figure class="code">
+    <figcaption>routes/web.php</figcaption>
+    <pre><code class="language-php">use App\Http\Controllers\AgreementController;
+use Illuminate\Support\Facades\Route;
+
+Route::middleware(['web', 'auth'])-&gt;group(function () {
+    Route::post('/agreements', [AgreementController::class, 'store'])-&gt;name('agreements.store');
+    Route::get('/agreements/{agreementId}', [AgreementController::class, 'show'])-&gt;name('agreements.show');
+    Route::get('/agreements/{agreementId}/sign', [AgreementController::class, 'signingUrl'])-&gt;name('agreements.sign');
+    Route::get('/agreements/{agreementId}/pdf', [AgreementController::class, 'download'])-&gt;name('agreements.pdf');
+});</code></pre>
+  </figure>
+  <p>In a standard app <code>routes/web.php</code> already has the <code>web</code> group; listing it explicitly does no harm and matches the example file.</p>
+
+  <h2 id="step-form">Step 2: The upload form</h2>
+  <p>
+    A plain multipart form: the PDF, a name, the signers in signing order, and a way to mark a signer as
+    signing at the same step as the one before them.
+  </p>
+  <figure class="code">
+    <figcaption>resources/views/agreements/create.blade.php</figcaption>
+    <pre><code class="language-text">&lt;form method="POST" action="{{ route('agreements.store') }}" enctype="multipart/form-data"&gt;
+    @csrf
+    &lt;input type="file" name="contract" accept="application/pdf" required&gt;
+    &lt;input type="text" name="name" value="Master Services Agreement" required&gt;
+
+    {{-- Signing order: one row per signer, top to bottom --}}
+    &lt;input type="email" name="signers[]" value="jane@client.example.com"&gt;
+    &lt;input type="email" name="signers[]" value="legal@example.com"&gt;
+    &lt;label&gt;&lt;input type="checkbox" name="parallel[]" value="legal@example.com"&gt; signs together with the signer above&lt;/label&gt;
+    &lt;input type="email" name="signers[]" value="ceo@example.com"&gt;
+
+    &lt;button type="submit"&gt;Send for signature&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+  </figure>
+  <p>With the box ticked, Jane and legal sign in parallel at step 1 and the CEO signs at step 2.</p>
+
+  <h2 id="step-controller">Step 3: The controller</h2>
+  <p>
+    The controller validates the request, uploads the PDF, builds the signing order, creates the agreement
+    and registers a webhook for it. It receives the client by injection, so it works with whichever auth
+    mode you configured.
+  </p>
+  <figure class="code">
+    <figcaption>app/Http/Controllers/AgreementController.php</figcaption>
+    <pre><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Http\Controllers;
+
+use Conceptlz\AdobeSign\AdobeSign;
+use Conceptlz\AdobeSign\Builder\AgreementInfo;
+use Conceptlz\AdobeSign\Builder\FileInfo;
+use Conceptlz\AdobeSign\Builder\ParticipantSetInfo;
+use Conceptlz\AdobeSign\Builder\WebhookInfo;
+use Conceptlz\AdobeSign\Exception\NotFoundException;
+use Conceptlz\AdobeSign\Webhook\EventType;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
+final class AgreementController
+{
+    /**
+     * POST /agreements: multipart form with `contract` (PDF), `name`, and `signers[]` in signing order.
+     * Signers listed in `parallel[]` sign at the same step as the signer before them.
+     */
+    public function store(Request $request, AdobeSign $sign): JsonResponse
+    {
+        $data = $request-&gt;validate([
+            'contract' =&gt; ['required', 'file', 'mimes:pdf', 'max:25600'],
+            'name' =&gt; ['required', 'string', 'max:255'],
+            'signers' =&gt; ['required', 'array', 'min:1'],
+            'signers.*' =&gt; ['required', 'email'],
+            'parallel' =&gt; ['sometimes', 'array'],
+            'parallel.*' =&gt; ['email'],
+        ]);
+
+        // 1. Upload the PDF (streamed, never fully loaded into memory).
+        $file = $request-&gt;file('contract');
+        $documentId = $sign-&gt;transientDocuments()-&gt;upload(
+            $file-&gt;getRealPath(),
+            fileName: $file-&gt;getClientOriginalName(),
+            mimeType: 'application/pdf',
+        );
+
+        // 2. Build the signing order: each signer is the next step, unless marked parallel.
+        //    Mixing sequential and parallel steps needs "hybrid routing" enabled on the Acrobat Sign
+        //    account; otherwise Adobe answers 403 HYBRID_ROUTING_NOT_ALLOWED.
+        $agreement = AgreementInfo::create($data['name'])
+            -&gt;file(FileInfo::transientDocument($documentId))
+            -&gt;message('Please review and sign.');
+
+        $parallel = $data['parallel'] ?? [];
+        $order = 0;
+        foreach ($data['signers'] as $email) {
+            $order = in_array($email, $parallel, true) &amp;&amp; $order &gt; 0 ? $order : $order + 1;
+            $agreement-&gt;participantSet(ParticipantSetInfo::signer($email)-&gt;order($order));
+        }
+
+        // 3. Create it in IN_PROCESS state (the default) = sent to the first signer(s) now.
+        $agreementId = $sign-&gt;agreements()-&gt;create($agreement);
+
+        // 4. Ask Adobe to notify our webhook endpoint about this agreement (one webhook per
+        //    agreement is Adobe's recommendation). The package registers the route.
+        $sign-&gt;webhooks()-&gt;create(
+            WebhookInfo::forAgreement('Agreement ' . $agreementId, route('adobe-sign.webhook'), $agreementId)
+                -&gt;events(EventType::AGREEMENT_ALL),
+        );
+
+        return new JsonResponse(['agreement_id' =&gt; $agreementId], 201);
+    }
+
+    /**
+     * GET /agreements/{agreementId}: current status, e.g. OUT_FOR_SIGNATURE or SIGNED.
+     */
+    public function show(string $agreementId, AdobeSign $sign): JsonResponse
+    {
+        $agreement = $sign-&gt;agreements()-&gt;get($agreementId);
+
+        return new JsonResponse([
+            'id' =&gt; $agreement-&gt;id,
+            'name' =&gt; $agreement-&gt;name,
+            'status' =&gt; $agreement-&gt;status,
+        ]);
+    }
+
+    /**
+     * GET /agreements/{agreementId}/sign: the signer's e-sign page (embedded signing).
+     */
+    public function signingUrl(Request $request, string $agreementId, AdobeSign $sign): JsonResponse
+    {
+        $user = $request-&gt;user() ?? abort(401);
+
+        try {
+            $url = $sign-&gt;agreements()-&gt;signingUrlFor($agreementId, $user-&gt;email);
+        } catch (NotFoundException $e) {
+            // Right after creation Adobe may still be processing the PDF (AGREEMENT_NOT_SIGNABLE).
+            return new JsonResponse(['message' =&gt; 'Not ready for signing yet, try again shortly.'], 409);
+        }
+
+        return $url === null
+            ? new JsonResponse(['message' =&gt; "It isn't your turn to sign."], 403)
+            : new JsonResponse(['url' =&gt; $url]);
+    }
+
+    /**
+     * GET /agreements/{agreementId}/pdf: stream the current PDF straight from Adobe to the browser.
+     */
+    public function download(string $agreementId, AdobeSign $sign): StreamedResponse
+    {
+        $pdf = $sign-&gt;agreements()-&gt;combinedDocument($agreementId);
+
+        return new StreamedResponse(function () use ($pdf) {
+            while (!$pdf-&gt;eof()) {
+                echo $pdf-&gt;read(65536);
+            }
+        }, 200, [
+            'Content-Type' =&gt; 'application/pdf',
+            'Content-Disposition' =&gt; 'attachment; filename="' . $agreementId . '.pdf"',
+        ]);
+    }
+}</code></pre>
+  </figure>
+
+  <h3 id="controller-explained">What each part of store() does</h3>
+  <ol class="steps">
+    <li>
+      <span class="step-title">Validation before anything leaves your app</span>
+      <p><code>mimes:pdf</code> and <code>max:25600</code> (25&nbsp;MB) reject bad uploads with a normal 422, and no request reaches Adobe. The package's test suite checks exactly that.</p>
+    </li>
+    <li>
+      <span class="step-title">Upload as a transient document</span>
+      <p>The upload is streamed through a temporary file, so memory use stays flat for large PDFs. The original file name and MIME type are passed because the temporary path has no extension.</p>
+    </li>
+    <li>
+      <span class="step-title">Turn the form into a signing order</span>
+      <p>The loop gives each signer the next order number, unless they appear in <code>parallel[]</code>, in which case they reuse the current number. With the form above the result is Jane 1, legal 1, CEO 2. The builder checks that the numbers run 1..n without gaps before sending anything.</p>
+    </li>
+    <li>
+      <span class="step-title">Create, which also sends</span>
+      <p><code>agreements()-&gt;create()</code> returns the new agreement id. Its default state, <code>IN_PROCESS</code>, means Adobe emails the first step's signers immediately. The project's signature level from <code>ADOBE_SIGN_SIGNATURE_LEVEL</code> is applied here too.</p>
+    </li>
+    <li>
+      <span class="step-title">Register a webhook for this agreement</span>
+      <p><code>route('adobe-sign.webhook')</code> builds the public URL of the package's route from <code>APP_URL</code> or the current request. Adobe verifies that URL immediately by calling it, and the package answers the handshake, so this call only succeeds when your app is reachable. One webhook per agreement is Adobe's recommendation: if deliveries keep failing, Adobe disables only that webhook.</p>
+    </li>
+  </ol>
+  <div class="callout callout-tip">
+    <p class="callout-title">Keep a record on your side</p>
+    <p>The example returns the agreement id as JSON. In a real app, store it on your own model (say <code>contracts.adobe_agreement_id</code>) and set <code>-&gt;externalId((string) $contract-&gt;id)</code> on the builder, so both systems can find each other. See <a href="usage.html#create-agreement">Create and send an agreement</a>.</p>
+  </div>
+
+  <h2 id="step-webhook-route">Step 4: The webhook route (already done)</h2>
+  <p>
+    You don't write this part. When the last signer finishes, Adobe sends a <code>POST</code> to
+    <code>/adobe-sign/webhook</code> with an <code>X-AdobeSign-ClientId</code> header and a JSON body whose
+    <code>event</code> is <code>AGREEMENT_WORKFLOW_COMPLETED</code>. The package's
+    <code>WebhookController</code>:
+  </p>
+  <ol>
+    <li>rejects the call with 403 if the client id isn't on your allow-list;</li>
+    <li>parses the body into a typed event (<code>AgreementEvent</code> here), or answers 400 if it can't;</li>
+    <li>adds the notification id to the cache, and only fires <code>WebhookReceived</code> if it wasn't there already;</li>
+    <li>answers 200 with the client id echoed in a header and the JSON body, which is how Adobe knows the delivery succeeded.</li>
+  </ol>
+  <p>All of that takes milliseconds, well inside Adobe's 5 seconds, provided your listeners are queued. Details on the <a href="webhooks.html">Webhooks page</a>.</p>
+
+  <h2 id="step-listener">Step 5: The queued listener</h2>
+  <p>
+    The listener decides what each event means for your app. It implements <code>ShouldQueue</code>, so
+    Laravel serialises the event onto the queue and the webhook request returns straight away.
+  </p>
+  <figure class="code">
+    <figcaption>app/Listeners/ProcessAdobeSignWebhook.php</figcaption>
+    <pre><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Listeners;
+
+use App\Jobs\DownloadSignedAgreement;
+use Conceptlz\AdobeSign\Laravel\Events\WebhookReceived;
+use Conceptlz\AdobeSign\Webhook\AgreementEvent;
+use Conceptlz\AdobeSign\Webhook\EventType;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
+
+final class ProcessAdobeSignWebhook implements ShouldQueue
+{
+    public function handle(WebhookReceived $received): void
+    {
+        $event = $received-&gt;event;
+
+        if (!$event instanceof AgreementEvent) {
+            return; // web form, Send in Bulk or library events: handle them here if you subscribe to them
+        }
+
+        Log::info('Acrobat Sign: ' . $event-&gt;event, [
+            'agreement' =&gt; $event-&gt;agreementId(),
+            'by' =&gt; $event-&gt;actingUserEmail,
+        ]);
+
+        match (true) {
+            // Every participant has acted: fetch and keep the signed PDF.
+            $event-&gt;isWorkflowCompleted() =&gt; DownloadSignedAgreement::dispatch((string) $event-&gt;agreementId()),
+
+            // One signer finished; others may still be pending.
+            $event-&gt;is(EventType::AGREEMENT_ACTION_COMPLETED) =&gt; null,
+
+            // Declined or cancelled: update your records / notify someone.
+            $event-&gt;is(EventType::AGREEMENT_REJECTED, EventType::AGREEMENT_RECALLED, EventType::AGREEMENT_EXPIRED) =&gt; null,
+
+            default =&gt; null,
+        };
+    }
+}</code></pre>
+  </figure>
+  <p>
+    Laravel 11 and later discover listeners in <code>app/Listeners</code> from the type-hint on
+    <code>handle()</code>. If you turned discovery off, register it in a service provider:
+  </p>
+  <pre><code class="language-php">use App\Listeners\ProcessAdobeSignWebhook;
+use Conceptlz\AdobeSign\Laravel\Events\WebhookReceived;
+use Illuminate\Support\Facades\Event;
+
+Event::listen(WebhookReceived::class, ProcessAdobeSignWebhook::class);</code></pre>
+  <p>
+    <code>AGREEMENT_ALL</code> subscribes to every agreement event, so the listener also sees views,
+    reminders and individual signatures. The <code>match</code> makes the interesting ones explicit and
+    ignores the rest. The <code>null</code> arms are where you'd update your own records, e.g. mark the
+    contract as declined.
+  </p>
+
+  <h2 id="step-download-job">Step 6: The download job</h2>
+  <p>
+    The job does the slow, fallible part, with its own retry budget. It is the only place that touches
+    Adobe after signing.
+  </p>
+  <figure class="code">
+    <figcaption>app/Jobs/DownloadSignedAgreement.php</figcaption>
+    <pre><code class="language-php">&lt;?php
+
+declare(strict_types=1);
+
+namespace App\Jobs;
+
+use Conceptlz\AdobeSign\AdobeSign;
+use Conceptlz\AdobeSign\Exception\RateLimitException;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Storage;
+
+final class DownloadSignedAgreement implements ShouldQueue
+{
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+
+    public int $tries = 5;
+
+    public function __construct(public readonly string $agreementId)
+    {
+    }
+
+    public function handle(AdobeSign $sign): void
+    {
+        try {
+            // Webhook payloads aren't signed, so confirm the status with the API before acting on it.
+            $agreement = $sign-&gt;agreements()-&gt;get($this-&gt;agreementId);
+            if (!$agreement-&gt;isSigned()) {
+                return;
+            }
+
+            // A PSR-7 stream: written to storage in chunks, never held in memory as a whole.
+            $pdf = $sign-&gt;agreements()-&gt;combinedDocument($this-&gt;agreementId, attachAuditReport: true);
+        } catch (RateLimitException $e) {
+            $this-&gt;release($e-&gt;retryAfter ?? 60);
+
+            return;
+        }
+
+        $resource = $pdf-&gt;detach() ?? throw new \RuntimeException('Download stream is not readable.');
+
+        Storage::disk(config('filesystems.default'))-&gt;writeStream("agreements/{$this-&gt;agreementId}.pdf", $resource);
+    }
+}</code></pre>
+  </figure>
+  <h3 id="job-explained">Why the job is written this way</h3>
+  <ul>
+    <li><strong>It re-checks the status.</strong> Adobe doesn't sign webhook payloads. The client-id allow-list stops casual forgeries, but the safe pattern is to treat the webhook as a hint and ask the API for the truth. Only a real <code>SIGNED</code> status leads to a download.</li>
+    <li><strong>It asks for the audit report.</strong> <code>attachAuditReport: true</code> appends Adobe's audit trail (who signed, when, from which IP, with which verification) to the PDF. Keep it with the document: it is what you show when a signature is challenged.</li>
+    <li><strong>It streams.</strong> <code>combinedDocument()</code> returns a PSR-7 stream; <code>detach()</code> hands its underlying PHP resource to <code>Storage::writeStream()</code>, which copies it to local disk, S3 or any other driver in chunks.</li>
+    <li><strong>It cooperates with throttling.</strong> Short <code>Retry-After</code> waits are retried inside the SDK. A long one surfaces as <code>RateLimitException</code>, and the job puts itself back on the queue for that many seconds instead of burning a try.</li>
+    <li><strong>It injects the default client.</strong> That is right for an Integration Key. With OAuth there is no signed-in user in a worker, so pass the user key into the job and use <code>AdobeSignManager::forUser()</code>; see <a href="usage.html#queues">queued jobs</a>.</li>
+  </ul>
+
+  <h2 id="step-try-it">Step 7: Try it</h2>
+  <ol class="steps">
+    <li>
+      <span class="step-title">Start a worker</span>
+      <pre><code class="language-bash">php artisan queue:work</code></pre>
+    </li>
+    <li>
+      <span class="step-title">Submit the form</span>
+      <p>Signed in to your app, upload a PDF with two or three addresses you control. The response contains the agreement id, and the first signers receive an email from Acrobat Sign.</p>
+    </li>
+    <li>
+      <span class="step-title">Watch progress</span>
+      <p>Open <code>/agreements/{id}</code> to see the status move from <code>OUT_FOR_SIGNATURE</code> to <code>SIGNED</code>. Each signature also produces an <code>AGREEMENT_ACTION_COMPLETED</code> line in your log from the listener.</p>
+    </li>
+    <li>
+      <span class="step-title">Find the signed PDF</span>
+      <p>After the last signature, the worker runs the listener, then the job, and <code>storage/app/agreements/{id}.pdf</code> (or the same path on your default disk) appears, with the audit report on its last pages.</p>
+    </li>
+  </ol>
+
+  <h2 id="step-test">Step 8: Test it without Adobe</h2>
+  <p>
+    The package's own <code>SigningLifecycleTest</code> runs this whole loop with a fake HTTP client and the
+    <code>sync</code> queue: it posts the form, checks the upload body, the signing order and the webhook
+    URL, posts Adobe's completion webhook to the route, and asserts the PDF is in the faked disk. The
+    <a href="testing.html#testing-the-full-loop">Testing page</a> shows how to write the same test in your
+    app.
+  </p>
+
+  <h2 id="production-hardening">Hardening for production</h2>
+  <ul>
+    <li><strong>Idempotency.</strong> The package drops duplicate deliveries for 72 hours, but a job can still run twice (a retry after a timeout, a manual replay). Writing the same file twice is harmless here; if the job also sends emails or bills, check your own record first or use <code>ShouldBeUnique</code> keyed on the agreement id.</li>
+    <li><strong>Failure handling.</strong> Add a <code>failed()</code> method to the job that flags the contract for attention. After 72 hours of failed webhook deliveries Adobe disables the webhook, so a scheduled sweep that checks agreements still marked "sent" is a cheap safety net.</li>
+    <li><strong>Timeouts.</strong> Large agreements with many pages can take a while to download. Give the job a <code>$timeout</code> that fits, and make sure your HTTP client timeout (see <a href="installation.html#http-client">the HTTP client</a>) is shorter than the job timeout.</li>
+    <li><strong>Storage layout.</strong> Store under a path you control (<code>agreements/{year}/{id}.pdf</code>) and keep the agreement id on your model. Adobe also keeps the document, but your retention rules may differ from theirs.</li>
+    <li><strong>Signature level.</strong> If the project requires AES or QES, check it in the job before marking the contract complete: <code>AdobeSign::signatureShortfalls($this-&gt;agreementId)</code>. See <a href="signature-levels.html#checking-after-signing">checking after signing</a>.</li>
+  </ul>
+
+  <h2 id="walkthrough-questions">Common questions</h2>
+  <div class="faq">
+    <details id="walkthrough-webhook-create-fails">
+      <summary>webhooks()-&gt;create() fails while creating the agreement works. Why?</summary>
+      <div class="faq-answer"><p>Adobe calls your URL to verify it before creating the webhook. It must be public HTTPS, reach the package route without auth or CSRF middleware, and your allow-list must contain the client id Adobe sends. Locally you need a tunnel. See <a href="troubleshooting.html#webhook-registration-fails">Troubleshooting</a>.</p></div>
+    </details>
+    <details id="walkthrough-no-file">
+      <summary>Everyone signed, but no PDF appeared in storage. Where do I look?</summary>
+      <div class="faq-answer"><p>Check, in order: that a queue worker is running (the listener and job are both queued), the <code>failed_jobs</code> table, your log for "Rejected Acrobat Sign webhook" warnings, and the webhook's status in Acrobat Sign. More in <a href="troubleshooting.html#webhook-no-events">Troubleshooting</a>.</p></div>
+    </details>
+    <details id="walkthrough-account-webhook">
+      <summary>Can I use one account-wide webhook instead of one per agreement?</summary>
+      <div class="faq-answer"><p>Yes: create it once with <code>WebhookInfo::forAccount('All agreements', route('adobe-sign.webhook'))</code> (an admin task) and drop step 4 of the controller. Adobe recommends per-agreement webhooks because a disabled webhook then affects one agreement, not all of them.</p></div>
+    </details>
+    <details id="walkthrough-oauth-variant">
+      <summary>How does this change if users send from their own accounts via OAuth?</summary>
+      <div class="faq-answer"><p>In the controller, use <code>AdobeSign::forUser($request-&gt;user())</code> instead of the injected client. In the listener, look up which user owns the agreement (from your own records) and pass that user's key into the job, which calls <code>forUser($key)</code>. The webhook route itself needs no change. See <a href="oauth.html">OAuth</a>.</p></div>
+    </details>
+    <details id="walkthrough-separate-audit">
+      <summary>Can I store the audit report as a separate file?</summary>
+      <div class="faq-answer"><p>Yes. Call <code>combinedDocument($id)</code> without <code>attachAuditReport</code> for the signed PDF and <code>auditTrail($id)</code> for the report, and write each stream to its own path. The core's <a href="https://conceptlz.github.io/adobe-sign/downloads.html">downloads page</a> lists the other formats.</p></div>
+    </details>
+  </div>
+  <ul class="next-links">
+    <li><a href="webhooks.html"><strong>Webhooks</strong><span>The route, the handshake, dedupe and listener patterns in depth.</span></a></li>
+    <li><a href="testing.html"><strong>Testing your application</strong><span>Fake Acrobat Sign and post webhooks in feature tests.</span></a></li>
+  </ul>
+</article>
+<!-- docs:pager -->
+<nav class="pager" aria-label="Previous and next pages">
+  <a class="pager-prev" href="usage.html" rel="prev"><span class="pager-label">Previous</span><span class="pager-title">Using the client</span></a>
+  <a class="pager-next" href="oauth.html" rel="next"><span class="pager-label">Next</span><span class="pager-title">OAuth: connect user accounts</span></a>
+</nav>
+<!-- /docs:pager -->
+</main>
+<aside class="toc" aria-label="On this page"></aside>
+</div>
+<!-- docs:footer -->
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <p>conceptlz/adobe-sign-laravel · MIT licensed · <a href="https://github.com/conceptlz/adobe-sign-laravel">Source on GitHub</a></p>
+    <p>An independent SDK, not affiliated with or endorsed by Adobe. Adobe and Acrobat Sign are trademarks of Adobe Inc.</p>
+  </div>
+</footer>
+<script src="assets/js/search-index.js"></script>
+<script src="assets/js/docs.js"></script>
+<!-- /docs:footer -->
+</body>
+</html>
