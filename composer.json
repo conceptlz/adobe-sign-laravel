@@ -1,0 +1,85 @@
+{
+    "name": "conceptlz/adobe-sign-laravel",
+    "description": "Laravel bridge for conceptlz/adobe-sign (Adobe Acrobat Sign REST API v6).",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "adobe",
+        "acrobat sign",
+        "laravel",
+        "esignature"
+    ],
+    "require": {
+        "php": "^8.2",
+        "illuminate/contracts": "^12.0 || ^13.0",
+        "illuminate/database": "^12.0 || ^13.0",
+        "illuminate/http": "^12.0 || ^13.0",
+        "illuminate/routing": "^12.0 || ^13.0",
+        "illuminate/support": "^12.0 || ^13.0",
+        "conceptlz/adobe-sign": "^0.1"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.0",
+        "nyholm/psr7": "^1.8",
+        "orchestra/testbench": "^10.0 || ^11.0",
+        "php-http/mock-client": "^1.6",
+        "phpunit/phpunit": "^10.5 || ^11.0 || ^12.0"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../adobe-sign",
+            "options": {
+                "symlink": true,
+                "versions": {
+                    "conceptlz/adobe-sign": "0.1.x-dev"
+                }
+            }
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Conceptlz\\AdobeSign\\Laravel\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Conceptlz\\AdobeSign\\Laravel\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Conceptlz\\AdobeSign\\Laravel\\AdobeSignServiceProvider"
+            ],
+            "aliases": {
+                "AdobeSign": "Conceptlz\\AdobeSign\\Laravel\\Facades\\AdobeSign"
+            }
+        },
+        "branch-alias": {
+            "dev-main": "0.1.x-dev"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "analyse": "phpstan analyse --no-progress --memory-limit=1G"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": false
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Conceptlz",
+            "email": "moiz@conceptualize.ae"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/conceptlz/adobe-sign/issues",
+        "source": "https://github.com/conceptlz/adobe-sign-laravel"
+    }
+}

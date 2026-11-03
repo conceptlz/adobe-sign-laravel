@@ -1,0 +1,25 @@
+{
+  "id": "CBJCHBCAABAAx1aFQyYF-aGrLsBZtVqaT9gPh6Xw42kK",
+  "name": "Mutual NDA",
+  "type": "AGREEMENT",
+  "status": "OUT_FOR_SIGNATURE",
+  "signatureType": "ESIGN",
+  "state": "IN_PROCESS",
+  "senderEmail": "sender@example.com",
+  "createdDate": "2026-11-03T10:15:30Z",
+  "expirationTime": "2026-12-03T10:15:30Z",
+  "locale": "en_US",
+  "groupId": "CBJCHBCAABAAgrp",
+  "participantSetsInfo": [
+    {
+      "id": "CBJCHBCAABAApset1",
+      "role": "SIGNER",
+      "order": 1,
+      "memberInfos": [
+        {"id": "CBJCHBCAABAAmem1", "email": "jane@example.com", "status": "ACTIVE"}
+      ]
+    }
+  ],
+  "fileInfos": [],
+  "lastEventDate": "2026-11-03T10:15:35Z"
+}
