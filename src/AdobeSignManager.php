@@ -10,6 +10,7 @@ use Conceptlz\AdobeSign\Auth\OAuthConfig;
 use Conceptlz\AdobeSign\Auth\OAuthTokenProvider;
 use Conceptlz\AdobeSign\Auth\TokenStore;
 use Conceptlz\AdobeSign\ClientOptions;
+use Conceptlz\AdobeSign\Enum\SignatureLevel;
 use Conceptlz\AdobeSign\Webhook\WebhookHandler;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Container\Container;
@@ -183,6 +184,40 @@ class AdobeSignManager
     }
 
     /**
+     * The project's default signature level (config adobe-sign.signature_level).
+     *
+     * @throws MisconfiguredException for a value other than ses, aes or qes
+     */
+    public function signatureLevel(): SignatureLevel
+    {
+        $value = strtoupper(trim((string) ($this->config['signature_level'] ?? 'ses')));
+
+        return SignatureLevel::tryFrom($value)
+            ?? throw new MisconfiguredException(sprintf('ADOBE_SIGN_SIGNATURE_LEVEL must be ses, aes or qes; got "%s".', $value));
+    }
+
+    /**
+     * Certificate issuers accepted as qualified (config adobe-sign.qualified_issuers).
+     *
+     * @return list<string>
+     */
+    public function qualifiedIssuers(): array
+    {
+        return array_values(array_map('strval', $this->config['qualified_issuers'] ?? []));
+    }
+
+    /**
+     * Whether a completed agreement met the project's signature level, using the configured qualified issuers.
+     *
+     * @return list<string> shortfalls; empty when every signer reached the level
+     */
+    public function signatureShortfalls(string $agreementId, ?SignatureLevel $required = null): array
+    {
+        return $this->client()->agreements()->signatureEvidence($agreementId)
+            ->shortfalls($required ?? $this->signatureLevel(), $this->qualifiedIssuers());
+    }
+
+    /**
      * Named constructor arguments shared by every client.
      *
      * @return array<string, mixed>
@@ -197,6 +232,7 @@ class AdobeSignManager
                 baseUriTtl: (int) ($this->config['base_uri_ttl'] ?? 86400),
                 maxRetries: (int) ($this->config['retries']['max'] ?? 3),
                 maxRetryDelay: (float) ($this->config['retries']['max_delay_seconds'] ?? 60),
+                defaultSignatureLevel: $this->signatureLevel(),
             ),
         ];
 

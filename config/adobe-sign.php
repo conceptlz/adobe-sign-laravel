@@ -33,6 +33,18 @@ return [
         'redirect_after' => '/',
     ],
 
+    /*
+    | Default signature level for agreements built with AgreementInfo: "ses" (Acrobat Sign's default),
+    | "aes" or "qes". AES/QES require a certificate-based digital signature from each signer; whether it
+    | is qualified depends on the trust provider configured in your Acrobat Sign account. Agreements can
+    | override it with ->signatureLevel(SignatureLevel::...).
+    */
+    'signature_level' => env('ADOBE_SIGN_SIGNATURE_LEVEL', 'ses'),
+
+    // Certificate issuers you accept as qualified (your QTSP), comma-separated in .env. Used with
+    // signatureEvidence()->meets(SignatureLevel::QES, config('adobe-sign.qualified_issuers')).
+    'qualified_issuers' => array_values(array_filter(array_map('trim', explode(',', (string) env('ADOBE_SIGN_QUALIFIED_ISSUERS', ''))))),
+
     // Shard-agnostic host for GET /baseUris. Only change for e.g. Gov Cloud.
     'bootstrap_url' => env('ADOBE_SIGN_BOOTSTRAP_URL', 'https://api.adobesign.com'),
 

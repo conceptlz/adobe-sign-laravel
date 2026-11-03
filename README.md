@@ -60,6 +60,8 @@ every Laravel app, is used as the HTTP client.
 | `ADOBE_SIGN_REDIRECT_URI` | defaults to `route('adobe-sign.oauth.callback')`; must be registered on your Adobe app |
 | `ADOBE_SIGN_SCOPES` | space-separated; default `user_login:self agreement_read:self agreement_write:self agreement_send:self webhook_read:self webhook_write:self` |
 | `ADOBE_SIGN_WEBHOOK_CLIENT_IDS` | comma-separated client ids allowed to call your webhook; defaults to `ADOBE_SIGN_CLIENT_ID` |
+| `ADOBE_SIGN_SIGNATURE_LEVEL` | `ses` (default), `aes` or `qes`: the level for agreements built with `AgreementInfo` that don't set their own |
+| `ADOBE_SIGN_QUALIFIED_ISSUERS` | comma-separated certificate issuers you accept as qualified (your QTSP), for QES checks |
 | `ADOBE_SIGN_CACHE_STORE` | cache store for the account's data-center URL (default store if empty) |
 | `ADOBE_SIGN_LOG_CHANNEL` | log channel for request logs (default channel; set `false` in config to disable) |
 | `ADOBE_SIGN_BOOTSTRAP_URL` | only for Gov Cloud and similar |
@@ -170,6 +172,28 @@ public function handle(AdobeSign $sign): void
 ```
 
 That's the whole loop: **upload → signing order → send → webhook → signed PDF in your storage.**
+
+## Signature levels (SES, AES, QES)
+
+Set the project's default level in `.env`. An agreement or a single signer can still override it
+(see the [core README](https://github.com/conceptlz/adobe-sign#signature-levels-ses-aes-qes)):
+
+```dotenv
+ADOBE_SIGN_SIGNATURE_LEVEL=qes
+ADOBE_SIGN_QUALIFIED_ISSUERS="DigiCert,TrustPro QTSP"
+```
+
+AES and QES need digital signatures enabled in Acrobat Sign admin. QES also needs a **qualified**
+trust service provider as the account's signature provider; the core README lists them by jurisdiction.
+
+After signing, e.g. in the download job, check that the level was really met:
+
+```php
+$problems = AdobeSign::signatureShortfalls($agreementId);   // uses the configured level and issuers
+if ($problems !== []) {
+    // don't treat the document as qualified; $problems says who fell short and why
+}
+```
 
 ## Using the client
 
@@ -300,6 +324,9 @@ Event::assertDispatched(WebhookReceived::class);
 | `InvalidArgumentException: Acrobat Sign only delivers webhooks to HTTPS URLs` | `route()` produced `http://`: set `APP_URL` / trusted proxies |
 | Webhook creation fails | Adobe couldn't reach your URL, or the reply had no client-id echo: check that it's public HTTPS and not behind auth middleware |
 | Webhook was working, then stopped | Adobe disabled it after 72h of failed deliveries; re-enable with `Sign::webhooks()->updateState($id, 'ACTIVE')` |
+| `AccountCapabilityException ... HYBRID_ROUTING_NOT_ALLOWED` | mixed sequential + parallel order: enable hybrid routing in Acrobat Sign admin |
+| `AccountCapabilityException ... GOV_ID_LIMIT_EXCEEDED` / "not allowed by account settings" | the identity method isn't enabled or has no quota on this account |
+| `MisconfiguredException: ADOBE_SIGN_SIGNATURE_LEVEL must be ses, aes or qes` | fix the `.env` value |
 | `OAuthException ... EXPIRED_TOKEN` | the refresh token expired (60 days unused) or was revoked; the user must connect again |
 
 ## License
