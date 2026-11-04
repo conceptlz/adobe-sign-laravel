@@ -1888,21 +1888,21 @@ window.DOCS_INDEX = [
         "page": "Credits",
         "url": "credits.html#created-by",
         "level": 2,
-        "text": "Created and maintained by Conceptualize designed and built conceptlz/adobe-sign and conceptlz/adobe-sign-laravel, and continues to maintain both: releases, fixes, testing against real Acrobat Sign accounts, and this documentation. The packages are published on GitHub under the conceptlz organisation and released under…"
+        "text": "Created and maintained by Conceptualize designed and built conceptlz/adobe-sign, conceptlz/adobe-sign-laravel and conceptlz/adobe-sign-symfony, and continues to maintain all three: releases, fixes, testing against real Acrobat Sign accounts, and this documentation. The packages are published on GitHub under the concept…"
     },
     {
         "title": "What maintenance means here",
         "page": "Credits",
         "url": "credits.html#what-conceptualize-does",
         "level": 2,
-        "text": "Design & developmentThe SDK's architecture: PSR-only core, data-centre routing, retries, ETags, typed exceptions, builders, signature levels and evidence, and the Laravel bridge. VerificationEvery request in the test suite is validated against Adobe's published API specification, and behaviour is checked against a real…"
+        "text": "Design & developmentThe SDK's architecture: PSR-only core, data-centre routing, retries, ETags, typed exceptions, builders, signature levels and evidence, the Laravel bridge and the Symfony bundle. VerificationEvery request in the test suite is validated against Adobe's published API specification, and behaviour is che…"
     },
     {
         "title": "Get in touch",
         "page": "Credits",
         "url": "credits.html#get-in-touch",
         "level": 2,
-        "text": "ForUse Bugs, questions, feature requestsgithub.com/conceptlz/adobe-sign/issues Security reports (please don't open a public issue)info@conceptualize.ae Commercial support, integration work, everything elseinfo@conceptualize.ae Source codeconceptlz/adobe-sign · conceptlz/adobe-sign-laravel Contributions are welcome. The…"
+        "text": "ForUse Bugs, questions, feature requestsgithub.com/conceptlz/adobe-sign/issues Security reports (please don't open a public issue)info@conceptualize.ae Commercial support, integration work, everything elseinfo@conceptualize.ae Source codeconceptlz/adobe-sign · conceptlz/adobe-sign-laravel · conceptlz/adobe-sign-symfony…"
     },
     {
         "title": "Built with",
@@ -1916,14 +1916,14 @@ window.DOCS_INDEX = [
         "page": "Credits",
         "url": "credits.html#runtime-dependencies",
         "level": 3,
-        "text": "ProjectUsed forLicence PHP-FIG standards: PSR-3, PSR-7, PSR-16, PSR-17, PSR-18, PSR-20The interfaces the core depends on: logging, HTTP messages, cache, factories, HTTP client, clockMIT php-http/discoveryFinding the HTTP client and factories installed in your projectMIT Laravel (illuminate/*)The framework the bridge pl…"
+        "text": "ProjectUsed forLicence PHP-FIG standards: PSR-3, PSR-7, PSR-16, PSR-17, PSR-18, PSR-20The interfaces the core depends on: logging, HTTP messages, cache, factories, HTTP client, clockMIT php-http/discoveryFinding the HTTP client and factories installed in your projectMIT Laravel (illuminate/*)The framework the Laravel b…"
     },
     {
         "title": "In development and testing",
         "page": "Credits",
         "url": "credits.html#development-tools",
         "level": 3,
-        "text": "ProjectUsed forLicence Jane PHPGenerating the 313 model classes from the API specificationMIT justinrainbow/json-schemaChecking every test request and response against the specificationMIT PHPUnitThe test suitesBSD-3-Clause PHPStan and LarastanStatic analysisMIT Orchestra TestbenchTesting the Laravel bridgeMIT nyholm/p…"
+        "text": "ProjectUsed forLicence Jane PHPGenerating the 313 model classes from the API specificationMIT justinrainbow/json-schemaChecking every test request and response against the specificationMIT PHPUnitThe test suitesBSD-3-Clause PHPStan and LarastanStatic analysisMIT Orchestra TestbenchTesting the Laravel bridgeMIT Doctrine…"
     },
     {
         "title": "The API specification",
@@ -1944,7 +1944,7 @@ window.DOCS_INDEX = [
         "page": "Credits",
         "url": "credits.html#licence",
         "level": 2,
-        "text": "Both packages are released under the MIT License (copyright © 2026 Conceptlz). You may use, copy, modify and distribute them, including commercially, as long as the copyright and licence notice is kept. The full text is in the LICENSE file of each repository. DisclaimerThe project's independence from Adobe, warranties…"
+        "text": "All three packages are released under the MIT License (copyright © 2026 Conceptlz). You may use, copy, modify and distribute them, including commercially, as long as the copyright and licence notice is kept. The full text is in the LICENSE file of each repository. DisclaimerThe project's independence from Adobe, warran…"
     },
     {
         "title": "Disclaimer",
@@ -1958,7 +1958,7 @@ window.DOCS_INDEX = [
         "page": "Disclaimer",
         "url": "disclaimer.html#independent-project",
         "level": 2,
-        "text": "conceptlz/adobe-sign (the framework-agnostic PHP SDK) and conceptlz/adobe-sign-laravel (its Laravel bridge) are created and maintained by Conceptualize. They are client libraries: they call the public Acrobat Sign REST API v6 on your behalf, using credentials you obtain from Adobe for your own Acrobat Sign account. Nei…"
+        "text": "conceptlz/adobe-sign (the framework-agnostic PHP SDK), conceptlz/adobe-sign-laravel (its Laravel bridge) and conceptlz/adobe-sign-symfony (its Symfony bundle) are created and maintained by Conceptualize. They are client libraries: they call the public Acrobat Sign REST API v6 on your behalf, using credentials you obtai…"
     },
     {
         "title": "Trademarks",
@@ -1972,7 +1972,7 @@ window.DOCS_INDEX = [
         "page": "Disclaimer",
         "url": "disclaimer.html#no-warranty",
         "level": 2,
-        "text": "Both packages are released under the MIT License. As that licence states, the software is provided \"as is\", without warranty of any kind, express or implied, including fitness for a particular purpose and non-infringement. Neither the authors nor the copyright holders are liable for any claim, damages or other liabilit…"
+        "text": "All three packages are released under the MIT License. As that licence states, the software is provided \"as is\", without warranty of any kind, express or implied, including fitness for a particular purpose and non-infringement. Neither the authors nor the copyright holders are liable for any claim, damages or other lia…"
     },
     {
         "title": "Not legal advice",
@@ -2007,7 +2007,7 @@ window.DOCS_INDEX = [
         "page": "Disclaimer",
         "url": "disclaimer.html#security-reports",
         "level": 2,
-        "text": "If you find a security problem in either package, please do not open a public issue. Email info@conceptualize.ae with a description and, if possible, steps to reproduce it. Problems in Acrobat Sign itself should be reported to Adobe."
+        "text": "If you find a security problem in any of the packages, please do not open a public issue. Email info@conceptualize.ae with a description and, if possible, steps to reproduce it. Problems in Acrobat Sign itself should be reported to Adobe."
     },
     {
         "title": "Contact",
@@ -2028,7 +2028,7 @@ window.DOCS_INDEX = [
         "page": "Privacy policy",
         "url": "privacy.html#scope",
         "level": 2,
-        "text": "\"We\" means Conceptualize, which creates and maintains the open-source packages conceptlz/adobe-sign and conceptlz/adobe-sign-laravel and publishes this documentation. This policy covers: the documentation websites for both packages (this site and its sibling), and the behaviour of the packages themselves when you insta…"
+        "text": "\"We\" means Conceptualize, which creates and maintains the open-source packages conceptlz/adobe-sign, conceptlz/adobe-sign-laravel and conceptlz/adobe-sign-symfony and publishes this documentation. This policy covers: the documentation websites for all three packages (this site and its siblings), and the behaviour of th…"
     },
     {
         "title": "This documentation website",
@@ -2042,7 +2042,7 @@ window.DOCS_INDEX = [
         "page": "Privacy policy",
         "url": "privacy.html#analytics",
         "level": 3,
-        "text": "Every page loads Google Analytics 4 (Google tag gtag.js, measurement ID G-MEPPZRMKDP), provided by Google. Both documentation sites, for the core SDK and for the Laravel bridge, report to the same Analytics property. We use it only to learn which pages are read and where the documentation needs improving, not for adver…"
+        "text": "Every page loads Google Analytics 4 (Google tag gtag.js, measurement ID G-MEPPZRMKDP), provided by Google. All three documentation sites, for the core SDK, the Laravel bridge and the Symfony bundle, report to the same Analytics property. We use it only to learn which pages are read and where the documentation needs imp…"
     },
     {
         "title": "No advertising, accounts or forms",
@@ -2098,7 +2098,7 @@ window.DOCS_INDEX = [
         "page": "Privacy policy",
         "url": "privacy.html#no-telemetry",
         "level": 3,
-        "text": "Neither package collects usage statistics, crash reports or analytics, and neither contacts any server operated by Conceptualize. Installing them through Composer involves Packagist and GitHub, whose own policies apply to those downloads."
+        "text": "None of the packages collects usage statistics, crash reports or analytics, or contacts any server operated by Conceptualize. Installing them through Composer involves Packagist and GitHub, whose own policies apply to those downloads."
     },
     {
         "title": "Where your data goes",

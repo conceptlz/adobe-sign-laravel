@@ -4,7 +4,7 @@
 <!-- docs:head -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Google tag (gtag.js): one GA4 property for both sites on conceptlz.github.io; see privacy.html -->
+<!-- Google tag (gtag.js): one GA4 property for all sites on conceptlz.github.io; see privacy.html -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-MEPPZRMKDP"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -31,7 +31,7 @@
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <!-- /docs:head -->
 <title>Disclaimer · conceptlz/adobe-sign-laravel</title>
-<meta name="description" content="conceptlz/adobe-sign and conceptlz/adobe-sign-laravel are independent open-source projects by Conceptualize, not affiliated with or endorsed by Adobe. What that means for warranties, trademarks, legal advice and your responsibilities.">
+<meta name="description" content="conceptlz/adobe-sign and its Laravel and Symfony integrations are independent open-source projects by Conceptualize, not affiliated with or endorsed by Adobe. What that means for warranties, trademarks, legal advice and your responsibilities.">
 </head>
 <body>
 <!-- docs:topbar -->
@@ -108,6 +108,7 @@
     </ul>
   </div>
   <p class="sidebar-other">Need the full API reference?<br><a href="https://conceptlz.github.io/adobe-sign/">Core SDK docs →</a></p>
+  <p class="sidebar-other">Using Symfony instead?<br><a href="https://conceptlz.github.io/adobe-sign-symfony/">Symfony bundle docs →</a></p>
 </nav>
 <div class="nav-backdrop" hidden></div>
 <!-- /docs:sidebar -->
@@ -122,7 +123,7 @@
       and cannot rely on.
     </p>
     <ul class="legal-meta">
-      <li><strong>Applies to:</strong> conceptlz/adobe-sign, conceptlz/adobe-sign-laravel and this documentation</li>
+      <li><strong>Applies to:</strong> conceptlz/adobe-sign, conceptlz/adobe-sign-laravel, conceptlz/adobe-sign-symfony and this documentation</li>
       <li><strong>Last updated:</strong> 3 November 2026</li>
     </ul>
   </header>
@@ -139,13 +140,14 @@
 
   <h2 id="independent-project">An independent project</h2>
   <p>
-    <code>conceptlz/adobe-sign</code> (the framework-agnostic PHP SDK) and <code>conceptlz/adobe-sign-laravel</code>
-    (its Laravel bridge) are created and maintained by <a href="credits.html">Conceptualize</a>. They are
+    <code>conceptlz/adobe-sign</code> (the framework-agnostic PHP SDK), <code>conceptlz/adobe-sign-laravel</code>
+    (its Laravel bridge) and <code>conceptlz/adobe-sign-symfony</code> (its Symfony bundle) are created and
+    maintained by <a href="credits.html">Conceptualize</a>. They are
     client libraries: they call the public Acrobat Sign REST API v6 on your behalf, using credentials you
     obtain from Adobe for your own Acrobat Sign account.
   </p>
   <p>
-    Neither package is an Adobe product. Adobe Inc. has not developed, reviewed, certified, sponsored or
+    None of the packages is an Adobe product. Adobe Inc. has not developed, reviewed, certified, sponsored or
     endorsed them, and is not responsible for them. Adobe's own documentation and support channels are the
     authority on how Acrobat Sign behaves. When this documentation and Adobe's disagree, Adobe's describes the
     service, and this documentation describes what the SDK does with it.
@@ -172,7 +174,7 @@
 
   <h2 id="no-warranty">No warranty</h2>
   <p>
-    Both packages are released under the <a href="https://opensource.org/license/mit">MIT License</a>. As that
+    All three packages are released under the <a href="https://opensource.org/license/mit">MIT License</a>. As that
     licence states, the software is provided "as is", without warranty of any kind, express or implied,
     including fitness for a particular purpose and non-infringement. Neither the authors nor the copyright
     holders are liable for any claim, damages or other liability arising from the software or its use.
@@ -238,7 +240,7 @@
 
   <h2 id="security-reports">Security reports</h2>
   <p>
-    If you find a security problem in either package, please do not open a public issue. Email
+    If you find a security problem in any of the packages, please do not open a public issue. Email
     <a href="mailto:info@conceptualize.ae">info@conceptualize.ae</a> with a description and, if possible, steps to
     reproduce it. Problems in Acrobat Sign itself should be reported to Adobe.
   </p>

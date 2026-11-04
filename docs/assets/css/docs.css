@@ -505,6 +505,12 @@ a:hover {
   color: var(--ink-soft);
 }
 
+.sidebar-other + .sidebar-other {
+  margin-top: var(--space-md);
+  padding-top: 0;
+  border-top: 0;
+}
+
 .sidebar-other a {
   display: inline-block;
   margin-top: var(--space-2xs);

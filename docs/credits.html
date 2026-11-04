@@ -4,7 +4,7 @@
 <!-- docs:head -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Google tag (gtag.js): one GA4 property for both sites on conceptlz.github.io; see privacy.html -->
+<!-- Google tag (gtag.js): one GA4 property for all sites on conceptlz.github.io; see privacy.html -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-MEPPZRMKDP"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -31,7 +31,7 @@
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <!-- /docs:head -->
 <title>Credits · conceptlz/adobe-sign-laravel</title>
-<meta name="description" content="conceptlz/adobe-sign and conceptlz/adobe-sign-laravel are created and maintained by Conceptualize. Credits for the open-source projects, standards and typefaces they are built with.">
+<meta name="description" content="conceptlz/adobe-sign and its Laravel and Symfony integrations are created and maintained by Conceptualize. Credits for the open-source projects, standards and typefaces they are built with.">
 </head>
 <body>
 <!-- docs:topbar -->
@@ -108,6 +108,7 @@
     </ul>
   </div>
   <p class="sidebar-other">Need the full API reference?<br><a href="https://conceptlz.github.io/adobe-sign/">Core SDK docs →</a></p>
+  <p class="sidebar-other">Using Symfony instead?<br><a href="https://conceptlz.github.io/adobe-sign-symfony/">Symfony bundle docs →</a></p>
 </nav>
 <div class="nav-backdrop" hidden></div>
 <!-- /docs:sidebar -->
@@ -134,8 +135,8 @@
       <h2 class="maker-name" id="created-by">Conceptualize</h2>
       <p class="maker-role">Created and maintained by</p>
       <p>
-        Conceptualize designed and built <code>conceptlz/adobe-sign</code> and
-        <code>conceptlz/adobe-sign-laravel</code>, and continues to maintain both: releases, fixes, testing against
+        Conceptualize designed and built <code>conceptlz/adobe-sign</code>,
+        <code>conceptlz/adobe-sign-laravel</code> and <code>conceptlz/adobe-sign-symfony</code>, and continues to maintain all three: releases, fixes, testing against
         real Acrobat Sign accounts, and this documentation. The packages are published on GitHub under the
         <a href="https://github.com/conceptlz">conceptlz</a> organisation and released under the MIT License.
       </p>
@@ -144,9 +145,9 @@
 
   <h2 id="what-conceptualize-does">What maintenance means here</h2>
   <ul class="ledger">
-    <li><span class="ledger-term">Design &amp; development</span><span class="ledger-desc">The SDK's architecture: PSR-only core, data-centre routing, retries, ETags, typed exceptions, builders, signature levels and evidence, and the Laravel bridge.</span></li>
+    <li><span class="ledger-term">Design &amp; development</span><span class="ledger-desc">The SDK's architecture: PSR-only core, data-centre routing, retries, ETags, typed exceptions, builders, signature levels and evidence, the Laravel bridge and the Symfony bundle.</span></li>
     <li><span class="ledger-term">Verification</span><span class="ledger-desc">Every request in the test suite is validated against Adobe's published API specification, and behaviour is checked against a real Acrobat Sign account. Differences from the specification are fixed in the SDK and documented.</span></li>
-    <li><span class="ledger-term">Releases</span><span class="ledger-desc">Both packages share one version number and are released together, with a changelog for every version.</span></li>
+    <li><span class="ledger-term">Releases</span><span class="ledger-desc">All three packages share one version number and are released together, with a changelog for every version.</span></li>
     <li><span class="ledger-term">Documentation</span><span class="ledger-desc">These sites, the READMEs and the runnable examples, kept in step with the code.</span></li>
     <li><span class="ledger-term">Support</span><span class="ledger-desc">Bug reports and feature requests through GitHub issues; security reports and other enquiries by email.</span></li>
   </ul>
@@ -159,7 +160,7 @@
         <tr><td>Bugs, questions, feature requests</td><td><a href="https://github.com/conceptlz/adobe-sign/issues">github.com/conceptlz/adobe-sign/issues</a></td></tr>
         <tr><td>Security reports (please don't open a public issue)</td><td><a href="mailto:info@conceptualize.ae">info@conceptualize.ae</a></td></tr>
         <tr><td>Commercial support, integration work, everything else</td><td><a href="mailto:info@conceptualize.ae">info@conceptualize.ae</a></td></tr>
-        <tr><td>Source code</td><td><a href="https://github.com/conceptlz/adobe-sign">conceptlz/adobe-sign</a> · <a href="https://github.com/conceptlz/adobe-sign-laravel">conceptlz/adobe-sign-laravel</a></td></tr>
+        <tr><td>Source code</td><td><a href="https://github.com/conceptlz/adobe-sign">conceptlz/adobe-sign</a> · <a href="https://github.com/conceptlz/adobe-sign-laravel">conceptlz/adobe-sign-laravel</a> · <a href="https://github.com/conceptlz/adobe-sign-symfony">conceptlz/adobe-sign-symfony</a></td></tr>
       </tbody>
     </table>
   </div>
@@ -181,7 +182,9 @@
       <tbody>
         <tr><td><a href="https://www.php-fig.org/">PHP-FIG</a> standards: PSR-3, PSR-7, PSR-16, PSR-17, PSR-18, PSR-20</td><td>The interfaces the core depends on: logging, HTTP messages, cache, factories, HTTP client, clock</td><td>MIT</td></tr>
         <tr><td><a href="https://github.com/php-http/discovery">php-http/discovery</a></td><td>Finding the HTTP client and factories installed in your project</td><td>MIT</td></tr>
-        <tr><td><a href="https://laravel.com/">Laravel</a> (<code>illuminate/*</code>)</td><td>The framework the bridge plugs into</td><td>MIT</td></tr>
+        <tr><td><a href="https://laravel.com/">Laravel</a> (<code>illuminate/*</code>)</td><td>The framework the Laravel bridge plugs into</td><td>MIT</td></tr>
+        <tr><td><a href="https://symfony.com/">Symfony</a> components</td><td>The framework the Symfony bundle plugs into</td><td>MIT</td></tr>
+        <tr><td><a href="https://www.doctrine-project.org/projects/dbal.html">Doctrine DBAL</a> (optional)</td><td>The Symfony bundle's database token store</td><td>MIT</td></tr>
       </tbody>
     </table>
   </div>
@@ -196,6 +199,7 @@
         <tr><td><a href="https://phpunit.de/">PHPUnit</a></td><td>The test suites</td><td>BSD-3-Clause</td></tr>
         <tr><td><a href="https://phpstan.org/">PHPStan</a> and <a href="https://github.com/larastan/larastan">Larastan</a></td><td>Static analysis</td><td>MIT</td></tr>
         <tr><td><a href="https://github.com/orchestral/testbench">Orchestra Testbench</a></td><td>Testing the Laravel bridge</td><td>MIT</td></tr>
+        <tr><td><a href="https://www.doctrine-project.org/projects/orm.html">Doctrine ORM</a>, <a href="https://symfony.com/doc/current/components/browser_kit.html">Symfony BrowserKit</a></td><td>Testing the Symfony bundle</td><td>MIT</td></tr>
         <tr><td><a href="https://github.com/Nyholm/psr7">nyholm/psr7</a>, <a href="https://symfony.com/doc/current/http_client.html">Symfony HttpClient</a>, <a href="https://github.com/php-http/mock-client">php-http/mock-client</a></td><td>HTTP messages and clients in tests and examples</td><td>MIT</td></tr>
       </tbody>
     </table>
@@ -219,7 +223,7 @@
 
   <h2 id="licence">Licence</h2>
   <p>
-    Both packages are released under the MIT License (copyright © 2026 Conceptlz). You may use, copy, modify
+    All three packages are released under the MIT License (copyright © 2026 Conceptlz). You may use, copy, modify
     and distribute them, including commercially, as long as the copyright and licence notice is kept. The full
     text is in the <code>LICENSE</code> file of each repository.
   </p>
