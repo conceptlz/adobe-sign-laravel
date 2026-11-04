@@ -21,7 +21,8 @@ final class WebhookController
 {
     /**
      * 403 for a missing or unknown client id, 400 for an unreadable POST body, otherwise 200 with
-     * the echo.
+     * the echo. Exceptions from listeners propagate (500) without marking the notification handled,
+     * so Adobe delivers it again.
      * Dedupe keys live in the adobe-sign.cache_store store for webhooks.dedupe_ttl seconds.
      */
     public function __invoke(Request $request, AdobeSignManager $manager, CacheFactory $cache): Response|JsonResponse
@@ -46,11 +47,20 @@ final class WebhookController
             }
 
             $store = $cache->store(config('adobe-sign.cache_store'));
+            $key = 'adobe_sign.webhook.' . $event->notificationId;
             $first = $event->notificationId === null
-                || $store->add('adobe_sign.webhook.' . $event->notificationId, true, (int) config('adobe-sign.webhooks.dedupe_ttl', 259200));
+                || $store->add($key, true, (int) config('adobe-sign.webhooks.dedupe_ttl', 259200));
 
             if ($first) {
-                WebhookReceived::dispatch($event);
+                try {
+                    WebhookReceived::dispatch($event);
+                } catch (\Throwable $e) {
+                    // Let Adobe's retry through: otherwise the failed delivery would count as handled.
+                    if ($event->notificationId !== null) {
+                        $store->forget($key);
+                    }
+                    throw $e;
+                }
             }
         }
 

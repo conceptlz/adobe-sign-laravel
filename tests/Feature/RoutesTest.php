@@ -117,6 +117,26 @@ final class RoutesTest extends TestCase
             && $e->event->agreementId() === 'CBJCHBCAABAAx1aFQyYF-aGrLsBZtVqaT9gPh6Xw42kK');
     }
 
+    public function test_failed_delivery_is_not_marked_handled_so_the_retry_gets_through(): void
+    {
+        $calls = 0;
+        Event::listen(WebhookReceived::class, function () use (&$calls): void {
+            if (++$calls === 1) {
+                throw new \RuntimeException('database unavailable');
+            }
+        });
+        $send = fn () => $this->call('POST', '/adobe-sign/webhook', [], [], [], [
+            'HTTP_X_ADOBESIGN_CLIENTID' => self::CLIENT_ID,
+            'CONTENT_TYPE' => 'application/json',
+        ], self::fixture('webhook_agreement_workflow_completed'));
+
+        $this->withoutExceptionHandling([\RuntimeException::class]);
+        $send()->assertStatus(500);
+        $send()->assertOk();   // Adobe's retry
+
+        self::assertSame(2, $calls, 'delivered again on the retry instead of being dropped as a duplicate');
+    }
+
     public function test_readme_webhook_testing_snippet_works(): void
     {
         Event::fake([WebhookReceived::class]);
