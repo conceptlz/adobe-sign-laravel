@@ -2038,11 +2038,18 @@ window.DOCS_INDEX = [
         "text": ""
     },
     {
-        "title": "No analytics, cookies, accounts or forms",
+        "title": "Analytics: Google Analytics",
         "page": "Privacy policy",
-        "url": "privacy.html#no-tracking",
+        "url": "privacy.html#analytics",
         "level": 3,
-        "text": "The site is a set of static HTML pages. It contains no analytics or advertising scripts, no tracking pixels, no social-media widgets and no embedded videos. It sets no cookies. There are no accounts, sign-ins or contact forms, so the site has no way to ask you for personal data."
+        "text": "Every page loads Google Analytics 4 (Google tag gtag.js, measurement ID G-MEPPZRMKDP), provided by Google. Both documentation sites, for the core SDK and for the Laravel bridge, report to the same Analytics property. We use it only to learn which pages are read and where the documentation needs improving, not for adver…"
+    },
+    {
+        "title": "No advertising, accounts or forms",
+        "page": "Privacy policy",
+        "url": "privacy.html#no-ads-or-forms",
+        "level": 3,
+        "text": "Apart from Google Analytics, the site contains no advertising scripts, no tracking pixels, no social-media widgets and no embedded videos. There are no accounts, sign-ins or contact forms, so the site never asks you for personal data."
     },
     {
         "title": "Hosting: GitHub Pages",
@@ -2133,7 +2140,7 @@ window.DOCS_INDEX = [
         "page": "Privacy policy",
         "url": "privacy.html#your-rights",
         "level": 2,
-        "text": "Because Conceptualize does not collect personal data through this website or the packages, there is usually nothing for us to access, correct or delete. For data held by GitHub, Google or Adobe, contact them directly using the links above. For emails you have sent us, write to info@conceptualize.ae to ask for access or…"
+        "text": "The only website data Conceptualize can see is Google Analytics data. It is pseudonymous: it identifies a browser by a random cookie identifier, not you by name, so we usually cannot tell which data is yours. You can stop it at any time by opting out; if you send us the identifier from your _ga cookie, we can ask Googl…"
     },
     {
         "title": "Children",

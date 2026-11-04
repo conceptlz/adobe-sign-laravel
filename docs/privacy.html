@@ -4,6 +4,15 @@
 <!-- docs:head -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (gtag.js): one GA4 property for both sites on conceptlz.github.io; see privacy.html -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MEPPZRMKDP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MEPPZRMKDP');
+</script>
 <meta name="color-scheme" content="light dark">
 <script>
 (function () {
@@ -22,7 +31,7 @@
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <!-- /docs:head -->
 <title>Privacy policy · conceptlz/adobe-sign-laravel</title>
-<meta name="description" content="How this documentation website and the conceptlz/adobe-sign packages handle personal data: no analytics, no cookies, no telemetry, and agreement data sent only to Adobe under your control.">
+<meta name="description" content="How this documentation website and the conceptlz/adobe-sign packages handle personal data: Google Analytics on the website, no telemetry in the packages, and agreement data sent only to Adobe under your control.">
 </head>
 <body>
 <!-- docs:topbar -->
@@ -108,21 +117,23 @@
     <p class="eyebrow">About</p>
     <h1>Privacy policy</h1>
     <p class="lede">
-      This website has no analytics, no cookies and no forms, and the packages have no telemetry. This policy
-      explains which services still see technical data when you read these pages, and where your agreement
-      data goes when you use the SDK.
+      This website uses Google Analytics to understand how the documentation is read. It has no advertising
+      and no forms, and the packages themselves have no telemetry. This policy explains what Google
+      Analytics and the other services behind these pages see, and where your agreement data goes when you
+      use the SDK.
     </p>
     <ul class="legal-meta">
       <li><strong>Controller:</strong> Conceptualize</li>
       <li><strong>Contact:</strong> <a href="mailto:info@conceptualize.ae">info@conceptualize.ae</a></li>
-      <li><strong>Effective:</strong> 3 November 2026</li>
+      <li><strong>Effective:</strong> 4 November 2026</li>
     </ul>
   </header>
 
   <div class="summary-box">
     <p class="summary-box-title">At a glance</p>
     <ul>
-      <li>Conceptualize does not collect, receive or store personal data through this website or through the packages.</li>
+      <li>The website uses <strong>Google Analytics</strong>, which sets cookies and gives Conceptualize statistics about how the pages are used: pages viewed, approximate location, device and browser. It is not used for advertising, and you can opt out.</li>
+      <li>The packages collect nothing. Conceptualize receives no data from your application or from the agreements you send.</li>
       <li>The website is hosted on GitHub Pages and loads fonts from Google Fonts; both receive your IP address as part of serving the files.</li>
       <li>Your theme choice (light or dark) is stored in your own browser only. Search runs in your browser.</li>
       <li>The SDK sends data only to Adobe Acrobat Sign and to endpoints you configure, never to Conceptualize.</li>
@@ -140,17 +151,47 @@
     <li>the behaviour of the packages themselves when you install them in your application.</li>
   </ol>
   <p>
-    It does not cover Adobe Acrobat Sign, GitHub, Packagist or Google Fonts, which have their own privacy
-    policies (linked below), or the applications you build with the SDK, for which you are responsible.
+    It does not cover Adobe Acrobat Sign, GitHub, Packagist, Google Analytics or Google Fonts, which have
+    their own privacy policies (linked below), or the applications you build with the SDK, for which you are
+    responsible.
   </p>
 
   <h2 id="website">This documentation website</h2>
 
-  <h3 id="no-tracking">No analytics, cookies, accounts or forms</h3>
+  <h3 id="analytics">Analytics: Google Analytics</h3>
   <p>
-    The site is a set of static HTML pages. It contains no analytics or advertising scripts, no tracking
-    pixels, no social-media widgets and no embedded videos. It sets no cookies. There are no accounts, sign-ins
-    or contact forms, so the site has no way to ask you for personal data.
+    Every page loads Google Analytics 4 (Google tag <code>gtag.js</code>, measurement ID
+    <code>G-MEPPZRMKDP</code>), provided by Google. Both documentation sites, for the core SDK and for the
+    Laravel bridge, report to the same Analytics property. We use it only to learn which pages are read and
+    where the documentation needs improving, not for advertising.
+  </p>
+  <p>When a page loads, Google Analytics collects:</p>
+  <ul>
+    <li>the page you view, the page that referred you, and how you interact with it (time on page, scrolling, links you follow out of the site);</li>
+    <li>technical details of your device: browser, operating system, screen size and language;</li>
+    <li>your approximate location (country and city), which Google derives from your IP address. Google states that Google Analytics 4 does not log or store IP addresses.</li>
+  </ul>
+  <p>
+    To recognise repeat visits, it sets first-party cookies on <code>conceptlz.github.io</code>, named
+    <code>_ga</code> and <code>_ga_MEPPZRMKDP</code>. They hold a random identifier, not your name or email, and
+    expire after up to two years. Google processes this data under its own terms and may handle it outside
+    your country; see
+    <a href="https://policies.google.com/technologies/partner-sites">how Google uses information from sites that use its services</a>.
+    Google keeps user-level data for the retention period set in our Analytics property, at most 14 months;
+    aggregated reports, which identify no one, can be kept longer.
+  </p>
+  <p>
+    <strong>Opting out.</strong> Install the
+    <a href="https://tools.google.com/dlpage/gaoptout">Google Analytics opt-out browser add-on</a>, block
+    cookies or scripts from Google in your browser or with a content blocker, or delete the
+    <code>_ga</code> cookies. The documentation works fully without Analytics.
+  </p>
+
+  <h3 id="no-ads-or-forms">No advertising, accounts or forms</h3>
+  <p>
+    Apart from Google Analytics, the site contains no advertising scripts, no tracking pixels, no
+    social-media widgets and no embedded videos. There are no accounts, sign-ins or contact forms, so the site
+    never asks you for personal data.
   </p>
 
   <h3 id="hosting">Hosting: GitHub Pages</h3>
@@ -158,7 +199,7 @@
     The pages are served by GitHub Pages, a service of GitHub, Inc. Like any web server, GitHub receives
     technical information when your browser requests a page, including your IP address, the page requested,
     and your browser's user-agent string. GitHub may log this for security and to operate the service.
-    Conceptualize has no access to these logs and receives no visitor statistics. See the
+    Conceptualize has no access to these logs. See the
     <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub General Privacy Statement</a>.
   </p>
 
@@ -265,9 +306,12 @@
 
   <h2 id="your-rights">Your rights</h2>
   <p>
-    Because Conceptualize does not collect personal data through this website or the packages, there is
-    usually nothing for us to access, correct or delete. For data held by GitHub, Google or Adobe, contact
-    them directly using the links above. For emails you have sent us, write to
+    The only website data Conceptualize can see is Google Analytics data. It is pseudonymous: it identifies
+    a browser by a random cookie identifier, not you by name, so we usually cannot tell which data is yours.
+    You can stop it at any time by <a href="#analytics">opting out</a>; if you send us the identifier from
+    your <code>_ga</code> cookie, we can ask Google to delete the data associated with it. The packages send
+    us nothing, so there is nothing to access or delete there. For data held by GitHub, Google or Adobe,
+    contact them directly using the links above. For emails you have sent us, write to
     <a href="mailto:info@conceptualize.ae">info@conceptualize.ae</a> to ask for access or deletion. Depending on
     where you live, you may also have the right to complain to a data-protection authority.
   </p>
