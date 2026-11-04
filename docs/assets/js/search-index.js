@@ -1979,7 +1979,7 @@ window.DOCS_INDEX = [
         "page": "Disclaimer",
         "url": "disclaimer.html#not-legal-advice",
         "level": 2,
-        "text": "Signature law is jurisdiction-specific The pages on signature levels, identity checks, eIDAS and UAE law explain how these frameworks are generally understood, so that developers and technical leads can talk to their lawyers in the same terms. They are not legal advice and do not create any professional relationship. W…"
+        "text": "Signature law is jurisdiction-specific The pages on signature levels, identity checks, eIDAS and national signature laws explain how these frameworks are generally understood, so that developers and technical leads can talk to their lawyers in the same terms. They are not legal advice and do not create any professional…"
     },
     {
         "title": "Your responsibilities",
