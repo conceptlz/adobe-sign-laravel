@@ -40,7 +40,7 @@ window.DOCS_INDEX = [
         "page": "E-signatures, the Laravel way.",
         "url": "index.html#relation-to-core",
         "level": 2,
-        "text": "Installing this package pulls in conceptlz/adobe-sign. Both packages share one version number (currently 0.4.0) and are always released together, and the bridge requires the core at ^0.4. All builders (AgreementInfo, ParticipantSetInfo, FileInfo, WebhookInfo, Verification), resources (agreements(), transientDocuments()…"
+        "text": "Installing this package pulls in conceptlz/adobe-sign. Both packages share one version number (currently 0.5.0) and are always released together, and the bridge requires the core at ^0.5. All builders (AgreementInfo, ParticipantSetInfo, FileInfo, WebhookInfo, Verification), resources (agreements(), transientDocuments()…"
     },
     {
         "title": "Requirements",
@@ -68,7 +68,7 @@ window.DOCS_INDEX = [
         "page": "Installation",
         "url": "installation.html#requirements",
         "level": 2,
-        "text": "NeedsVersion or detail PHP8.2 or newer Laravel12 or 13 (illuminate/* ^12.0 || ^13.0) Core SDKconceptlz/adobe-sign ^0.4, installed for you HTTP clientAny PSR-18 client. Laravel already ships Guzzle, so there is nothing to add. Database tableOnly for OAuth (adobe_sign_tokens) Acrobat Sign accountAny plan, including a fre…"
+        "text": "NeedsVersion or detail PHP8.2 or newer Laravel12 or 13 (illuminate/* ^12.0 || ^13.0) Core SDKconceptlz/adobe-sign ^0.5, installed for you HTTP clientAny PSR-18 client. Laravel already ships Guzzle, so there is nothing to add. Database tableOnly for OAuth (adobe_sign_tokens) Acrobat Sign accountAny plan, including a fre…"
     },
     {
         "title": "Install in five steps",
@@ -117,7 +117,7 @@ window.DOCS_INDEX = [
         "page": "Installation",
         "url": "installation.html#upgrading",
         "level": 2,
-        "text": "Update both packages together so the bridge and the core stay on the same release: composer update conceptlz/adobe-sign-laravel conceptlz/adobe-sign While the version is below 1.0, a minor bump (0.4 → 0.5) can contain breaking changes, and the bridge's ^0.4 constraint keeps you on 0.4.x until you change your own constr…"
+        "text": "Update both packages together so the bridge and the core stay on the same release: composer update conceptlz/adobe-sign-laravel conceptlz/adobe-sign While the version is below 1.0, a minor bump (0.5 → 0.6) can contain breaking changes, and the bridge's ^0.5 constraint keeps you on 0.5.x until you change your own constr…"
     },
     {
         "title": "Common questions",
@@ -1664,7 +1664,7 @@ window.DOCS_INDEX = [
         "page": "FAQ · FAQ",
         "url": "faq.html#faq-version-numbers",
         "level": 3,
-        "text": "They share one version number and are always released together; the current release is 0.4.0. The bridge requires the core at ^0.4. Before 1.0, a minor bump (0.4 → 0.5) may contain breaking changes, so update both with composer update conceptlz/adobe-sign-laravel conceptlz/adobe-sign and read the changelog. See Upgradi…"
+        "text": "They share one version number and are always released together; the current release is 0.5.0. The bridge requires the core at ^0.5. Before 1.0, a minor bump (0.5 → 0.6) may contain breaking changes, so update both with composer update conceptlz/adobe-sign-laravel conceptlz/adobe-sign and read the changelog. See Upgradi…"
     },
     {
         "title": "Is this an official Adobe package?",

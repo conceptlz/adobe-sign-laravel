@@ -40,6 +40,6 @@ Tests in `tests/Feature` fake HTTP through the core client; they never call Adob
 
 ## Dependency on the core
 
-The bridge requires `conceptlz/adobe-sign` `^0.4`. Locally it resolves to `../adobe-sign` through a path
-repository pinned to `0.4.x-dev`. Bump both on every minor release (see Releasing in the root
+The bridge requires `conceptlz/adobe-sign` `^0.5`. Locally it resolves to `../adobe-sign` through a path
+repository pinned to `0.5.x-dev`. Bump both on every minor release (see Releasing in the root
 `CLAUDE.md`).
